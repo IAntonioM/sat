@@ -22,7 +22,7 @@
 		<link href="assets/plugins/global/plugins.bundle.css" rel="stylesheet" type="text/css" />
 		<link href="assets/css/style.bundle.css" rel="stylesheet" type="text/css" />
 		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
-	
+
 		<!--end::Global Stylesheets Bundle-->
 		<script>// Frame-busting to prevent site from being loaded within a frame without permission (click-jacking) if (window.top != window.self) { window.top.location.replace(window.self.location.href); }</script>
 	</head>
@@ -53,7 +53,7 @@
 
 .fade-in {
   animation: aparecer 0.8s ease forwards;
-  
+
 }
 
 @keyframes mover {
@@ -132,7 +132,22 @@
 		<script src="assets/js/custom/authentication/sign-in/general.js"></script>
 		<!--end::Custom Javascript-->
 		<!--end::Javascript-->
-		
+
 	</body>
 	<!--end::Body-->
+
+    @if (session('alert'))
+        <script>
+            Swal.fire({
+                icon: '{{ session('alert.type') }}', // error, success, info, etc.
+                title: '{{ session('alert.title') }}',
+                html: `{!! session('alert.message') !!}`,
+                confirmButtonText: 'Aceptar',
+                customClass: {
+                    confirmButton: 'btn btn-light-danger'
+                }
+            });
+        </script>
+    @endif
+
 </html>

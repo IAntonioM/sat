@@ -7,32 +7,40 @@
 						<!--begin::Wrapper-->
 						<div class="d-flex flex-center flex-column  px-lg-10  ">
 							<!--begin::Form-->
-							<form class="form w-100" novalidate="novalidate" id="kt_sign_in_form" data-kt-redirect-url="../../demo2/dist/index.html" action="#">
+							<form class="form w-100" novalidate="novalidate" id="kt_sign_in_form" method="POST" action="{{route('login')}}">
+                            <!--<form class="form w-100" novalidate="novalidate" id="kt_sign_in_form" data-kt-redirect-url="../../demo2/dist/index.html" action="#">-->
 								<!--begin::Heading-->
+                                @csrf
 								<div class="text-center mb-11">
 									<!--begin::Title-->
 									<h1 class="fw-bolder mb-3" style="color:#015e80;">INICIAR SESIÓN</h1>
 									<!--end::Title-->
-									
+
 								</div>
 								<!--begin::Heading-->
-								
+
 								<!--begin::Separator-->
 								<div class="separator separator-content my-14">
-									
+
 								</div>
 								<!--end::Separator-->
 								<!--begin::Input group=-->
 								<div class="fv-row mb-8">
 									<!--begin::Email-->
-									<input type="text" placeholder="Usuario" name="usuario" autocomplete="off" class="form-control bg-transparent" />
+									<input type="text" placeholder="Usuario" name="usuario" autocomplete="off" class="form-control bg-transparent" value="{{ old('usuario') }}"/>
+                                    @error('usuario')
+                                    <div style="color: #d12d2d">{{ $message }}</div>
+                                    @enderror
 									<!--end::Email-->
 								</div>
 								<!--end::Input group=-->
 								<div class="fv-row mb-3">
 									<!--begin::Password-->
 									<input type="password" placeholder="Password" name="password" autocomplete="off" class="form-control bg-transparent" />
-									<!--end::Password-->
+                                    @error('password')
+                                    <div style="color: #d12d2d">{{ $message }}</div>
+                                    @enderror
+                                    <!--end::Password-->
 								</div>
 								<!--end::Input group=-->
 								<!--begin::Wrapper-->
@@ -45,8 +53,9 @@
 								<!--end::Wrapper-->
 								<!--begin::Submit button-->
 								<div class="d-grid mb-10">
-									<button type="submit" id="kt_sign_in_submit" class="btn" style="color: #fff;border-color: #015e80;background-color: #015e80;">
-										<!--begin::Indicator label-->
+									{{-- <button type="submit" id="kt_sign_in_submit" class="btn" style="color: #fff;border-color: #015e80;background-color: #015e80;"> --}}
+                                    <button type="submit"   class="btn" style="color: #fff;border-color: #015e80;background-color: #015e80;">
+                                        <!--begin::Indicator label-->
 										<span class="indicator-label">INGRESAR</span>
 										<!--end::Indicator label-->
 										<!--begin::Indicator progress-->
@@ -56,7 +65,7 @@
 									</button>
 								</div>
                                 <div class="d-grid mb-10">
-									<button type="submit" id="kt_sign_in_submit" class="btn" style="color: #fff;border-color: #015e80;background-color: #015e80;">
+									<button  id="kt_sign_in_submit" class="btn" style="color: #fff;border-color: #015e80;background-color: #015e80;">
 										<!--begin::Indicator label-->
 										<span class="indicator-label">SOLICITAR ACCESO</span>
 										<!--end::Indicator label-->
@@ -67,16 +76,26 @@
 									</button>
 								</div>
 								<!--end::Submit button-->
-								
+
+								{{-- @if ($errors->any())
+                                    <div class="alert alert-danger mt-3">
+                                        <ul class="mb-0">
+                                            @foreach ($errors->all() as $error)
+                                                <li>{{ $error }}</li>
+                                            @endforeach
+                                        </ul>
+                                    </div>
+                                @endif --}}
 							</form>
 							<!--end::Form-->
 						</div>
 						<!--end::Wrapper-->
 						<!--begin::Footer-->
-						
+
 						<!--end::Footer-->
 					</div>
 					<!--end::Card-->
 				</div>
+
 				<!--end::Body-->
-				@endsection			
+				@endsection

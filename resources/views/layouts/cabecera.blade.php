@@ -32,15 +32,15 @@
 	<body id="kt_body" class="header-fixed header-tablet-and-mobile-fixed toolbar-enabled">
 		<!--begin::Theme mode setup on page load-->
 		<script>
-            var defaultThemeMode = "light"; 
-            var themeMode; 
-            if ( document.documentElement ) { 
-                if ( document.documentElement.hasAttribute("data-bs-theme-mode")) 
-                { themeMode = document.documentElement.getAttribute("data-bs-theme-mode"); } 
-                else { 
-                    if ( localStorage.getItem("data-bs-theme") !== null ) { themeMode = localStorage.getItem("data-bs-theme"); } 
-                    else { themeMode = defaultThemeMode; } } 
-                    if (themeMode === "system") { themeMode = window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light"; } 
+            var defaultThemeMode = "light";
+            var themeMode;
+            if ( document.documentElement ) {
+                if ( document.documentElement.hasAttribute("data-bs-theme-mode"))
+                { themeMode = document.documentElement.getAttribute("data-bs-theme-mode"); }
+                else {
+                    if ( localStorage.getItem("data-bs-theme") !== null ) { themeMode = localStorage.getItem("data-bs-theme"); }
+                    else { themeMode = defaultThemeMode; } }
+                    if (themeMode === "system") { themeMode = window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light"; }
                     document.documentElement.setAttribute("data-bs-theme", themeMode); }
         </script>
 		<!--end::Theme mode setup on page load-->
@@ -90,7 +90,7 @@
 												</span>
 												<!--end:Menu link-->
 												<!--begin:Menu sub-->
-												
+
 												<!--end:Menu sub-->
 											</div>
 											<!--end:Menu item-->
@@ -135,8 +135,8 @@
 														<!--end:Menu link-->
 													</div>
 													<!--end:Menu item-->
-													
-													
+
+
 												</div>
 												<!--end:Menu sub-->
 											</div>
@@ -149,7 +149,7 @@
 													<span class="menu-arrow d-lg-none"></span>
 												</span>
 												<!--end:Menu link-->
-												
+
 											</div>
 											<!--end:Menu item-->
 											<!--begin:Menu item-->
@@ -193,8 +193,8 @@
 														<!--end:Menu link-->
 													</div>
 													<!--end:Menu item-->
-													
-													
+
+
 												</div>
 												<!--end:Menu sub-->
 											</div>
@@ -205,7 +205,7 @@
 													<span class="menu-arrow d-lg-none"></span>
 												</span>
 												<!--end:Menu link-->
-												
+
 											</div>
 											<!--end:Menu item-->
 										</div>
@@ -216,11 +216,11 @@
 								<!--end::Navbar-->
 								<!--begin::Toolbar wrapper-->
 								<div class="topbar d-flex align-items-stretch flex-shrink-0">
-									
-									
-									
-									
-									
+
+
+
+
+
 									<!--begin::Theme mode-->
 									<div class="d-flex align-items-center ms-1 ms-lg-3">
 										<!--begin::Menu toggle-->
@@ -279,7 +279,7 @@
 												</a>
 											</div>
 											<!--end::Menu item-->
-											
+
 										</div>
 										<!--end::Menu-->
 									</div>
@@ -303,10 +303,10 @@
 													<!--begin::Username-->
 													<div class="d-flex flex-column">
 														<div class="fw-bold d-flex align-items-center fs-8">
-															MÉNDEZ ORTEGA OSCAR ANTONIO
+															{{ $usuario->vnombre ?? 'Usuario' }}
 															<!--<span class="badge badge-light-success fw-bold fs-8 px-2 py-1 ms-2">Pro</span>-->
 														</div>
-														<a href="#" class="fw-semibold text-muted text-hover-primary fs-7">0000004</a>
+														<a href="#" class="fw-semibold text-muted text-hover-primary fs-7">{{ $usuario->vcodcontr ?? 'Sin Codigo Contribuyente' }}</a>
 													</div>
 													<!--end::Username-->
 												</div>
@@ -321,19 +321,24 @@
 											</div>
 											<!--end::Menu item-->
 											<!--begin::Menu item-->
-											
+
 											<!--end::Menu item-->
-											
-											
+
+
 											<!--begin::Menu separator-->
 											<div class="separator my-2"></div>
 											<!--end::Menu separator-->
-											
-											
+
+
 											<!--begin::Menu item-->
-											<div class="menu-item px-5">
-												<a href="../../demo2/dist/authentication/layouts/corporate/sign-in.html" class="menu-link px-5">Cerrar Sesión</a>
-											</div>
+                                            <div class="menu-item px-5">
+                                                <form method="POST" action="{{ route('logout') }}">
+                                                    @csrf
+                                                    <button type="submit" class="menu-link px-5" style="background: none; border: none; padding: 0; margin: 0; cursor: pointer;">
+                                                        Cerrar Sesión
+                                                    </button>
+                                                </form>
+                                            </div>
 											<!--end::Menu item-->
 										</div>
 										<!--end::User account menu-->
@@ -354,23 +359,23 @@
 					<div class="toolbar py-5 pb-lg-15" id="kt_toolbar">
 						<!--begin::Container-->
 						<div id="kt_toolbar_container" class="container-xxl d-flex flex-stack flex-wrap">
-							<!--begin::Page title-->
-							<div class="page-title d-flex flex-column me-3">
-								<!--begin::Title-->
-								<h1 class="d-flex text-white fw-bold my-1 fs-3">MÉNDEZ ORTEGA OSCAR ANTONIO</h1>
-								<!--end::Title-->
-								<!--begin::Breadcrumb-->
-								<ul class="breadcrumb breadcrumb-separatorless fw-semibold fs-7 my-1">
-									<li class="breadcrumb-item text-white opacity-75">
-										<i class="fa-solid fa-house text-white" style="padding-right: 5px; font-size: 9.5px;"></i>  AV. JUAN VICENTE NICOLINI 241 URB.PALAO - SMP
-									</li>
-									
-								</ul>
-								<!--end::Breadcrumb-->
-							</div>
-							<!--end::Page title-->
-							
-						</div>
+                            <!--begin::Page title-->
+                            <div class="page-title d-flex flex-column me-3">
+                                <!--begin::Title-->
+                                <h1 class="d-flex text-white fw-bold my-1 fs-3">{{ $usuario->vnombre ?? 'Usuario' }}</h1>
+                                <!--end::Title-->
+                                <!--begin::Breadcrumb-->
+                                <ul class="breadcrumb breadcrumb-separatorless fw-semibold fs-7 my-1">
+                                    <li class="breadcrumb-item text-white opacity-75">
+                                        <i class="fa-solid fa-house text-white" style="padding-right: 5px; font-size: 9.5px;"></i>
+                                        {{ $usuario->vdirec ?? 'Sin dirección registrada' }}
+                                    </li>
+                                </ul>
+                                <!--end::Breadcrumb-->
+                            </div>
+                            <!--end::Page title-->
+                        </div>
+
 						<!--end::Container-->
 					</div>
 					<!--end::Toolbar-->
@@ -378,14 +383,14 @@
 					<div id="kt_content_container" class="d-flex flex-column-fluid align-items-start container-xxl">
 						<!--begin::Post-->
 						<div class="content flex-row-fluid" id="kt_content">
-							
+
 							<!--begin::Row-->
 							<div class="row gy-5 g-xl-8">
 								@yield('content')
-                    
+
 
 							</div>
-							
+
 						</div>
 						<!--end::Post-->
 					</div>
@@ -424,8 +429,8 @@
 		</div>
 		<!--end::Root-->
 		<!--begin::Drawers-->
-		
-		
+
+
 		<!--begin::Chat drawer-->
 		<div id="kt_shopping_cart" class="bg-body" data-kt-drawer="true" data-kt-drawer-name="cart" data-kt-drawer-activate="true" data-kt-drawer-overlay="true" data-kt-drawer-width="{default:'300px', 'md': '500px'}" data-kt-drawer-direction="end" data-kt-drawer-toggle="#kt_drawer_shopping_cart_toggle" data-kt-drawer-close="#kt_drawer_shopping_cart_close">
 			<!--begin::Messenger-->
@@ -1224,7 +1229,7 @@
 			<!--end::Modal dialog-->
 		</div>
 		<!--end::Modal - Upgrade plan-->
-		
+
 		<!--begin::Modal - Create Campaign-->
 		<div class="modal fade" id="kt_modal_create_campaign" tabindex="-1" aria-hidden="true">
 			<!--begin::Modal dialog-->
