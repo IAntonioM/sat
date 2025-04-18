@@ -67,11 +67,11 @@
 							<!--end::Heaeder menu toggle-->
 							<!--begin::Header Logo-->
 							<div class="header-logo me-5 me-md-10 flex-grow-1 flex-lg-grow-0">
-								<a href="../../demo2/dist/index.html">
-									<img alt="Logo" src="assets/media/logos/custom-3-h25.png" class="logo-default h-25px" />
-									<img alt="Logo" src="assets/media/logos/custom-3-h25-2.png" class="logo-sticky h-25px" />
-								</a>
-							</div>
+                                <a href="{{ route('principal') }}">
+                                    <img alt="Logo" src="assets/media/logos/custom-3-h25.png" class="logo-default h-25px" />
+                                    <img alt="Logo" src="assets/media/logos/custom-3-h25-2.png" class="logo-sticky h-25px" />
+                                </a>
+                            </div>
 							<!--end::Header Logo-->
 							<!--begin::Wrapper-->
 							<div class="d-flex align-items-stretch justify-content-between flex-lg-grow-1">
@@ -82,17 +82,19 @@
 										<!--begin::Menu-->
 										<div class="menu menu-rounded menu-column menu-lg-row menu-active-bg menu-title-gray-700 menu-state-primary menu-arrow-gray-400 fw-semibold my-5 my-lg-0 align-items-stretch px-2 px-lg-0" id="#kt_header_menu" data-kt-menu="true">
 											<!--begin:Menu item-->
-											<div data-kt-menu-trigger="{default: 'click', lg: 'hover'}" data-kt-menu-placement="bottom-start" class="menu-item here show menu-here-bg menu-lg-down-accordion me-0 me-lg-2">
-												<!--begin:Menu link-->
-												<span class="menu-link py-3">
-													<span class="menu-title">Principal</span>
-													<span class="menu-arrow d-lg-none"></span>
-												</span>
-												<!--end:Menu link-->
-												<!--begin:Menu sub-->
+											{{-- <div data-kt-menu-trigger="{default: 'click', lg: 'hover'}" data-kt-menu-placement="bottom-start" --}}
+											<div  data-kt-menu-placement="bottom-start"
+                                                class="menu-item here show menu-here-bg menu-lg-down-accordion me-0 me-lg-2">
+                                                <!--begin:Menu link-->
+                                                <a href="{{ route('principal') }}" class="menu-link py-3">
+                                                    <span class="menu-title">Principal</span>
+                                                    <span class="menu-arrow d-lg-none"></span>
+                                                </a>
+                                                <!--end:Menu link-->
+                                                <!--begin:Menu sub-->
+                                                <!--end:Menu sub-->
+                                            </div>
 
-												<!--end:Menu sub-->
-											</div>
 											<!--end:Menu item-->
 											<!--begin:Menu item-->
 											<div data-kt-menu-trigger="{default: 'click', lg: 'hover'}" data-kt-menu-placement="bottom-start" class="menu-item menu-lg-down-accordion me-0 me-lg-2">
