@@ -28,6 +28,8 @@ class LoginController extends Controller
 
     public function login(LoginRequest $request)
     {
+        $request->ensureIsNotRateLimited(); // 👈 Validamos que no esté bloqueado
+
         Debugbar::info($request->all());
 
         // Ya validados los campos por el FormRequest
@@ -40,6 +42,8 @@ class LoginController extends Controller
         if ($user) {
             return $this->handleSuccessfulLogin($user);
         }
+
+        $request->incrementLoginAttempts(); // 👈 Contar intento fallido
 
         return $this->handleFailedLogin($request);
     }

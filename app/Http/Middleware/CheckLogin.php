@@ -10,7 +10,7 @@ class CheckLogin
     public function handle(Request $request, Closure $next)
     {
         if (!session()->has('usuario')) {
-            return redirect()->route('login')->withErrors(['usuario' => 'Debes iniciar sesión.']);
+            return redirect()->route('login')->withErrors(['password' => 'Debes iniciar sesión.']);
         }
 
         return $next($request);
