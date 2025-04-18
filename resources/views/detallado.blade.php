@@ -55,7 +55,7 @@
                     <!--begin::Card title-->
                     <div class="card-title">
                         <!--begin::Search-->
-                        <form id="filtroForm" action="{{ route('detallado.filtrar') }}" method="POST">
+                        <form id="filtroForm" action="{{ route('detallado') }}" method="POST">
                             @csrf
                             <div class="d-flex flex-row">
                                 <div class="w-200 mw-250px me-3">
@@ -71,10 +71,22 @@
                                             </option>
                                         @endforeach
                                     </select>
+
                                     <!--end::Select2-->
                                 </div>
                                 <div class="w-200 mw-250px">
                                     <!--begin::Select2-->
+                                    <select class="form-select form-select-solid" name="tipo_tributo" id="tipo_tributo_select"
+                                        data-control="select2" data-hide-search="true" data-placeholder="Seleccione el Tributo">
+                                        <option></option>
+                                        <option value="%" {{ $tipoTributo == '%' ? 'selected' : '' }}>Todos
+                                        </option>
+                                        @foreach ($tiposTributo as $tributo)
+                                            <option value="{{ $tributo }}"
+                                                {{ $tipoTributo == $tributo ? 'selected' : '' }}>{{ $tributo }}
+                                            </option>
+                                        @endforeach
+                                    </select>
                                     <select class="form-select form-select-solid" id="tipo_tributo_select"
                                         name="tipo_tributo" data-control="select2" data-hide-search="true"
                                         data-placeholder="Seleccione el Tributo">
@@ -86,6 +98,9 @@
                                             Municipales</option>
                                     </select>
                                     <!--end::Select2-->
+                                </div>
+                                <div>
+                                    <button type="submit">pene</button>
                                 </div>
                             </div>
                         </form>

@@ -7,7 +7,7 @@ use App\Models\Detallado;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
-use Illuminate\Support\Facades\Log;
+use Barryvdh\Debugbar\Facades\Debugbar;
 
 class DetalladoController extends Controller
 {
@@ -81,13 +81,13 @@ class DetalladoController extends Controller
     public function filtrar(DetalladoRequest $request)
     {
         try {
-            Log::info('Filtro recibido', $request->all());
+            Debugbar::info('Filtro recibido', $request->all());
 
             $codigoContribuyente = $request->session()->get('codigo_contribuyente');
             $anioSeleccionado = $request->anio ?? '%';
             $tipoTributo = $request->tipo_tributo ?? '%';
 
-            Log::info('Parámetros de filtrado', [
+            Debugbar::info('Parámetros de filtrado', [
                 'codigoContribuyente' => $codigoContribuyente,
                 'anio' => $anioSeleccionado,
                 'tipoTributo' => $tipoTributo
@@ -118,20 +118,20 @@ class DetalladoController extends Controller
                     }
                 }
 
-                Log::info('Clave de agrupación encontrada', ['keyAnio' => $keyAnio]);
+                Debugbar::info('Clave de agrupación encontrada', ['keyAnio' => $keyAnio]);
             }
 
             // Agrupar por la clave identificada
             $deudas = collect($deudas)->groupBy($keyAnio);
 
-            Log::info('Deudas encontradas', ['cantidad' => count($deudas)]);
+            Debugbar::info('Deudas encontradas', ['cantidad' => count($deudas)]);
 
             return response()->json([
                 'status' => 'success',
                 'deudas' => $deudas,
             ]);
         } catch (\Exception $e) {
-            Log::error('Error al filtrar deudas', [
+            Debugbar::error('Error al filtrar deudas', [
                 'error' => $e->getMessage(),
                 'trace' => $e->getTraceAsString()
             ]);
