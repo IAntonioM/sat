@@ -63,7 +63,8 @@ class LoginController extends Controller
 
        session([
            'usuario' => $user,
-           'cod_usuario' => $user->cidusu
+           'cod_usuario' => $user->cidusu,
+           'codigo_contribuyente' => $user -> vcodcontr
        ]);
 
        // SI SE REQUIERE CAMBIAR LA CONTRASEÑA
