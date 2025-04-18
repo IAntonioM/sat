@@ -58,10 +58,6 @@ Route::middleware('check.login')->group(function () {
 
     //DETALLADO
     // Muestra resources/views/about.blade.php
-    Route::get('/detallado', function () {
-        return view('detallado'); // Muestra resources/views/about.blade.php
-    })->name('detallado');;
-
     Route::get('/detallado', [DetalladoController::class, 'index'])->name('detallado');
 
     // Filtrar deudas por año y tipo

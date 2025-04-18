@@ -50,7 +50,7 @@
                 <!--begin::Card title-->
                 <div class="card-title">
                     <!--begin::Search-->
-                    <form id="filtroForm" action="{{ route('deudas.filtrar') }}" method="POST">
+                    <form id="filtroForm" action="{{ route('detallado.filtrar') }}" method="POST">
                         @csrf
                         <div class="w-200 mw-250px" style="padding-right: 10px;" >
                             <!--begin::Select2-->
@@ -65,12 +65,11 @@
                         </div>
                         <div class="w-200 mw-250px">
                             <!--begin::Select2-->
-                            <select class="form-select form-select-solid" name="tipo_tributo" id="tipo_tributo_select" data-control="select2" data-hide-search="true" data-placeholder="Seleccione el Tributo">
+                            <select class="form-select form-select-solid" name="tipo_tributo" data-control="select2" data-hide-search="true" data-placeholder="Seleccione el Tributo">
                                 <option></option>
                                 <option value="%" {{ $tipoTributo == '%' ? 'selected' : '' }}>Todos</option>
-                                @foreach($tiposTributo as $tipo)
-                                    <option value="{{ $tipo['id'] }}" {{ $tipoTributo == $tipo['id'] ? 'selected' : '' }}>{{ $tipo['nombre'] }}</option>
-                                @endforeach
+                                <option value="predial" {{ $tipoTributo == '02.01' ? 'selected' : '' }}>Impuesto Predial</option>
+                                <option value="arbitrios" {{ $tipoTributo == '11' ? 'selected' : '' }}>Arbitrios Municipales</option>
                             </select>
                             <!--end::Select2-->
                         </div>
@@ -81,7 +80,7 @@
                 <!--begin::Card toolbar-->
                 <div class="card-toolbar flex-row-fluid justify-content-end gap-5">
                     <!--begin::Add product-->
-                    <a href="{{ route('deudas.imprimir') }}" class="btn btn-primary"><i class="fa-solid fa-print"></i> Imprimir</a>
+                    <a href="{{ route('detallado.imprimir') }}" class="btn btn-primary"><i class="fa-solid fa-print"></i> Imprimir</a>
                     <button id="btnPagar" class="btn btn-success"><i class="fa-solid fa-money-bill-1-wave"></i> Pagar</button>
                     <!--end::Add product-->
                 </div>
@@ -90,7 +89,7 @@
             <!--end::Card header-->
             <!--begin::Card body-->
             <div class="card-body pt-0">
-                <form id="formPago" action="{{ route('deudas.preparar-pago') }}" method="POST">
+                <form id="formPago" action="{{ route('detallado.preparar-pago') }}" method="POST">
                     @csrf
                     <!--begin::Table-->
                     <table class="table align-middle table-row-dashed fs-6 gy-5 table-bordered" id="kt_ecommerce_sales_table">
@@ -179,5 +178,5 @@
 @endsection
 
 @section('scripts')
-<script src="{{ asset('js/deudas.js') }}"></script>
+<script src="{{ asset('js/detalladoJS.js') }}"></script>
 @endsection

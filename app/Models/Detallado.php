@@ -32,7 +32,7 @@ class Detallado extends Model
      */
     public static function obtenerTotalDeuda($codigoContribuyente)
     {
-        $result = DB::select('EXEC pxConsultasWeb2 @msquery = ?, @vcodcontr = ?', [191, $codigoContribuyente]);
+        $result = DB::select('EXEC pxConsultasWeb2 ?, ?, ?,?', [191, $codigoContribuyente, '%', '%']);
         return $result && isset($result[0]->total) ? $result[0]->total : 0;
     }
 
