@@ -7,7 +7,6 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     // Inicializar el contador de deuda
-    i// Inicializar el contador de deuda
     if ($.fn.countTo) {
         $('[data-kt-countup="true"]').each(function () {
             const el = this;
