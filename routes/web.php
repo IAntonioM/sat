@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Auth\ChangePassword;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\LogoutController;
 use App\Http\Controllers\Home\PrincipalController;
@@ -25,7 +26,6 @@ use Illuminate\Support\Facades\Route;
 
 // REDIRIGE AL LOGIN A LO USUARIO NO LOGEUADOS
 Route::middleware('guest.redirect')->group(function () {
-
     Route::get('/', [LoginController::class, 'formLogin'])->name('login');
 
     Route::post('/', [LoginController::class, 'login']);
@@ -33,9 +33,17 @@ Route::middleware('guest.redirect')->group(function () {
 
 // REDIRIGE A LOS USUARIO LOGUEADOS
 Route::middleware('check.login')->group(function () {
-
+    //CERRAR SESION
     Route::post('/logout', [LogoutController::class, 'logout'])->name('logout');
 
+    //CAMBIAR CLAVE
+    //formulario
+    Route::get('/cambiarClave',[ChangePassword::class, 'formCambiarClave'])->name('cambiarClave');
+
+    //cambio de clave
+    Route::post('/cambiarClave',[ChangePassword::class, 'cambiarClave']);
+
+    //PANTALLA PRINCIPAL
     Route::get('/principal', [PrincipalController::class, 'viewPrincipal'])->name('principal');
 
     //CONSOLIDADO
