@@ -82,20 +82,10 @@
                                         <option value="%" {{ $tipoTributo == '%' ? 'selected' : '' }}>Todos
                                         </option>
                                         @foreach ($tiposTributo as $tributo)
-                                            <option value="{{ $tributo }}"
-                                                {{ $tipoTributo == $tributo ? 'selected' : '' }}>{{ $tributo }}
+                                            <option value="{{ $tributo}}"
+                                                {{ $tipoTributo == $tributo? 'selected' : '' }}>{{ $tributo['nombre'] }}
                                             </option>
                                         @endforeach
-                                    </select>
-                                    <select class="form-select form-select-solid" id="tipo_tributo_select"
-                                        name="tipo_tributo" data-control="select2" data-hide-search="true"
-                                        data-placeholder="Seleccione el Tributo">
-                                        <option></option>
-                                        <option value="%" {{ $tipoTributo == '%' ? 'selected' : '' }}>Todos</option>
-                                        <option value="02.01" {{ $tipoTributo == '02.01' ? 'selected' : '' }}>Impuesto
-                                            Predial</option>
-                                        <option value="11.00" {{ $tipoTributo == '11.00' ? 'selected' : '' }}>Arbitrios
-                                            Municipales</option>
                                     </select>
                                     <!--end::Select2-->
                                 </div>

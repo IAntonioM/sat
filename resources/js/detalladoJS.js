@@ -211,7 +211,7 @@ function actualizarTabla(deudas) {
                 <tr style="text-align: center; font-size:12px">
                     <td>
                         <div class="badge ${tipoClase}" style="font-size:12px">
-                            ${deuda.mtipo1}
+                            ${deuda.mtipo1 || deuda.mtipo || 'N/A'}
                         </div>
                     </td>
                     <td>${deuda.ano}-${deuda.periodo}</td>

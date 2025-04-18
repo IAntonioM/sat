@@ -72,7 +72,7 @@ class Detallado extends Model
      */
     public static function obtenerAniosDisponibles($codigoContribuyente)
     {
-        $result = DB::select('SELECT DISTINCT año FROM CONSOLIDADO WHERE codigo = ?', [$codigoContribuyente]);
+        $result = DB::select('SELECT DISTINCT año FROM DETALLADO WHERE codigo = ?', [$codigoContribuyente]);
         return collect($result)->pluck('año')->toArray();
     }
 
@@ -81,11 +81,9 @@ class Detallado extends Model
      *
      * @return array
      */
-    public static function obtenerTiposTributo()
+    public static function obtenerTiposTributo($codigoContribuyente)
     {
-        return [
-            ['id' => '02.01', 'nombre' => 'Impuesto Predial'],
-            ['id' => '11.00', 'nombre' => 'Arbitrios Municipales'],
-        ];
+        $result = DB::select('SELECT DISTINCT tipo,mtipo FROM DETALLADO WHERE codigo = ?', [$codigoContribuyente]);
+        return collect($result)->pluck('mtipo')->toArray();
     }
 }

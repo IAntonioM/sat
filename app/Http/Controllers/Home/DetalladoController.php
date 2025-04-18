@@ -57,7 +57,7 @@ class DetalladoController extends Controller
         // Preparar datos para la vista
         $deudas = collect($deudas)->groupBy('año');
         $aniosDisponibles = Detallado::obtenerAniosDisponibles($codigoContribuyente);
-        $tiposTributo = Detallado::obtenerTiposTributo();
+        $tiposTributo = Detallado::obtenerTiposTributo($codigoContribuyente);
         $fechaActual = Carbon::now()->format('d/m/Y');
 
         return view('detallado', compact(
