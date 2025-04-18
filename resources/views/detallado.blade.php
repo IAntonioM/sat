@@ -124,7 +124,7 @@
                                     <th class=" min-w-100px" style="text-align: center;">Total</th>
                                     <th class="w-20px pe-2">
                                         <div class="form-check form-check-sm form-check-custom form-check-solid ">
-                                            <input class="form-check-input" type="checkbox" id="check_all" value="1" />
+                                            <input class="form-check-input" type="checkbox" data-kt-check="true" data-kt-check-target="#kt_ecommerce_sales_table .form-check-input" value="1" />
                                         </div>
                                     </th>
                                 </tr>
@@ -146,8 +146,7 @@
                                     @foreach ($deudasAnio as $deuda)
                                         <tr style="text-align: center; font-size:12px">
                                             <td>
-                                                <div class="badge {{ strpos($deuda->tipo, '02.') !== false ? 'badge-light-success' : 'badge-light-danger' }}"
-                                                    style="font-size:12px">
+                                                <div class="badge {{ !is_null($deuda->tipo) && strpos($deuda->tipo, '02.') !== false ? 'badge-light-success' : 'badge-light-danger' }}" style="font-size:12px">
                                                     {{ $deuda->mtipo1 }}
                                                 </div>
                                             </td>
@@ -199,9 +198,7 @@
         </div>
         <!--end::Post-->
     </div>
-
-@endsection
-
-@section('scripts')
+    @push('scripts')
     <script src="{{ asset('js/detalladoJS.js') }}"></script>
+    @endpush
 @endsection
