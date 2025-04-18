@@ -1,4 +1,4 @@
-// Archivo: public/js/deudas.js
+// Archivo: public/js/detalladoJS.js
 
 document.addEventListener('DOMContentLoaded', function () {
     // Inicializar componentes Select2 si existen
@@ -25,18 +25,40 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 
-    // Listener para los filtros de año y tipo de tributo
-    const anioSelect = document.getElementById('anio_select');
-    const tipoTributoSelect = document.getElementById('tipo_tributo_select');
+    // Listener para los filtros de año y tipo de tributo - USANDO EVENTOS SELECT2
+    const anioSelect = $('#anio_select');
+    const tipoTributoSelect = $('#tipo_tributo_select');
 
-    if (anioSelect && tipoTributoSelect) {
-        // Aplicar filtros cuando cambian los selectores
-        anioSelect.addEventListener('change', aplicarFiltros);
-        tipoTributoSelect.addEventListener('change', aplicarFiltros);
+    if (anioSelect.length && tipoTributoSelect.length) {
+        console.log('Selectores encontrados, registrando eventos Select2...');
+
+        // Usar el evento select2:select para detectar cambios
+        anioSelect.on('select2:select', function (e) {
+            console.log('Año seleccionado:', e.params.data.id);
+            aplicarFiltros();
+        });
+
+        tipoTributoSelect.on('select2:select', function (e) {
+            console.log('Tipo tributo seleccionado:', e.params.data.id);
+            aplicarFiltros();
+        });
+
+        // También manejar los eventos de cambio directo por si acaso
+        anioSelect.on('change', function() {
+            console.log('Evento change en año:', this.value);
+            aplicarFiltros();
+        });
+
+        tipoTributoSelect.on('change', function() {
+            console.log('Evento change en tipo tributo:', this.value);
+            aplicarFiltros();
+        });
+    } else {
+        console.error('No se encontraron los selectores Select2');
     }
 
     // Checkbox "Seleccionar todos"
-    const checkAll = document.getElementById('check_all');
+    const checkAll = document.querySelector('input[data-kt-check="true"]');
     if (checkAll) {
         checkAll.addEventListener('change', function () {
             const checkboxes = document.querySelectorAll('.check_deuda');
@@ -89,47 +111,66 @@ document.addEventListener('DOMContentLoaded', function () {
  * Aplica los filtros de año y tipo de tributo
  */
 function aplicarFiltros() {
+    console.log('Aplicando filtros...');
+
     const anio = document.getElementById('anio_select').value;
     const tipoTributo = document.getElementById('tipo_tributo_select').value;
     const tablaDeudas = document.getElementById('tabla_deudas');
     const formFiltro = document.getElementById('filtroForm');
+    const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+
+    console.log('Filtros a aplicar:', { anio, tipoTributo });
 
     // Mostrar cargando
-    tablaDeudas.innerHTML = '<tr><td colspan="8" class="text-center">Cargando...</td></tr>';
+    tablaDeudas.innerHTML = '<tr><td colspan="8" class="text-center"><div class="spinner-border text-primary" role="status"><span class="visually-hidden">Cargando...</span></div></td></tr>';
+
+    // Preparar los datos del formulario
+    const formData = new FormData();
+    formData.append('_token', csrfToken);
+    formData.append('anio', anio);
+    formData.append('tipo_tributo', tipoTributo);
+
+    console.log('Enviando solicitud a:', formFiltro.action);
 
     // Enviar solicitud AJAX para filtrar
-    const formData = new FormData(formFiltro);
-
     fetch(formFiltro.action, {
         method: 'POST',
         body: formData,
         headers: {
-            'X-Requested-With': 'XMLHttpRequest',
-            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+            'X-Requested-With': 'XMLHttpRequest'
         }
     })
-        .then(response => response.json())
-        .then(data => {
-            if (data.status === 'success') {
-                actualizarTabla(data.deudas);
-            } else {
-                Swal.fire({
-                    title: 'Error',
-                    text: data.message || 'Ocurrió un error al filtrar las deudas',
-                    icon: 'error',
-                    confirmButtonText: 'Aceptar'
-                });
-            }
-        })
-        .catch(error => {
-            console.error('Error:', error);
+    .then(response => {
+        console.log('Respuesta recibida:', response.status);
+        if (!response.ok) {
+            throw new Error('Error en la respuesta del servidor: ' + response.status);
+        }
+        return response.json();
+    })
+    .then(data => {
+        console.log('Datos recibidos:', data);
+        if (data.status === 'success') {
+            actualizarTabla(data.deudas);
+        } else {
             Swal.fire({
                 title: 'Error',
-                text: 'Ocurrió un error al filtrar las deudas',
+                text: data.message || 'Ocurrió un error al filtrar las deudas',
                 icon: 'error',
                 confirmButtonText: 'Aceptar'
             });
+        }
+    })
+    .catch(error => {
+        console.error('Error en la solicitud:', error);
+        tablaDeudas.innerHTML = '<tr><td colspan="8" class="text-center text-danger">Error al cargar los datos. Por favor, intente nuevamente.</td></tr>';
+
+        Swal.fire({
+            title: 'Error',
+            text: 'Ocurrió un error al filtrar las deudas: ' + error.message,
+            icon: 'error',
+            confirmButtonText: 'Aceptar'
         });
+    });
 }
 
 /**
@@ -137,6 +178,8 @@ function aplicarFiltros() {
  * @param {Object} deudas - Datos de deudas agrupadas por año
  */
 function actualizarTabla(deudas) {
+    console.log('Actualizando tabla con datos:', deudas);
+
     const tablaDeudas = document.getElementById('tabla_deudas');
     let html = '';
     let totalGeneral = 0;
@@ -160,8 +203,9 @@ function actualizarTabla(deudas) {
 
         // Iterar por las deudas del año
         deudasAnio.forEach(deuda => {
-            const tipoClase = deuda.tipo.includes('02.') ? 'badge-light-success' : 'badge-light-danger';
-            totalGeneral += parseFloat(deuda.total);
+            const tipoClase = deuda.tipo && deuda.tipo.includes('02.') ? 'badge-light-success' : 'badge-light-danger';
+            const montoTotal = parseFloat(deuda.total);
+            totalGeneral += montoTotal;
 
             html += `
                 <tr style="text-align: center; font-size:12px">
@@ -175,11 +219,11 @@ function actualizarTabla(deudas) {
                     <td>${parseFloat(deuda.imp_reaj).toFixed(2)}</td>
                     <td>${parseFloat(deuda.mora).toFixed(2)}</td>
                     <td>${parseFloat(deuda.costo_emis).toFixed(2)}</td>
-                    <td>${parseFloat(deuda.total).toFixed(2)}</td>
+                    <td>${montoTotal.toFixed(2)}</td>
                     <td class="text-end">
                         <div class="form-check form-check-sm form-check-custom form-check-solid">
                             <input class="form-check-input check_deuda" name="id_recibos[]" type="checkbox"
-                                value="${deuda.idrecibo}" data-monto="${deuda.total}" />
+                                value="${deuda.idrecibo}" data-monto="${montoTotal}" />
                         </div>
                     </td>
                 </tr>
@@ -204,4 +248,5 @@ function actualizarTabla(deudas) {
     }
 
     tablaDeudas.innerHTML = html;
+    console.log('Tabla actualizada con éxito');
 }

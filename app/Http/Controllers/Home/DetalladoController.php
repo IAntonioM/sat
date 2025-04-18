@@ -7,6 +7,7 @@ use App\Models\Detallado;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Log;
 
 class DetalladoController extends Controller
 {
@@ -79,18 +80,67 @@ class DetalladoController extends Controller
      */
     public function filtrar(DetalladoRequest $request)
     {
-        $codigoContribuyente = $request->session()->get('codigo_contribuyente');
-        $anioSeleccionado = $request->anio;
-        $tipoTributo = $request->tipo_tributo;
+        try {
+            Log::info('Filtro recibido', $request->all());
 
-        // Obtener las deudas detalladas
-        $deudas = Detallado::obtenerDetalleDeudas($codigoContribuyente, $anioSeleccionado, $tipoTributo);
-        $deudas = collect($deudas)->groupBy('año');
+            $codigoContribuyente = $request->session()->get('codigo_contribuyente');
+            $anioSeleccionado = $request->anio ?? '%';
+            $tipoTributo = $request->tipo_tributo ?? '%';
 
-        return response()->json([
-            'status' => 'success',
-            'deudas' => $deudas,
-        ]);
+            Log::info('Parámetros de filtrado', [
+                'codigoContribuyente' => $codigoContribuyente,
+                'anio' => $anioSeleccionado,
+                'tipoTributo' => $tipoTributo
+            ]);
+
+            if (!$codigoContribuyente) {
+                return response()->json([
+                    'status' => 'error',
+                    'message' => 'No se encontró el código de contribuyente en la sesión'
+                ], 400);
+            }
+
+            // Obtener las deudas detalladas
+            $deudas = Detallado::obtenerDetalleDeudas($codigoContribuyente, $anioSeleccionado, $tipoTributo);
+
+            // Verificar si hay una propiedad 'año' en los registros
+            // El nombre de la propiedad podría variar según la codificación
+            $keyAnio = 'año';
+            if (!empty($deudas) && !isset($deudas[0]->$keyAnio)) {
+                // Buscamos la clave correcta para agrupar
+                $firstRecord = (array)$deudas[0];
+                $possibleKeys = ['año', 'ano', 'anio', 'year'];
+
+                foreach ($possibleKeys as $key) {
+                    if (array_key_exists($key, $firstRecord)) {
+                        $keyAnio = $key;
+                        break;
+                    }
+                }
+
+                Log::info('Clave de agrupación encontrada', ['keyAnio' => $keyAnio]);
+            }
+
+            // Agrupar por la clave identificada
+            $deudas = collect($deudas)->groupBy($keyAnio);
+
+            Log::info('Deudas encontradas', ['cantidad' => count($deudas)]);
+
+            return response()->json([
+                'status' => 'success',
+                'deudas' => $deudas,
+            ]);
+        } catch (\Exception $e) {
+            Log::error('Error al filtrar deudas', [
+                'error' => $e->getMessage(),
+                'trace' => $e->getTraceAsString()
+            ]);
+
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Error al filtrar las deudas: ' . $e->getMessage()
+            ], 500);
+        }
     }
 
     /**
