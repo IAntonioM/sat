@@ -44,8 +44,8 @@ class DeudaConsolidada extends Model
         $msquery = 18; // Valor para DeudasConsolidads_anoconmora
 
         $resultado = DB::select(
-            "EXEC pxConsultasWeb2 ?, ?, ?, ?",
-            [$msquery, $codigoContribuyente, $anio, $tipoTributo]
+            "EXEC pxConsultasWeb2 ?, @vcodcontr=?",
+            [$msquery, $codigoContribuyente]
         );
 
         return $resultado;

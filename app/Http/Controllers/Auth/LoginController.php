@@ -56,7 +56,8 @@ class LoginController extends Controller
 
         session([
             'usuario' => $user,
-            'cod_usuario' => $user->cidusu
+            'cod_usuario' => $user->cidusu,
+            'codigo_contribuyente' => $user->vcodcontr // Guarda el código de contribuyente
         ]);
 
         return redirect()->route('principal');

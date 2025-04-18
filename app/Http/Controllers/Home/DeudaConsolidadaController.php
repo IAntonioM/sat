@@ -14,10 +14,6 @@ class DeudaConsolidadaController extends Controller
     /**
      * Constructor
      */
-    public function __construct()
-    {
-        $this->middleware('auth'); // Ajusta según tus reglas de autenticación
-    }
 
     /**
      * Mostrar la vista de deudas consolidadas
@@ -28,7 +24,19 @@ class DeudaConsolidadaController extends Controller
     public function index(DeudaConsolidadaRequest $request)
     {
         // Obtener el código del contribuyente (puede venir de sesión, auth, etc.)
-        $codigoContribuyente = session('codigo_contribuyente') ?? '0003324'; // Valor por defecto para pruebas
+        $codigoContribuyente = session('codigo_contribuyente') ??
+        session('cod_usuario') ?? null; // Valor por defecto para pruebas
+
+        if (!$codigoContribuyente) {
+            // Si no hay código de contribuyente, redirigir al login
+            return redirect()->route('login')->with([
+                'alert' => [
+                    'type' => 'error',
+                    'title' => 'Sesión inválida',
+                    'message' => 'No se encontró el código de contribuyente en la sesión'
+                ]
+            ]);
+        }
 
         // Obtener los filtros de la solicitud
         $anio = $request->input('anio', '%');
@@ -68,7 +76,7 @@ class DeudaConsolidadaController extends Controller
             ];
         }
 
-        return view('deudas.consolidadas', compact(
+        return view('consolidado', compact(
             'contribuyente',
             'deudaTotal',
             'deudasAgrupadas',

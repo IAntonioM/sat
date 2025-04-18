@@ -33,7 +33,7 @@
                             <div class="fw-semibold fs-6 text-gray-400">Su Deuda Actual es:</div>
                             <!--begin::Number-->
                             <div class="d-flex align-items-center">
-                                <div class="fw-bold" data-kt-countup="true" data-kt-countup-value="{{ $deudaTotal }}" data-kt-countup-prefix="S/." style="font-size:30px">0</div>
+                                <div class="fw-bold" data-kt-countup="true" data-kt-countup-value="{{ $deudaTotal }}" data-kt-countup-prefix="S/." style="font-size:30px">0.0</div>
                             </div>
                             <!--end::Number-->
                             <!--begin::Label-->

@@ -3,7 +3,8 @@
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\LogoutController;
 use App\Http\Controllers\Home\PrincipalController;
-use App\Http\Controllers\Home\ConsolidadoController;
+use App\Http\Controllers\Home\DeudaConsolidadaController;
+use App\Http\Controllers\Home\DetalladoController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -39,19 +40,19 @@ Route::middleware('check.login')->group(function () {
 
     //CONSOLIDADO
     // Muestra resources/views/about.blade.php
-    Route::get('/consolidado', function () { return view('consolidado');})
+    Route::get('/consolidado', [DeudaConsolidadaController::class, 'index'])
     ->name('consolidado');
 
     // Filtrar deudas consolidadas (mismo método pero con POST)
-    Route::post('/consolidadas', [App\Http\Controllers\Home\DeudaConsolidadaController::class, 'index'])
+    Route::post('/consolidadas', [DeudaConsolidadaController::class, 'index'])
     ->name('consolidadas.filtrar');
 
     // Preparar pago de deudas seleccionadas
-    Route::post('/consolidadas/pagar', [App\Http\Controllers\Home\DeudaConsolidadaController::class, 'prepararPago'])
+    Route::post('/consolidadas/pagar', [DeudaConsolidadaController::class, 'prepararPago'])
     ->name('consolidadas.pagar');
 
     // Imprimir deudas consolidadas
-    Route::get('/consolidadas/imprimir', [App\Http\Controllers\Home\DeudaConsolidadaController::class, 'imprimirDeudas'])
+    Route::get('/consolidadas/imprimir', [DeudaConsolidadaController::class, 'imprimirDeudas'])
     ->name('consolidadas.imprimir');
 
 
@@ -60,6 +61,32 @@ Route::middleware('check.login')->group(function () {
     Route::get('/detallado', function () {
         return view('detallado'); // Muestra resources/views/about.blade.php
     })->name('detallado');;
+
+    Route::get('/detallado', [DetalladoController::class, 'index'])->name('detallado');
+
+    // Filtrar deudas por año y tipo
+    Route::post('/detallado/filtrar', [DetalladoController::class, 'filtrar'])->name('detallado.filtrar');
+
+    // Imprimir deudas
+    Route::get('/detallado/imprimir', [DetalladoController::class, 'imprimir'])->name('detallado.imprimir');
+
+    // Preparar pago de deudas seleccionadas
+    Route::post('/detallado/pagar', [DetalladoController::class, 'prepararPago'])->name('detallado.preparar-pago');
+
+    // Vista de pago (esta ruta debería ir a un controlador de pagos)
+    Route::get('/detallado/pago', function () {
+        // Redirigir a un controlador de pagos
+        return redirect()->route('pagos.index');
+    })->name('detallado.pago');
+
+
+
+
+
+
+
+
+
 
     Route::get('/pagos', function () {
         return view('pagos'); // Muestra resources/views/about.blade.php
