@@ -18,9 +18,9 @@
             <div class="fw-bold text-white py-2">
                 <span class="opacity-50">Pago en Linea</span>
                 <span class="fs-2hx text-white fw-bold me-6" >Consolidado</span>
-                
+
             </div>
-            
+
             <!--end::Info-->
         </div>
         <!--end::Card body-->
@@ -28,7 +28,7 @@
         <div class="card-footer" style="border-top: 1px solid rgba(255, 255, 255, 0.3);background: rgba(0, 0, 0, 0.15);">
             <!--begin::Progress-->
             <div class="fw-bold text-white py-2" style="text-align: center;">
-                <a href="#" class="btn btn-sm btn-light-danger btn-active-danger">
+                <a href="{{ route('consolidado') }}" class="btn btn-sm btn-light-danger btn-active-danger">
                     <i class="ki-duotone ki-plus fs-2"></i>Deudas Consolidadas</a>
                 <span class="opacity-50"></span>
             </div>
@@ -55,7 +55,7 @@
             <div class="fw-bold text-white py-2">
                 <span class="opacity-50">Pago en Linea</span>
                 <span class="fs-2hx text-white fw-bold me-6" >Detallado</span>
-                
+
             </div>
         </div>
         <!--end::Card body-->
@@ -63,7 +63,7 @@
         <div class="card-footer" style="border-top: 1px solid rgba(255, 255, 255, 0.3);background: rgba(0, 0, 0, 0.15);">
             <!--begin::Progress-->
             <div class="fw-bold text-white py-2" style="text-align: center;">
-                <a href="#" class="btn btn-sm btn-light-info btn-active-info" >
+                <a href="{{ route('detallado') }}" class="btn btn-sm btn-light-info btn-active-info" >
                     <i class="ki-duotone ki-plus fs-2"></i>Deudas Detalladas</a>
                 <span class="opacity-50"></span>
             </div>
@@ -80,7 +80,7 @@
         <div class="card-header pt-5 mb-3">
             <!--begin::Icon-->
             <div class="d-flex flex-center rounded-circle h-80px w-80px" style="border: 1px dashed rgba(255, 255, 255, 0.4);background-color: #0fb85b">
-                
+
                 <i class="fa-solid fa-file fs-1" style="color: #fff;"></i>
             </div>
             <!--end::Icon-->
@@ -91,7 +91,7 @@
             <div class="fw-bold text-white py-2">
                 <span class="opacity-50">Declaración Jurada</span><br>
                 <span class="fs-2hx text-white fw-bold me-6" >HR </span>
-                
+
             </div>
         </div>
         <!--end::Card body-->
@@ -126,7 +126,7 @@
             <div class="fw-bold text-white py-2">
                 <span class="opacity-50">Declaración Jurada</span><br>
                 <span class="fs-2hx text-white fw-bold me-6" >HLA </span>
-                
+
             </div>
         </div>
         <!--end::Card body-->
@@ -173,11 +173,11 @@
                     <!--begin::Table head-->
                     <thead>
                         <tr class="fw-bold text-muted" style="background-color:#f8f8f9;">
-                            
+
                             <th style="width: 80%;text-align: center;">Concepto</th>
                             <th style="width: 20%;text-align: center;">Fecha</th>
-                            
-                            
+
+
                         </tr>
                     </thead>
                     <!--end::Table head-->
@@ -198,7 +198,7 @@
                                     </div>
                                 </div>
                             </td>
-                            
+
                         </tr>
                         <tr>
                             <td style="padding-top: 13px;  padding-bottom: 13px;">
@@ -215,7 +215,7 @@
                                     </div>
                                 </div>
                             </td>
-                            
+
                         </tr>
                         <tr>
                             <td style="padding-top: 13px;  padding-bottom: 13px;">
@@ -232,7 +232,7 @@
                                     </div>
                                 </div>
                             </td>
-                            
+
                         </tr>
                         <tr>
                             <td style="padding-top: 13px;  padding-bottom: 13px;">
@@ -249,7 +249,7 @@
                                     </div>
                                 </div>
                             </td>
-                            
+
                         </tr>
                         <tr>
                             <td style="padding-top: 13px;  padding-bottom: 13px;">
@@ -266,7 +266,7 @@
                                     </div>
                                 </div>
                             </td>
-                            
+
                         </tr>
                     </tbody>
                     <!--end::Table body-->
@@ -303,10 +303,10 @@
                     <!--begin::Table head-->
                     <thead>
                         <tr class="fw-bold text-muted" style="background-color:#f8f8f9;">
-                            
+
                             <th style="width: 80%;text-align: center;">Concepto</th>
                             <th style="width: 20%;text-align: center;">Fecha</th>
-                            
+
                         </tr>
                     </thead>
                     <!--end::Table head-->
@@ -327,7 +327,7 @@
                                     </div>
                                 </div>
                             </td>
-                            
+
                         </tr>
                         <tr>
                             <td style="padding-top: 13px;  padding-bottom: 13px;">
@@ -344,7 +344,7 @@
                                     </div>
                                 </div>
                             </td>
-                            
+
                         </tr>
                         <tr>
                             <td style="padding-top: 13px;  padding-bottom: 13px;">
@@ -361,7 +361,7 @@
                                     </div>
                                 </div>
                             </td>
-                            
+
                         </tr>
                         <tr>
                             <td style="padding-top: 13px;  padding-bottom: 13px;">
@@ -378,7 +378,7 @@
                                     </div>
                                 </div>
                             </td>
-                            
+
                         </tr>
                         <tr>
                             <td style="padding-top: 13px;  padding-bottom: 13px;">
@@ -395,7 +395,7 @@
                                     </div>
                                 </div>
                             </td>
-                            
+
                         </tr>
                     </tbody>
                     <!--end::Table body-->
@@ -432,10 +432,10 @@
                     <!--begin::Table head-->
                     <thead>
                         <tr class="fw-bold text-muted" style="background-color:#f8f8f9;">
-                            
+
                             <th style="width: 80%;text-align: center;">Concepto</th>
                             <th style="width: 20%;text-align: center;">Fecha</th>
-                            
+
                         </tr>
                     </thead>
                     <!--end::Table head-->
@@ -446,7 +446,7 @@
                                 <div class="d-flex align-items-center">
                                     <div class="d-flex justify-content-start flex-column">
                                         <span class="text-muted fw-semibold text-muted d-block fs-7" style="padding-left: 10px; padding-right: 10px">Impuesto predial</span>
-                                        
+
                                     </div>
                                 </div>
                             </td>
@@ -457,14 +457,14 @@
                                     </div>
                                 </div>
                             </td>
-                            
+
                         </tr>
                         <tr>
                             <td style="padding-top: 13px;  padding-bottom: 13px;">
                                 <div class="d-flex align-items-center">
                                     <div class="d-flex justify-content-start flex-column">
                                         <span class="text-muted fw-semibold text-muted d-block fs-7" style="padding-left: 10px; padding-right: 10px">Impuesto predial</span>
-                                        
+
                                     </div>
                                 </div>
                             </td>
@@ -475,14 +475,14 @@
                                     </div>
                                 </div>
                             </td>
-                            
+
                         </tr>
                         <tr>
                             <td style="padding-top: 13px;  padding-bottom: 13px;">
                                 <div class="d-flex align-items-center">
                                     <div class="d-flex justify-content-start flex-column">
                                         <span class="text-muted fw-semibold text-muted d-block fs-7" style="padding-left: 10px; padding-right: 10px">Impuesto predial</span>
-                                        
+
                                     </div>
                                 </div>
                             </td>
@@ -493,14 +493,14 @@
                                     </div>
                                 </div>
                             </td>
-                            
+
                         </tr>
                         <tr>
                             <td style="padding-top: 13px;  padding-bottom: 13px;">
                                 <div class="d-flex align-items-center">
                                     <div class="d-flex justify-content-start flex-column">
                                         <span class="text-muted fw-semibold text-muted d-block fs-7" style="padding-left: 10px; padding-right: 10px">Impuesto predial</span>
-                                        
+
                                     </div>
                                 </div>
                             </td>
@@ -511,14 +511,14 @@
                                     </div>
                                 </div>
                             </td>
-                            
+
                         </tr>
                         <tr>
                             <td style="padding-top: 13px;  padding-bottom: 13px;">
                                 <div class="d-flex align-items-center">
                                     <div class="d-flex justify-content-start flex-column">
                                         <span class="text-muted fw-semibold text-muted d-block fs-7" style="padding-left: 10px; padding-right: 10px">Impuesto predial</span>
-                                        
+
                                     </div>
                                 </div>
                             </td>
@@ -529,7 +529,7 @@
                                     </div>
                                 </div>
                             </td>
-                            
+
                         </tr>
                     </tbody>
                     <!--end::Table body-->
@@ -566,12 +566,12 @@
                     <!--begin::Table head-->
                     <thead>
                         <tr class="fw-bold text-muted" style="background-color:#f8f8f9;">
-                            
+
                             <th style="width: 80%;text-align: center;">Concepto</th>
                             <th style="width: 20%;text-align: center;">Fecha</th>
-                            
-                            
-                            
+
+
+
                         </tr>
                     </thead>
                     <!--end::Table head-->
@@ -582,7 +582,7 @@
                                 <div class="d-flex align-items-center">
                                     <div class="d-flex justify-content-start flex-column">
                                         <span class="text-muted fw-semibold text-muted d-block fs-7" style="padding-left: 10px; padding-right: 10px">Impuesto predial</span>
-                                        
+
                                     </div>
                                 </div>
                             </td>
@@ -593,14 +593,14 @@
                                     </div>
                                 </div>
                             </td>
-                            
+
                         </tr>
                         <tr>
                             <td style="padding-top: 13px;  padding-bottom: 13px;">
                                 <div class="d-flex align-items-center">
                                     <div class="d-flex justify-content-start flex-column">
                                         <span class="text-muted fw-semibold text-muted d-block fs-7" style="padding-left: 10px; padding-right: 10px">Impuesto predial</span>
-                                        
+
                                     </div>
                                 </div>
                             </td>
@@ -611,14 +611,14 @@
                                     </div>
                                 </div>
                             </td>
-                            
+
                         </tr>
                         <tr>
                             <td style="padding-top: 13px;  padding-bottom: 13px;">
                                 <div class="d-flex align-items-center">
                                     <div class="d-flex justify-content-start flex-column">
                                         <span class="text-muted fw-semibold text-muted d-block fs-7" style="padding-left: 10px; padding-right: 10px">Impuesto predial</span>
-                                        
+
                                     </div>
                                 </div>
                             </td>
@@ -629,14 +629,14 @@
                                     </div>
                                 </div>
                             </td>
-                            
+
                         </tr>
                         <tr>
                             <td style="padding-top: 13px;  padding-bottom: 13px;">
                                 <div class="d-flex align-items-center">
                                     <div class="d-flex justify-content-start flex-column">
                                         <span class="text-muted fw-semibold text-muted d-block fs-7" style="padding-left: 10px; padding-right: 10px">Impuesto predial</span>
-                                        
+
                                     </div>
                                 </div>
                             </td>
@@ -647,14 +647,14 @@
                                     </div>
                                 </div>
                             </td>
-                            
+
                         </tr>
                         <tr>
                             <td style="padding-top: 13px;  padding-bottom: 13px;">
                                 <div class="d-flex align-items-center">
                                     <div class="d-flex justify-content-start flex-column">
                                         <span class="text-muted fw-semibold text-muted d-block fs-7" style="padding-left: 10px; padding-right: 10px">Impuesto predial</span>
-                                        
+
                                     </div>
                                 </div>
                             </td>
@@ -665,7 +665,7 @@
                                     </div>
                                 </div>
                             </td>
-                            
+
                         </tr>
                     </tbody>
                     <!--end::Table body-->

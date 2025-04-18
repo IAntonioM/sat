@@ -41,17 +41,17 @@
                             </div>
                             <!--end::Number-->
                             <!--begin::Label-->
-                            
+
                             <!--end::Label-->
                         </div>
                         <!--begin::Menu-->
-                        
+
                         <!--end::Menu-->
                     </div>
                     <!--end::Actions-->
                 </div>
                 <!--end::Head-->
-                
+
             </div>
         </div>
     </div>
@@ -76,7 +76,7 @@
                             <option value="2025">2024</option>
                             <option value="2025">2023</option>
                             <option value="2025">2022</option>
-                        </select> 
+                        </select>
                         <!--end::Select2-->
                     </div>
                     <div class="w-200 mw-250px">
@@ -85,7 +85,7 @@
                             <option></option>
                             <option value="all">Impuesto Predial</option>
                             <option value="Cancelled">Arbitrios Municipales</option>
-                        </select> 
+                        </select>
                         <!--end::Select2-->
                     </div>
                     <!--end::Search-->
@@ -93,8 +93,8 @@
                 <!--end::Card title-->
                 <!--begin::Card toolbar-->
                 <div class="card-toolbar flex-row-fluid justify-content-end gap-5">
-                    
-                    
+
+
                     <!--begin::Add product-->
                     <a href="" class="btn btn-primary"><i class="fa-solid fa-print"></i>Imprimir</a>
                     <a href="" class="btn btn-success"><i class="fa-solid fa-money-bill-1-wave"></i>Pagar</a>
@@ -109,7 +109,7 @@
                 <table class="table align-middle table-row-dashed fs-6 gy-5 table-bordered" id="kt_ecommerce_sales_table">
                     <thead>
                         <tr class="text-start text-gray-400 fw-bold fs-7 text-uppercase gs-0" style="background-color:#f8f8f9;">
-                            
+
                             <th class="min-w-175px" style="text-align: center;">Tributo</th>
                             <th class="min-w-30px" style="text-align: center;">Año</th>
                             <th class=" min-w-30px" style="text-align: center;">Imp. Insoluto</th>
