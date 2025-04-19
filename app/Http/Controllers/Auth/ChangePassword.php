@@ -105,7 +105,7 @@ class ChangePassword extends Controller
             return redirect()->route('principal')->with([
                 'alert' => [
                     'type' => 'success',
-                    'title' => 'Inicio de sesión exitoso',
+                    'title' => 'Cambio de clave exitoso',
                     'message' => 'BIENVENIDO, ' . ($user->vnombre ?? 'Usuario')
                 ]
             ]);
@@ -115,7 +115,7 @@ class ChangePassword extends Controller
         return redirect()->route('principal')->with([
             'alert' => [
                 'type' => 'success',
-                'title' => 'Inicio de sesión exitoso',
+                'title' => 'Cambio de clave exitoso',
                 'message' => 'BIENVENIDO, ' . ($user->vnombre ?? 'Usuario')
             ]
         ]);

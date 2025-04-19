@@ -33,7 +33,7 @@
 								<!--end::Input group=-->
 								<div class="fv-row mb-3">
 									<!--begin::Password-->
-									<input type="password" placeholder="Password" name="password" autocomplete="off" class="form-control bg-transparent" />
+									<input type="password" placeholder="Actual Password" name="password" autocomplete="off" class="form-control bg-transparent" />
                                     @error('password')
                                     <div style="color: #d12d2d">{{ $message }}</div>
                                     @enderror
