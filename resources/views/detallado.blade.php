@@ -76,21 +76,25 @@
                                 </div>
                                 <div class="w-200 mw-250px">
                                     <!--begin::Select2-->
-                                    <select class="form-select form-select-solid" name="tipo_tributo" id="tipo_tributo_select"
-                                        data-control="select2" data-hide-search="true" data-placeholder="Seleccione el Tributo">
+                                    <select class="form-select form-select-solid" name="tipo_tributo"
+                                        id="tipo_tributo_select" data-control="select2" data-hide-search="true"
+                                        data-placeholder="Seleccione el Tributo">
                                         <option></option>
                                         <option value="%" {{ $tipoTributo == '%' ? 'selected' : '' }}>Todos
                                         </option>
                                         @foreach ($tiposTributo as $tributo)
-                                            <option value="{{ $tributo}}"
-                                                {{ $tipoTributo == $tributo? 'selected' : '' }}>{{ $tributo['nombre'] }}
+                                            <option value="{{ $tributo->tipo }}"
+                                                {{ $tipoTributo == $tributo->tipo ? 'selected' : '' }}>
+                                                {{ $tributo->mtipo }}
                                             </option>
                                         @endforeach
                                     </select>
                                     <!--end::Select2-->
                                 </div>
                                 <div>
-                                    <button type="submit">pene</button>
+                                    <button id="btnFiltrar" class="btn btn-success" type="submit">
+                                        <i class="fa-solid fa-filter"></i>
+                                        Filtrar</button>
                                 </div>
                             </div>
                         </form>

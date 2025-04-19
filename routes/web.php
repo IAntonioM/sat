@@ -46,22 +46,23 @@ Route::middleware('check.login')->group(function () {
     //PANTALLA PRINCIPAL
     Route::get('/principal', [PrincipalController::class, 'viewPrincipal'])->name('principal');
 
-    //CONSOLIDADO
-    // Muestra resources/views/about.blade.php
-    Route::get('/consolidado', [DeudaConsolidadaController::class, 'index'])
-    ->name('consolidado');
+    ///CONSOLIDADO
+    // Muestra vista inicial
+    Route::get('/consolidado', [DeudaConsolidadaController::class, 'index'])->name('consolidado');
 
-    // Filtrar deudas consolidadas (mismo método pero con POST)
-    Route::post('/consolidadas', [DeudaConsolidadaController::class, 'index'])
-    ->name('consolidadas.filtrar');
+    Route::post('/consolidado', [DeudaConsolidadaController::class, 'index'])->name('consolidado');
+
+    // Filtrar deudas por año y tipo
+    Route::post('/consolidado/filtrar', [DeudaConsolidadaController::class, 'filtrar'])->name('consolidado.filtrar');
+
+    // Imprimir deudas
+    Route::get('/consolidado/imprimir', [DeudaConsolidadaController::class, 'imprimir'])->name('consolidado.imprimir');
 
     // Preparar pago de deudas seleccionadas
-    Route::post('/consolidadas/pagar', [DeudaConsolidadaController::class, 'prepararPago'])
-    ->name('consolidadas.pagar');
+    Route::post('/consolidado/pagar', [DeudaConsolidadaController::class, 'prepararPago'])->name('consolidado.preparar-pago');
 
-    // Imprimir deudas consolidadas
-    Route::get('/consolidadas/imprimir', [DeudaConsolidadaController::class, 'imprimirDeudas'])
-    ->name('consolidadas.imprimir');
+    // Vista de pago (esta ruta debería ir a un controlador de pagos)
+    Route::get('/consolidado/pago', function () {return redirect()->route('pagos.index');})->name('consolidado.pago');
 
 
     //DETALLADO
@@ -80,10 +81,7 @@ Route::middleware('check.login')->group(function () {
     Route::post('/detallado/pagar', [DetalladoController::class, 'prepararPago'])->name('detallado.preparar-pago');
 
     // Vista de pago (esta ruta debería ir a un controlador de pagos)
-    Route::get('/detallado/pago', function () {
-        // Redirigir a un controlador de pagos
-        return redirect()->route('pagos.index');
-    })->name('detallado.pago');
+    Route::get('/detallado/pago', function () {return redirect()->route('pagos.index');})->name('detallado.pago');
 
 
 

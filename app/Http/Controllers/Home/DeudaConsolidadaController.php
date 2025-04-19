@@ -6,24 +6,20 @@ use App\Http\Requests\Opciones\DeudaConsolidadaRequest;
 use App\Models\DeudaConsolidada;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Session;
+use Carbon\Carbon;
+use Barryvdh\Debugbar\Facades\Debugbar;
 
 class DeudaConsolidadaController extends Controller
 {
     /**
-     * Constructor
-     */
-
-    /**
      * Mostrar la vista de deudas consolidadas
      *
-     * @param DeudaConsolidadaRequest $request
+     * @param Request $request
      * @return \Illuminate\View\View
      */
-    public function index(DeudaConsolidadaRequest $request)
+    public function index(Request $request)
     {
-        // Obtener el código del contribuyente (puede venir de sesión, auth, etc.)
+        // Obtener el código del contribuyente de la sesión o del parámetro
         $codigoContribuyente = session('codigo_contribuyente') ??
         session('cod_usuario') ?? null; // Valor por defecto para pruebas
 
@@ -38,89 +34,162 @@ class DeudaConsolidadaController extends Controller
             ]);
         }
 
-        // Obtener los filtros de la solicitud
-        $anio = $request->input('anio', '%');
-        $tipoTributo = $request->input('tipo_tributo', '%');
-
-        // Adaptar el tipo de tributo al formato esperado por el procedimiento
-        if ($tipoTributo == 'predial') {
-            $tipoTributo = '02.01';
-        } elseif ($tipoTributo == 'arbitrios') {
-            $tipoTributo = '11';
-        }
+        // Guardar el código en sesión para futuras consultas
+        $request->session()->put('codigo_contribuyente', $codigoContribuyente);
 
         // Obtener datos del contribuyente
         $contribuyente = DeudaConsolidada::obtenerDatosContribuyente($codigoContribuyente);
 
-        // Obtener la deuda total actual
-        $deudaTotal = DeudaConsolidada::obtenerDeudaTotal($codigoContribuyente);
-
-        // Obtener el detalle de las deudas
-        $detalleDeudas = DeudaConsolidada::obtenerDetalleDeudas($codigoContribuyente, $anio, $tipoTributo);
-
-        // Obtener los años disponibles para el filtro
-        $aniosDisponibles = DeudaConsolidada::obtenerAniosDisponibles($codigoContribuyente);
-
-        // Agrupar las deudas por año para la visualización
-        $deudasAgrupadas = collect($detalleDeudas)->groupBy('año');
-
-        // Calcular totales por año
-        $totalesPorAnio = [];
-        foreach ($deudasAgrupadas as $año => $deudas) {
-            $totalesPorAnio[$año] = [
-                'imp_insol' => $deudas->sum('imp_insol'),
-                'imp_reaj' => $deudas->sum('imp_reaj'),
-                'mora' => $deudas->sum('mora'),
-                'costo_emis' => $deudas->sum('costo_emis'),
-                'total' => $deudas->sum('total')
-            ];
+        if (!$contribuyente) {
+            return redirect()->route('login')->with('error', 'No se encontró el contribuyente');
         }
+
+        // Obtener el total de la deuda
+        $totalDeuda = DeudaConsolidada::obtenerTotalDeuda($codigoContribuyente);
+
+        // Obtener los filtros
+        $anioSeleccionado = $request->anio ?? '%';
+        $tipoTributo = $request->tipo_tributo ?? '%';
+
+        // Obtener las deudas detalladas
+        $deudas = DeudaConsolidada::obtenerDeudasDetalladas($codigoContribuyente, $anioSeleccionado, $tipoTributo);
+
+        // Preparar datos para la vista
+        $deudas = collect($deudas)->groupBy('año');
+        $aniosDisponibles = DeudaConsolidada::obtenerAniosDisponibles($codigoContribuyente);
+        $tiposTributo = DeudaConsolidada::obtenerTiposTributo($codigoContribuyente);
+        $fechaActual = Carbon::now()->format('d/m/Y');
 
         return view('consolidado', compact(
             'contribuyente',
-            'deudaTotal',
-            'deudasAgrupadas',
-            'totalesPorAnio',
+            'totalDeuda',
+            'deudas',
             'aniosDisponibles',
-            'anio',
-            'tipoTributo'
+            'tiposTributo',
+            'anioSeleccionado',
+            'tipoTributo',
+            'fechaActual'
         ));
     }
 
     /**
-     * Preparar para el pago de las deudas seleccionadas
+     * Filtra las deudas por año y tipo de tributo
      *
      * @param DeudaConsolidadaRequest $request
-     * @return \Illuminate\Http\RedirectResponse
+     * @return \Illuminate\Http\JsonResponse
      */
-    public function prepararPago(DeudaConsolidadaRequest $request)
+    public function filtrar(DeudaConsolidadaRequest $request)
     {
-        $recibosSeleccionados = $request->input('recibos_seleccionados', []);
+        try {
+            Debugbar::info('Filtro recibido', $request->all());
 
-        if (empty($recibosSeleccionados)) {
-            return redirect()->back()->with('error', 'No se han seleccionado deudas para pagar.');
+            $codigoContribuyente = $request->session()->get('codigo_contribuyente');
+            $anioSeleccionado = $request->anio ?? '%';
+            $tipoTributo = $request->tipo_tributo ?? '%';
+
+            Debugbar::info('Parámetros de filtrado', [
+                'codigoContribuyente' => $codigoContribuyente,
+                'anio' => $anioSeleccionado,
+                'tipoTributo' => $tipoTributo
+            ]);
+
+            if (!$codigoContribuyente) {
+                return response()->json([
+                    'status' => 'error',
+                    'message' => 'No se encontró el código de contribuyente en la sesión'
+                ], 400);
+            }
+
+            // Obtener las deudas detalladas
+            $deudas = DeudaConsolidada::obtenerDetalleDeudas($codigoContribuyente, $anioSeleccionado, $tipoTributo);
+
+            // Verificar si hay una propiedad 'año' en los registros
+            // El nombre de la propiedad podría variar según la codificación
+            $keyAnio = 'año';
+            if (!empty($deudas) && !isset($deudas[0]->$keyAnio)) {
+                // Buscamos la clave correcta para agrupar
+                $firstRecord = (array)$deudas[0];
+                $possibleKeys = ['año', 'ano', 'anio', 'year'];
+
+                foreach ($possibleKeys as $key) {
+                    if (array_key_exists($key, $firstRecord)) {
+                        $keyAnio = $key;
+                        break;
+                    }
+                }
+
+                Debugbar::info('Clave de agrupación encontrada', ['keyAnio' => $keyAnio]);
+            }
+
+            // Agrupar por la clave identificada
+            $deudas = collect($deudas)->groupBy($keyAnio);
+
+            Debugbar::info('Deudas encontradas', ['cantidad' => count($deudas)]);
+
+            return response()->json([
+                'status' => 'success',
+                'deudas' => $deudas,
+            ]);
+        } catch (\Exception $e) {
+            Debugbar::error('Error al filtrar deudas', [
+                'error' => $e->getMessage(),
+                'trace' => $e->getTraceAsString()
+            ]);
+
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Error al filtrar las deudas: ' . $e->getMessage()
+            ], 500);
         }
-
-        // Guardar los IDs de los recibos seleccionados en la sesión para usarlos en el proceso de pago
-        Session::put('recibos_seleccionados', $recibosSeleccionados);
-
-        return redirect()->route('pagos.crear');
     }
 
     /**
-     * Generar reporte de deudas consolidadas para imprimir
+     * Prepara los datos para el pago de deudas seleccionadas
      *
-     * @param DeudaConsolidadaRequest $request
-     * @return \Illuminate\Http\Response
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse|\Illuminate\Http\RedirectResponse
      */
-    public function imprimirDeudas(DeudaConsolidadaRequest $request)
+    public function prepararPago(Request $request)
     {
-        // Obtener el código del contribuyente
-        $codigoContribuyente = session('codigo_contribuyente') ?? '0000001';
+        $idRecibos = $request->recibos_seleccionados;
 
-        // Obtener los filtros de la solicitud
-        $anio = $request->input('anio', '%');
-        $tipoTributo = $request->input('tipo_tributo', '%');
+        if (!$idRecibos || !is_array($idRecibos) || count($idRecibos) == 0) {
+            if ($request->ajax()) {
+                return response()->json([
+                    'status' => 'error',
+                    'message' => 'Debe seleccionar al menos una deuda para pagar'
+                ]);
+            }
+            return back()->with('error', 'Debe seleccionar al menos una deuda para pagar');
+        }
+
+        // Almacenar los ID de recibos seleccionados en la sesión
+        $request->session()->put('recibos_seleccionados', $idRecibos);
+
+        if ($request->ajax()) {
+            return response()->json([
+                'status' => 'success',
+                'redirect' => route('deudas.pago')
+            ]);
+        }
+
+        return redirect()->route('deudas.pago');
+    }
+
+    /**
+     * Muestra la vista de impresión de deudas
+     *
+     * @param Request $request
+     * @return \Illuminate\View\View
+     */
+    public function imprimir(Request $request)
+    {
+        $codigoContribuyente = $request->session()->get('codigo_contribuyente');
+        $contribuyente = DeudaConsolidada::obtenerDatosContribuyente($codigoContribuyente);
+        $deudaTotal = DeudaConsolidada::obtenerDeudaTotal($codigoContribuyente);
+
+        $anioSeleccionado = $request->anio ?? '%';
+        $tipoTributo = $request->tipo_tributo ?? '%';
 
         // Adaptar el tipo de tributo al formato esperado por el procedimiento
         if ($tipoTributo == 'predial') {
@@ -129,16 +198,16 @@ class DeudaConsolidadaController extends Controller
             $tipoTributo = '11';
         }
 
-        // Obtener datos del contribuyente
-        $contribuyente = DeudaConsolidada::obtenerDatosContribuyente($codigoContribuyente);
+        $deudas = DeudaConsolidada::obtenerDetalleDeudas($codigoContribuyente, $anioSeleccionado, $tipoTributo);
+        $deudas = collect($deudas)->groupBy('año');
 
-        // Obtener el detalle de las deudas
-        $detalleDeudas = DeudaConsolidada::obtenerDetalleDeudas($codigoContribuyente, $anio, $tipoTributo);
+        $fechaActual = Carbon::now()->format('d/m/Y');
 
-        // Aquí implementarías la lógica para generar un PDF o una vista para imprimir
-        // Por ejemplo, usando una librería como Dompdf
-
-        // Para este ejemplo, solo devolvemos una vista específica para impresión
-        return view('deudas.imprimir', compact('contribuyente', 'detalleDeudas'));
+        return view('deudas.imprimir', compact(
+            'contribuyente',
+            'deudaTotal',
+            'deudas',
+            'fechaActual'
+        ));
     }
 }

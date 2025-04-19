@@ -84,6 +84,6 @@ class Detallado extends Model
     public static function obtenerTiposTributo($codigoContribuyente)
     {
         $result = DB::select('SELECT DISTINCT tipo,mtipo FROM DETALLADO WHERE codigo = ?', [$codigoContribuyente]);
-        return collect($result)->pluck('mtipo')->toArray();
+        return $result;
     }
 }
