@@ -190,7 +190,7 @@
 
         <!-- MONTO INAFECTO DATA -->
         <div class="col-xl-1" style="border-right: 1px solid #ccc; padding:10px; text-align:center;">
-            {{ number_format($predio->total_autoavaluo, 2) }}
+            {{ number_format($predio->total, 2) }}
         </div>
 
         <!-- VALOR AFECTO DATA -->

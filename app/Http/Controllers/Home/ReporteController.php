@@ -27,7 +27,8 @@ class ReporteController extends Controller
 
     public function reporteHR()
     {
-        $pdf = HRReport::generarPDFRecibo();
+        $report = new HRReport();      // 👈 crea la instancia
+        $pdf = $report->generarPDF();  // ✅ llamado correctamente
 
         return response($pdf, 200)
             ->header('Content-Type', 'application/pdf');
