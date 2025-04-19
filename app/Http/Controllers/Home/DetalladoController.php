@@ -7,6 +7,7 @@ use App\Models\Detallado;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Session;
 use Barryvdh\Debugbar\Facades\Debugbar;
 
 class DetalladoController extends Controller
@@ -22,6 +23,8 @@ class DetalladoController extends Controller
         // Obtener el código del contribuyente de la sesión o del parámetro
         $codigoContribuyente = session('codigo_contribuyente') ??
         session('cod_usuario') ?? null; // Valor por defecto para pruebas
+
+        $usuario =  Session::get('usuario');
 
         if (!$codigoContribuyente) {
             // Si no hay código de contribuyente, redirigir al login
@@ -68,7 +71,8 @@ class DetalladoController extends Controller
             'tiposTributo',
             'anioSeleccionado',
             'tipoTributo',
-            'fechaActual'
+            'fechaActual',
+            'usuario'
         ));
     }
 

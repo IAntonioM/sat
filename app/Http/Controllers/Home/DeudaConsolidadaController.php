@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Carbon\Carbon;
 use Barryvdh\Debugbar\Facades\Debugbar;
+use Illuminate\Support\Facades\Session;
 
 class DeudaConsolidadaController extends Controller
 {
@@ -22,6 +23,8 @@ class DeudaConsolidadaController extends Controller
         // Obtener el código del contribuyente de la sesión o del parámetro
         $codigoContribuyente = session('codigo_contribuyente') ??
         session('cod_usuario') ?? null; // Valor por defecto para pruebas
+
+        $usuario =  Session::get('usuario');
 
         if (!$codigoContribuyente) {
             // Si no hay código de contribuyente, redirigir al login
@@ -68,7 +71,8 @@ class DeudaConsolidadaController extends Controller
             'tiposTributo',
             'anioSeleccionado',
             'tipoTributo',
-            'fechaActual'
+            'fechaActual',
+            'usuario'
         ));
     }
 
