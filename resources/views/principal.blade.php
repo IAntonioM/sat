@@ -99,7 +99,7 @@
         <div class="card-footer" style="border-top: 1px solid rgba(255, 255, 255, 0.3);background: rgba(0, 0, 0, 0.15);">
             <!--begin::Progress-->
             <div class="fw-bold text-white py-2" style="text-align: center;">
-                <a href="" class="btn btn-sm btn-light-success btn-active-success " >
+                <a  href="{{ route('HR') }}" class="btn btn-sm btn-light-success btn-active-success " >
                     <i class="ki-duotone ki-plus fs-2"></i>Ir a la Hoja Resumen</a>
                 <span class="opacity-50"></span>
             </div>

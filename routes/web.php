@@ -6,6 +6,8 @@ use App\Http\Controllers\Auth\LogoutController;
 use App\Http\Controllers\Home\PrincipalController;
 use App\Http\Controllers\Home\DeudaConsolidadaController;
 use App\Http\Controllers\Home\DetalladoController;
+use App\Http\Controllers\Home\HRController;
+use App\Http\Controllers\Home\ReporteController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -85,9 +87,11 @@ Route::middleware('check.login')->group(function () {
 
 
 
+    Route::get('/HR', [HRController::class, 'index'])->name('HR');
 
 
 
+    Route::get('/reporte/{tipo}', [ReporteController::class, 'reporte'])->name('reporte');
 
 
 
@@ -96,9 +100,7 @@ Route::middleware('check.login')->group(function () {
         return view('pagos'); // Muestra resources/views/about.blade.php
     });
 
-    Route::get('/HR', function () {
-        return view('HR'); // Muestra resources/views/about.blade.php
-    });
+
 
     Route::get('/HLA', function () {
         return view('HLA'); // Muestra resources/views/about.blade.php
