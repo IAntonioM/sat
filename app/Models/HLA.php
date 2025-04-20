@@ -2,12 +2,13 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
 
 class HlaModel extends Model
 {
-    protected $table = null; // We'll use raw queries with the stored procedure
+    protected $table = 'HLP_PORTAL'; // We'll use raw queries with the stored procedure
 
     /**
      * Get contributor data

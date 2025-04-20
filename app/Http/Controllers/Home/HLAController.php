@@ -21,9 +21,11 @@ class HlaController extends Controller
     public function index(HlaRequest $request)
     {
         $user = Auth::user();
-        $vcodcontr = $user->vcodcontr;
+        $vcodcontr = session('codigo_contribuyente') ??
+        session('cod_usuario') ?? null;
         $year = $request->input('year', date('Y'));
         $usuario =  Session::get('usuario');
+
         // Get contributor data
         $contributor = HlaModel::getContributorData($vcodcontr);
 
@@ -37,6 +39,8 @@ class HlaController extends Controller
         $hlpData = HlaModel::getHlpData($vcodcontr, $year);
 
         return view('HLA', compact(
+            'vcodcontr',
+            'user',
             'contributor',
             'hlaDetails',
             'hlaSummary',
