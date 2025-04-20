@@ -23,7 +23,7 @@
                         <!--end::Details-->
                         <!--begin::Actions-->
                         <div class="d-flex mb-4">
-                            <a href="javascript:void(0)" class="btn btn-primary" id="btnImprimir"><i
+                            <a href="{{ route('reporte', ['tipo' => 'reporteHR']) }}" class="btn btn-primary" id="btnImprimir"><i
                                     class="fa-solid fa-print"></i> Imprimir</a>
                         </div>
                         <!--end::Actions-->
@@ -67,7 +67,7 @@
                             </div>
                             <div class="col-xl-8"
                                 style="font-size:10px;border-right: 1px solid var(--bs-gray-300);border-bottom: 0px solid var(--bs-gray-300); padding:30px;">
-                                {{ $vnombre ?? 'N/A' }}
+                                {{ $datos_predio[0]->nombre ?? 'N/A' }}
                             </div>
                         </div>
                         <div class="col-xl-4 row" style="margin-left: 0;margin-right:0;--bs-gutter-x: 0rem;">
@@ -78,7 +78,7 @@
                                 </div>
                                 <div class="col-xl-12"
                                     style="border-right: 1px solid var(--bs-gray-300); padding:10px;text-align: center">
-                                    {{ $contribuyente->codigo ?? 'N/A' }}
+                                    {{ $datos_predio[0]->codigo ?? 'N/A' }}
                                 </div>
                             </div>
                             <div class="col-xl-6 row">
@@ -88,7 +88,7 @@
                                 </div>
                                 <div class="col-xl-12"
                                     style="border-right: 0px solid var(--bs-gray-300); padding:10px;text-align: center">
-                                    {{ $xid_anexo ?? 'N/A' }}
+                                    {{ $datos_predio[0]->id_anexo ?? 'N/A' }}
                                 </div>
                             </div>
                         </div>
@@ -108,7 +108,7 @@
                                 </div>
                                 <div class="col-xl-12"
                                     style="font-size:10px;border-right: 1px solid var(--bs-gray-300);border-bottom: 0px solid var(--bs-gray-300); padding:10px;">
-                                    {{ $propertyDetails->direccion ?? ($vdirecc ?? 'N/A') }}
+                                    {{ $datos_predio[0]->direccion ?? ($vdirecc ?? 'N/A') }}
                                 </div>
                             </div>
 
@@ -121,7 +121,7 @@
                                 </div>
                                 <div class="col-xl-12"
                                     style="border-right: 1px solid var(--bs-gray-300); padding:10px;text-align: center">
-                                    {{ $propertyDetails->construcciones->id_condi ?? 'N/A' }}
+                                    {{ $datos_predio[0]->id_condi ?? 'N/A' }}
                                 </div>
                             </div>
                             <div class="col-xl-4 row">
@@ -131,7 +131,7 @@
                                 </div>
                                 <div class="col-xl-12"
                                     style="border-right: 1px solid var(--bs-gray-300); padding:10px;text-align: center">
-                                    {{ $propertyDetails->condicion ?? 'N/A' }}
+                                    {{ $datos_predio[0]->condi ?? 'N/A' }}
                                 </div>
                             </div>
                             <div class="col-xl-3 row">
@@ -141,7 +141,7 @@
                                 </div>
                                 <div class="col-xl-12"
                                     style="border-right: 1px solid var(--bs-gray-300); padding:10px;text-align: center">
-                                    {{ $propertyDetails->uso_predio ?? 'N/A' }}
+                                    {{ $datos_predio[0]->uso ?? 'N/A' }}
                                 </div>
                             </div>
                             <div class="col-xl-3 row">
@@ -151,7 +151,7 @@
                                 </div>
                                 <div class="col-xl-12"
                                     style="border-right: 0px solid var(--bs-gray-300); padding:10px;text-align: center">
-                                    {{ $propertyDetails->porcentaje_propiedad ?? '0' }}%
+                                    {{ number_format($datos_predio[0]->porcen ?? '0', 2) }}%
                                 </div>
                             </div>
                         </div>
@@ -161,304 +161,150 @@
                     </div>
 
                     <div id="construccionesContainer">
-                        @if (isset($propertyDetails->construcciones) && count($propertyDetails->construcciones))
-                            @foreach ($propertyDetails->construcciones as $construccion)
-                                <div class="col-xl-12 row construccion-row"
-                                    style="border: 1px solid var(--bs-gray-300);margin-left: 0;margin-right:0;--bs-gutter-x: 0rem;">
-                                    <div class="row" style="width: 5%">
-                                        <div class="col-xl-12"
-                                            style="font-size:8px;border-right: 1px solid var(--bs-gray-300);border-bottom: 1px solid var(--bs-gray-300); padding:10px;background-color:#f8f8f9;text-align: center">
-                                            NIVEL
-                                        </div>
-                                        <div class="col-xl-12"
-                                            style="border-right: 1px solid var(--bs-gray-300); padding:10px;text-align: center">
-                                            {{ $construccion->nivel ?? 'N/A' }}
-                                        </div>
-                                    </div>
-                                    <div class="row" style="width: 6%">
-                                        <div class="col-xl-12"
-                                            style="font-size:8px;border-right: 1px solid var(--bs-gray-300);border-bottom: 1px solid var(--bs-gray-300); padding:10px;background-color:#f8f8f9;text-align: center">
-                                            TIPO CONST.
-                                        </div>
-                                        <div class="col-xl-12"
-                                            style="border-right: 1px solid var(--bs-gray-300); padding:10px;text-align: center">
-                                            {{ $construccion->tipo_const ?? 'N/A' }}
-                                        </div>
-                                    </div>
-                                    <div class="row" style="width: 5%">
-                                        <div class="col-xl-12"
-                                            style="font-size:9px;border-right: 1px solid var(--bs-gray-300);border-bottom: 1px solid var(--bs-gray-300); padding:10px;background-color:#f8f8f9;text-align: center">
-                                            AÑO
-                                        </div>
-                                        <div class="col-xl-12"
-                                            style="border-right: 1px solid var(--bs-gray-300); padding:10px;text-align: center">
-                                            {{ $construccion->anio ?? $year }}
-                                        </div>
-                                    </div>
-                                    <div class="row" style="width: 5%">
-                                        <div class="col-xl-12"
-                                            style="font-size:9px;border-right: 1px solid var(--bs-gray-300);border-bottom: 1px solid var(--bs-gray-300); padding:10px;background-color:#f8f8f9;text-align: center">
-                                            CL
-                                        </div>
-                                        <div class="col-xl-12"
-                                            style="border-right: 1px solid var(--bs-gray-300); padding:10px;text-align: center">
-                                            {{ $construccion->cl ?? 'N/A' }}
-                                        </div>
-                                    </div>
-                                    <div class="row" style="width: 5%">
-                                        <div class="col-xl-12"
-                                            style="font-size:9px;border-right: 1px solid var(--bs-gray-300);border-bottom: 1px solid var(--bs-gray-300); padding:10px 0px 10px 0px;background-color:#f8f8f9;text-align: center">
-                                            MP
-                                        </div>
-                                        <div class="col-xl-12"
-                                            style="border-right: 1px solid var(--bs-gray-300); padding:10px;text-align: center">
-                                            {{ $construccion->mp ?? 'N/A' }}
-                                        </div>
-                                    </div>
-                                    <div class="row" style="width: 8%">
-                                        <div class="col-xl-12"
-                                            style="font-size:9px;border-right: 1px solid var(--bs-gray-300);border-bottom: 1px solid var(--bs-gray-300); padding:10px;background-color:#f8f8f9;text-align: center">
-                                            ESTADO
-                                        </div>
-                                        <div class="col-xl-12"
-                                            style="border-right: 1px solid var(--bs-gray-300); padding:10px;text-align: center">
-                                            {{ $construccion->estado ?? 'N/A' }}
-                                        </div>
-                                    </div>
-                                    <div class="row" style="width: 15%">
-                                        <div class="col-xl-12"
-                                            style="font-size:9px;border-right: 1px solid var(--bs-gray-300);border-bottom: 1px solid var(--bs-gray-300); padding:10px;background-color:#f8f8f9;text-align: center">
-                                            CATEGORIA (1)
-                                            Mc Tc Pi Pv Rv Ba
-                                        </div>
-                                        <div class="col-xl-12"
-                                            style="border-right: 1px solid var(--bs-gray-300); padding:10px;text-align: center">
-                                            {{ $construccion->categoria ?? 'N/A' }}
-                                        </div>
-                                    </div>
-                                    <div class="row" style="width: 6%">
-                                        <div class="col-xl-12"
-                                            style="font-size:9px;border-right: 1px solid var(--bs-gray-300);border-bottom: 1px solid var(--bs-gray-300); padding:10px;background-color:#f8f8f9;text-align: center">
-                                            V.UNITARIO
-                                        </div>
-                                        <div class="col-xl-12"
-                                            style="border-right: 1px solid var(--bs-gray-300); padding:10px;text-align: center">
-                                            {{ number_format($construccion->valor_unitario ?? 0, 2) }}
-                                        </div>
-                                    </div>
-                                    <div class="row" style="width: 5%">
-                                        <div class="col-xl-12"
-                                            style="font-size:9px;border-right: 1px solid var(--bs-gray-300);border-bottom: 1px solid var(--bs-gray-300); padding:10px;background-color:#f8f8f9;text-align: center">
-                                            INC.5%
-                                        </div>
-                                        <div class="col-xl-12"
-                                            style="border-right: 1px solid var(--bs-gray-300); padding:10px;text-align: center">
-                                            {{ number_format($construccion->inc_5 ?? 0, 2) }}
-                                        </div>
-                                    </div>
-                                    <div class="row" style="width: 8%">
-                                        <div class="col-xl-12"
-                                            style="font-size:9px;border-right: 1px solid var(--bs-gray-300);border-bottom: 1px solid var(--bs-gray-300); padding:10px;background-color:#f8f8f9;text-align: center">
-                                            DEPRECIACIÓN
-                                        </div>
-                                        <div class="col-xl-12"
-                                            style="border-right: 1px solid var(--bs-gray-300); padding:10px;text-align: center">
-                                            {{ number_format($construccion->depreciacion ?? 0, 2) }}
-                                        </div>
-                                    </div>
-                                    <div class="row" style="width: 8%">
-                                        <div class="col-xl-12"
-                                            style="font-size:9px;border-right: 1px solid var(--bs-gray-300);border-bottom: 1px solid var(--bs-gray-300); padding:10px 0px 10px 0px;background-color:#f8f8f9;text-align: center">
-                                            V.U.DEPRECIACIÓN
-                                        </div>
-                                        <div class="col-xl-12"
-                                            style="border-right: 1px solid var(--bs-gray-300); padding:10px;text-align: center">
-                                            {{ number_format($construccion->vu_depreciacion ?? 0, 2) }}
-                                        </div>
-                                    </div>
-                                    <div class="row" style="width: 7%">
-                                        <div class="col-xl-12"
-                                            style="font-size:9px;border-right: 1px solid var(--bs-gray-300);border-bottom: 1px solid var(--bs-gray-300); padding:10px;background-color:#f8f8f9;text-align: center">
-                                            ÁREA CONST.
-                                        </div>
-                                        <div class="col-xl-12"
-                                            style="border-right: 1px solid var(--bs-gray-300); padding:10px;text-align: center">
-                                            {{ number_format($construccion->area_const ?? 0, 2) }}
-                                        </div>
-                                    </div>
-                                    <div class="row" style="width: 9%">
-                                        <div class="col-xl-12"
-                                            style="font-size:9px;border-right: 1px solid var(--bs-gray-300);border-bottom: 1px solid var(--bs-gray-300); padding:10px;background-color:#f8f8f9;text-align: center">
-                                            ÁREA COM. CONST.
-                                        </div>
-                                        <div class="col-xl-12"
-                                            style="border-right: 1px solid var(--bs-gray-300); padding:10px;text-align: center">
-                                            {{ number_format($construccion->area_com_const ?? 0, 2) }}
-                                        </div>
-                                    </div>
-                                    <div class="row" style="width: 8%">
-                                        <div class="col-xl-12"
-                                            style="font-size:9px;border-right: 0px solid var(--bs-gray-300);border-bottom: 1px solid var(--bs-gray-300); padding:10px;background-color:#f8f8f9;text-align: center">
-                                            VALOR CONST.
-                                        </div>
-                                        <div class="col-xl-12"
-                                            style="border-right: 0px solid var(--bs-gray-300); padding:10px;text-align: center">
-                                            {{ number_format($construccion->valor_const ?? 0, 2) }}
-                                        </div>
-                                    </div>
+                        <div class="col-xl-12 row construccion-row"
+                            style="border: 1px solid var(--bs-gray-300);margin-left: 0;margin-right:0;--bs-gutter-x: 0rem;">
+                            <div class="row" style="width: 5%">
+                                <div class="col-xl-12"
+                                    style="font-size:8px;border-right: 1px solid var(--bs-gray-300);border-bottom: 1px solid var(--bs-gray-300); padding:10px;background-color:#f8f8f9;text-align: center">
+                                    NIVEL
                                 </div>
-                            @endforeach
-                        @else
-                            <div class="col-xl-12 row construccion-row"
-                                style="border: 1px solid var(--bs-gray-300);margin-left: 0;margin-right:0;--bs-gutter-x: 0rem;">
-                                <div class="row" style="width: 5%">
-                                    <div class="col-xl-12"
-                                        style="font-size:8px;border-right: 1px solid var(--bs-gray-300);border-bottom: 1px solid var(--bs-gray-300); padding:10px;background-color:#f8f8f9;text-align: center">
-                                        NIVEL
-                                    </div>
-                                    <div class="col-xl-12"
-                                        style="border-right: 1px solid var(--bs-gray-300); padding:10px;text-align: center">
-                                        N/A
-                                    </div>
-                                </div>
-                                <div class="row" style="width: 6%">
-                                    <div class="col-xl-12"
-                                        style="font-size:8px;border-right: 1px solid var(--bs-gray-300);border-bottom: 1px solid var(--bs-gray-300); padding:10px;background-color:#f8f8f9;text-align: center">
-                                        TIPO CONST.
-                                    </div>
-                                    <div class="col-xl-12"
-                                        style="border-right: 1px solid var(--bs-gray-300); padding:10px;text-align: center">
-                                        N/A
-                                    </div>
-                                </div>
-                                <div class="row" style="width: 5%">
-                                    <div class="col-xl-12"
-                                        style="font-size:9px;border-right: 1px solid var(--bs-gray-300);border-bottom: 1px solid var(--bs-gray-300); padding:10px;background-color:#f8f8f9;text-align: center">
-                                        AÑO
-                                    </div>
-                                    <div class="col-xl-12"
-                                        style="border-right: 1px solid var(--bs-gray-300); padding:10px;text-align: center">
-                                        {{ $year }}
-                                    </div>
-                                </div>
-                                <div class="row" style="width: 5%">
-                                    <div class="col-xl-12"
-                                        style="font-size:9px;border-right: 1px solid var(--bs-gray-300);border-bottom: 1px solid var(--bs-gray-300); padding:10px;background-color:#f8f8f9;text-align: center">
-                                        CL
-                                    </div>
-                                    <div class="col-xl-12"
-                                        style="border-right: 1px solid var(--bs-gray-300); padding:10px;text-align: center">
-                                        N/A
-                                    </div>
-                                </div>
-                                <div class="row" style="width: 5%">
-                                    <div class="col-xl-12"
-                                        style="font-size:9px;border-right: 1px solid var(--bs-gray-300);border-bottom: 1px solid var(--bs-gray-300); padding:10px 0px 10px 0px;background-color:#f8f8f9;text-align: center">
-                                        MP
-                                    </div>
-                                    <div class="col-xl-12"
-                                        style="border-right: 1px solid var(--bs-gray-300); padding:10px;text-align: center">
-                                        N/A
-                                    </div>
-                                </div>
-                                <div class="row" style="width: 8%">
-                                    <div class="col-xl-12"
-                                        style="font-size:9px;border-right: 1px solid var(--bs-gray-300);border-bottom: 1px solid var(--bs-gray-300); padding:10px;background-color:#f8f8f9;text-align: center">
-                                        ESTADO
-                                    </div>
-                                    <div class="col-xl-12"
-                                        style="border-right: 1px solid var(--bs-gray-300); padding:10px;text-align: center">
-                                        N/A
-                                    </div>
-                                </div>
-                                <div class="row" style="width: 15%">
-                                    <div class="col-xl-12"
-                                        style="font-size:9px;border-right: 1px solid var(--bs-gray-300);border-bottom: 1px solid var(--bs-gray-300); padding:10px;background-color:#f8f8f9;text-align: center">
-                                        CATEGORIA (1)
-                                        Mc Tc Pi Pv Rv Ba
-                                    </div>
-                                    <div class="col-xl-12"
-                                        style="border-right: 1px solid var(--bs-gray-300); padding:10px;text-align: center">
-                                        N/A
-                                    </div>
-                                </div>
-                                <div class="row" style="width: 6%">
-                                    <div class="col-xl-12"
-                                        style="font-size:9px;border-right: 1px solid var(--bs-gray-300);border-bottom: 1px solid var(--bs-gray-300); padding:10px;background-color:#f8f8f9;text-align: center">
-                                        V.UNITARIO
-                                    </div>
-                                    <div class="col-xl-12"
-                                        style="border-right: 1px solid var(--bs-gray-300); padding:10px;text-align: center">
-                                        0.00
-                                    </div>
-                                </div>
-                                <div class="row" style="width: 5%">
-                                    <div class="col-xl-12"
-                                        style="font-size:9px;border-right: 1px solid var(--bs-gray-300);border-bottom: 1px solid var(--bs-gray-300); padding:10px;background-color:#f8f8f9;text-align: center">
-                                        INC.5%
-                                    </div>
-                                    <div class="col-xl-12"
-                                        style="border-right: 1px solid var(--bs-gray-300); padding:10px;text-align: center">
-                                        0.00
-                                    </div>
-                                </div>
-                                <div class="row" style="width: 8%">
-                                    <div class="col-xl-12"
-                                        style="font-size:9px;border-right: 1px solid var(--bs-gray-300);border-bottom: 1px solid var(--bs-gray-300); padding:10px;background-color:#f8f8f9;text-align: center">
-                                        DEPRECIACIÓN
-                                    </div>
-                                    <div class="col-xl-12"
-                                        style="border-right: 1px solid var(--bs-gray-300); padding:10px;text-align: center">
-                                        0.00
-                                    </div>
-                                </div>
-                                <div class="row" style="width: 8%">
-                                    <div class="col-xl-12"
-                                        style="font-size:9px;border-right: 1px solid var(--bs-gray-300);border-bottom: 1px solid var(--bs-gray-300); padding:10px 0px 10px 0px;background-color:#f8f8f9;text-align: center">
-                                        V.U.DEPRECIACIÓN
-                                    </div>
-                                    <div class="col-xl-12"
-                                        style="border-right: 1px solid var(--bs-gray-300); padding:10px;text-align: center">
-                                        0.00
-                                    </div>
-                                </div>
-                                <div class="row" style="width: 7%">
-                                    <div class="col-xl-12"
-                                        style="font-size:9px;border-right: 1px solid var(--bs-gray-300);border-bottom: 1px solid var(--bs-gray-300); padding:10px;background-color:#f8f8f9;text-align: center">
-                                        ÁREA CONST.
-                                    </div>
-                                    <div class="col-xl-12"
-                                        style="border-right: 1px solid var(--bs-gray-300); padding:10px;text-align: center">
-                                        0.00
-                                    </div>
-                                </div>
-                                <div class="row" style="width: 9%">
-                                    <div class="col-xl-12"
-                                        style="font-size:9px;border-right: 1px solid var(--bs-gray-300);border-bottom: 1px solid var(--bs-gray-300); padding:10px;background-color:#f8f8f9;text-align: center">
-                                        ÁREA COM. CONST.
-                                    </div>
-
-                                    <!--SIGUE DESDE ACÁ-->
-
-
-
-                                    <div class="col-xl-12"
-                                        style="border-right: 1px solid var(--bs-gray-300); padding:10px;text-align: center">
-                                        0.00
-                                    </div>
-                                </div>
-                                <div class="row" style="width: 8%">
-                                    <div class="col-xl-12"
-                                        style="font-size:9px;border-right: 0px solid var(--bs-gray-300);border-bottom: 1px solid var(--bs-gray-300); padding:10px;background-color:#f8f8f9;text-align: center">
-                                        VALOR CONST.
-                                    </div>
-                                    <div class="col-xl-12"
-                                        style="border-right: 0px solid var(--bs-gray-300); padding:10px;text-align: center">
-                                        0.00
-                                    </div>
+                                <div class="col-xl-12"
+                                    style="border-right: 1px solid var(--bs-gray-300); padding:10px;text-align: center">
+                                    {{ $datos_predio[0]->piso ?? 'N/A' }}
                                 </div>
                             </div>
-                        @endif
+                            <div class="row" style="width: 6%">
+                                <div class="col-xl-12"
+                                    style="font-size:8px;border-right: 1px solid var(--bs-gray-300);border-bottom: 1px solid var(--bs-gray-300); padding:10px;background-color:#f8f8f9;text-align: center">
+                                    TIPO CONST.
+                                </div>
+                                <div class="col-xl-12"
+                                    style="border-right: 1px solid var(--bs-gray-300); padding:10px;text-align: center">
+                                    {{ $datos_predio[0]->tipo ?? 'N/A' }}
+                                </div>
+                            </div>
+                            <div class="row" style="width: 5%">
+                                <div class="col-xl-12"
+                                    style="font-size:9px;border-right: 1px solid var(--bs-gray-300);border-bottom: 1px solid var(--bs-gray-300); padding:10px;background-color:#f8f8f9;text-align: center">
+                                    AÑO
+                                </div>
+                                <div class="col-xl-12"
+                                    style="border-right: 1px solid var(--bs-gray-300); padding:10px;text-align: center">
+                                    {{ $datos_predio[0]->anio ?? 'N/A' }}
+                                </div>
+                            </div>
+                            <div class="row" style="width: 5%">
+                                <div class="col-xl-12"
+                                    style="font-size:9px;border-right: 1px solid var(--bs-gray-300);border-bottom: 1px solid var(--bs-gray-300); padding:10px;background-color:#f8f8f9;text-align: center">
+                                    CL
+                                </div>
+                                <div class="col-xl-12"
+                                    style="border-right: 1px solid var(--bs-gray-300); padding:10px;text-align: center">
+                                    {{ $datos_predio[0]->cl ?? 'N/A' }}
+                                </div>
+                            </div>
+                            <div class="row" style="width: 5%">
+                                <div class="col-xl-12"
+                                    style="font-size:9px;border-right: 1px solid var(--bs-gray-300);border-bottom: 1px solid var(--bs-gray-300); padding:10px 0px 10px 0px;background-color:#f8f8f9;text-align: center">
+                                    MP
+                                </div>
+                                <div class="col-xl-12"
+                                    style="border-right: 1px solid var(--bs-gray-300); padding:10px;text-align: center">
+                                    {{ $datos_predio[0]->mp ?? 'N/A' }}
+                                </div>
+                            </div>
+                            <div class="row" style="width: 8%">
+                                <div class="col-xl-12"
+                                    style="font-size:9px;border-right: 1px solid var(--bs-gray-300);border-bottom: 1px solid var(--bs-gray-300); padding:10px;background-color:#f8f8f9;text-align: center">
+                                    ESTADO
+                                </div>
+                                <div class="col-xl-12"
+                                    style="border-right: 1px solid var(--bs-gray-300); padding:10px;text-align: center">
+                                    {{ $datos_predio[0]->estado ?? 'N/A' }}
+                                </div>
+                            </div>
+                            <div class="row" style="width: 15%">
+                                <div class="col-xl-12"
+                                    style="font-size:9px;border-right: 1px solid var(--bs-gray-300);border-bottom: 1px solid var(--bs-gray-300); padding:10px;background-color:#f8f8f9;text-align: center">
+                                    CATEGORIA (1)
+                                    Mc Tc Pi Pv Rv Ba
+                                </div>
+                                <div class="col-xl-12"
+                                    style="border-right: 1px solid var(--bs-gray-300); padding:10px;text-align: center">
+                                    {{ $datos_predio[0]->categoria ?? 'N/A' }}
+                                </div>
+                            </div>
+                            <div class="row" style="width: 6%">
+                                <div class="col-xl-12"
+                                    style="font-size:9px;border-right: 1px solid var(--bs-gray-300);border-bottom: 1px solid var(--bs-gray-300); padding:10px;background-color:#f8f8f9;text-align: center">
+                                    V.UNITARIO
+                                </div>
+                                <div class="col-xl-12"
+                                    style="border-right: 1px solid var(--bs-gray-300); padding:10px;text-align: center">
+                                    {{ number_format($datos_predio[0]->val_unit ?? 0, 2) }}
+                                </div>
+                            </div>
+                            <div class="row" style="width: 5%">
+                                <div class="col-xl-12"
+                                    style="font-size:9px;border-right: 1px solid var(--bs-gray-300);border-bottom: 1px solid var(--bs-gray-300); padding:10px;background-color:#f8f8f9;text-align: center">
+                                    INC.5%
+                                </div>
+                                <div class="col-xl-12"
+                                    style="border-right: 1px solid var(--bs-gray-300); padding:10px;text-align: center">
+                                    {{ number_format($datos_predio[0]->incremento ?? 0, 2) }}
+                                </div>
+                            </div>
+                            <div class="row" style="width: 8%">
+                                <div class="col-xl-12"
+                                    style="font-size:9px;border-right: 1px solid var(--bs-gray-300);border-bottom: 1px solid var(--bs-gray-300); padding:10px;background-color:#f8f8f9;text-align: center">
+                                    DEPRECIACIÓN
+                                </div>
+                                <div class="col-xl-12"
+                                    style="border-right: 1px solid var(--bs-gray-300); padding:10px;text-align: center">
+                                    {{ number_format($datos_predio[0]->deprec ?? 0, 2) }}
+                                </div>
+                            </div>
+                            <div class="row" style="width: 8%">
+                                <div class="col-xl-12"
+                                    style="font-size:9px;border-right: 1px solid var(--bs-gray-300);border-bottom: 1px solid var(--bs-gray-300); padding:10px 0px 10px 0px;background-color:#f8f8f9;text-align: center">
+                                    V.U.DEPRECIACIÓN
+                                </div>
+                                <div class="col-xl-12"
+                                    style="border-right: 1px solid var(--bs-gray-300); padding:10px;text-align: center">
+                                    {{ number_format($datos_predio[0]->val_un_dep ?? 0, 2) }}
+                                </div>
+                            </div>
+                            <div class="row" style="width: 7%">
+                                <div class="col-xl-12"
+                                    style="font-size:9px;border-right: 1px solid var(--bs-gray-300);border-bottom: 1px solid var(--bs-gray-300); padding:10px;background-color:#f8f8f9;text-align: center">
+                                    ÁREA CONST.
+                                </div>
+                                <div class="col-xl-12"
+                                    style="border-right: 1px solid var(--bs-gray-300); padding:10px;text-align: center">
+                                    {{ number_format($datos_predio[0]->area_const ?? 0, 2) }}
+                                </div>
+                            </div>
+                            <div class="row" style="width: 9%">
+                                <div class="col-xl-12"
+                                    style="font-size:9px;border-right: 1px solid var(--bs-gray-300);border-bottom: 1px solid var(--bs-gray-300); padding:10px;background-color:#f8f8f9;text-align: center">
+                                    ÁREA COM. CONST.
+                                </div>
+                                <div class="col-xl-12"
+                                    style="border-right: 1px solid var(--bs-gray-300); padding:10px;text-align: center">
+                                    {{ number_format($datos_predio[0]->area_comun ?? 0, 2) }}
+                                </div>
+                            </div>
+                            <div class="row" style="width: 8%">
+                                <div class="col-xl-12"
+                                    style="font-size:9px;border-right: 0px solid var(--bs-gray-300);border-bottom: 1px solid var(--bs-gray-300); padding:10px;background-color:#f8f8f9;text-align: center">
+                                    VALOR CONST.
+                                </div>
+                                <div class="col-xl-12"
+                                    style="border-right: 0px solid var(--bs-gray-300); padding:10px;text-align: center">
+                                    {{ number_format($datos_predio[0]->val_const ?? 0, 2) }}
+                                </div>
+                            </div>
+                        </div>
                     </div>
                     <div class="col-xl-12 row"
                         style="border: 1px solid var(--bs-gray-300);margin-left: 0;margin-right:0;--bs-gutter-x: 0rem;">
@@ -468,7 +314,7 @@
                                     <b>TOTAL ÁREA CONST.:</b>
                                 </div>
                                 <div class="col-xl-6" style="font-size:10px; padding:10px;text-align: center">
-                                    {{ isset($propertyDetails->total_area_const) ? number_format($propertyDetails->total_area_const, 2) : '0.00' }}
+                                    {{ number_format($datos_predio[0]->area_const, 2) ?? '0.00' }}
                                     M2
                                 </div>
                             </div>
@@ -477,7 +323,7 @@
                                     <b>FECHA DE ADQUISICIÓN:</b>
                                 </div>
                                 <div class="col-xl-6" style="font-size:10px; padding:10px;text-align: center">
-                                    {{ $propertyDetails->fecha_adquisicion ?? '30/12/2023' }}
+                                    {{ $datos_predio[0]->fec_resol ?? '--/--/----' }}
                                 </div>
                             </div>
                             <div class="col-xl-4 row"></div>
@@ -486,7 +332,7 @@
                                     <b>ÁREA DE TERRENO:</b>
                                 </div>
                                 <div class="col-xl-6" style="font-size:10px; padding:10px;text-align: center">
-                                    {{ isset($propertyDetails->area_terreno) ? number_format($propertyDetails->area_terreno, 2) : '0.00' }}
+                                    {{number_format($datos_predio[0]->area_terr, 2) ?? '0.00' }}
                                     M2
                                 </div>
                             </div>
@@ -495,7 +341,7 @@
                                     <b>ÁREA COMUN DE TERRENO:</b>
                                 </div>
                                 <div class="col-xl-6" style="font-size:10px; padding:10px;text-align: center">
-                                    {{ isset($propertyDetails->area_comun_terreno) ? number_format($propertyDetails->area_comun_terreno, 2) : '0.00' }}
+                                    {{number_format($datos_predio[0]->area_comun, 2) ?? '0.00' }}
                                     M2
                                 </div>
                             </div>
@@ -504,7 +350,7 @@
                                     <b>ARANCEL:</b>
                                 </div>
                                 <div class="col-xl-6" style="font-size:10px; padding:10px;text-align: center">
-                                    {{ isset($propertyDetails->arancel) ? number_format($propertyDetails->arancel, 2) : '0.00' }}
+                                    {{number_format($datos_predio[0]->arancel, 2) ?? '0.00' }}
                                 </div>
                             </div>
                         </div>
@@ -515,7 +361,7 @@
                                     <b>VALOR TOTAL DE LA CONSTRUCCIÓN:</b>
                                 </div>
                                 <div class="col-xl-4" style="font-size:11px; padding:10px;text-align: right">
-                                    {{ isset($propertyDetails->valor_total_construccion) ? number_format($propertyDetails->valor_total_construccion, 2) : '0.00' }}
+                                    {{number_format($datos_predio[0]->tot_constr, 2) ?? '0.00' }}
                                 </div>
                             </div>
                             <div class="col-xl-12 row">
@@ -523,7 +369,7 @@
                                     <b>VALOR DE OTRAS INSTALACIÓNES:</b>
                                 </div>
                                 <div class="col-xl-4" style="font-size:11px; padding:10px;text-align: right">
-                                    {{ isset($propertyDetails->valor_otras_instalaciones) ? number_format($propertyDetails->valor_otras_instalaciones, 2) : '0.00' }}
+                                    {{number_format($datos_predio[0]->ot_instal, 2) ?? '0.00' }}
                                 </div>
                             </div>
                             <div class="col-xl-12 row">
@@ -531,7 +377,7 @@
                                     <b>VALOR TOTAL DEL TERRENO:</b>
                                 </div>
                                 <div class="col-xl-4" style="font-size:11px; padding:10px;text-align: right">
-                                    {{ isset($propertyDetails->valor_total_terreno) ? number_format($propertyDetails->valor_total_terreno, 2) : '0.00' }}
+                                    {{number_format($datos_predio[0]->tot_terr, 2) ?? '0.00' }}
                                 </div>
                             </div>
                         </div>
@@ -553,7 +399,10 @@
                                 <b>VALOR TOTAL DEL PREDIO:</b>
                             </div>
                             <div class="col-xl-2" style="font-size:12px; padding:10px 20px 10px 10px;text-align: right">
-                                {{ isset($propertyDetails->valor_total_predio) ? number_format($propertyDetails->valor_total_predio, 2) : '0.00' }}
+                                {{ number_format(
+                                    ($datos_predio[0]->ot_instal ?? 0) +
+                                    ($datos_predio[0]->tot_constr ?? 0) +
+                                    ($datos_predio[0]->tot_terr ?? 0), 2) }}
                             </div>
                         </div>
                     </div>
@@ -579,11 +428,4 @@
         </div>
         <!--end::Post-->
     </div>
-
-    <!-- JavaScript for print functionality -->
-    <script>
-        document.getElementById('btnImprimir').addEventListener('click', function() {
-            window.print();
-        });
-    </script>
 @endsection

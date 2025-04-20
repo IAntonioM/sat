@@ -10,11 +10,11 @@ class PUModel extends Model
 {
     protected $table = 'PU_PORTAL'; // We'll use raw queries with the stored procedure
 
-    public static function getPredioDatos($vcodcontr, $year, $idanexo)
+    public static function getPredioDatos($vcodcontr, $idanexo)
     {
         return DB::select(
-            "exec pxConsultasWeb2 @msquery='5', @vcodcontr=?, @paramt5=?, @paramt3=?",
-            [$vcodcontr, $year, $idanexo]
+            "exec pxConsultasWeb2 @msquery='5', @vcodcontr=?, @paramt3=?",
+            [$vcodcontr, $idanexo]
         );
     }
 
