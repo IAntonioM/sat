@@ -18,47 +18,47 @@ class PUController extends Controller
         $year = date("Y");
 
         $usuario = Session::get('usuario');
+        $codigo_contribuyente = Session::get('codigo_contribuyente');
+
         // Get user data from model
-        $rw = PUModel::getUserData(Session::get('codigo_contribuyente'));
+        $rw = PUModel::getUserData($codigo_contribuyente);
 
         if (!$rw) {
             return redirect()->route('login')->with('error', 'No se encontraron datos de usuario');
         }
 
-        $vdirecc = strlen($rw->dirfiscal) == 0 ? '&nbsp;' : $rw->dirfiscal;
-        $vnombre = str_replace('Ñ', '&Ntilde;', $rw->nombre);
+        $vdirecc = strlen($rw->dirfiscal ?? '') == 0 ? '&nbsp;' : $rw->dirfiscal;
+        $vnombre = str_replace('Ñ', '&Ntilde;', $rw->nombre ?? '');
         $cidpers = $request->input('cidpers');
-        $vnrdoc = $rw->num_doc;
+        $vnrdoc = $rw->num_doc ?? '';
         Session::put('vnrdoc', $vnrdoc);
-        $cejerci = $request->input('cejerci');
 
-        // Get count from model
-        $contribuyente = PUModel::obtenerDatosContribuyente(Session::get('codigo_contribuyente'));
+        // Get the property ID from the request
+        $xid_anexo = $request->input('xid_anexo');
 
-        return view('PU', [
+        // Data to send to the view
+        $viewData = [
             'fechaActual' => $fechaActual,
-            'contribuyente' => $contribuyente,
-            'usuario'=>$usuario,
+            'usuario' => $usuario,
             'userData' => $rw,
             'vdirecc' => $vdirecc,
             'vnombre' => $vnombre,
             'cidpers' => $cidpers,
             'vnrdoc' => $vnrdoc,
-            'cejerci' => $cejerci,
-        ]);
-    }
+            'year' => $year,
+        ];
 
-    public function detallePredio(Request $request)
-    {
-        $xid_anexo = $request->input('xid_anexo');
-        $year = $request->input('year');
+        // If property ID is provided, get property details
+        if ($xid_anexo) {
+            $propertyDetails = PUModel::getPredioDatos($codigo_contribuyente, $year, $xid_anexo);
+            $viewData['propertyDetails'] = $propertyDetails;
+            $viewData['xid_anexo'] = $xid_anexo;
+        }
 
-        // Fetch property details using the model
-        $propertyDetails = PUModel::getPredioDatos(Session::get('codigo_contribuyente'), $year, $xid_anexo);
+        // Get contributor data
+        $contribuyente = PUModel::obtenerDatosContribuyente($codigo_contribuyente);
+        $viewData['contribuyente'] = $contribuyente;
 
-        return view('PU', [
-            'propertyDetails' => $propertyDetails
-        ]);
+        return view('PU', $viewData);
     }
 }
-

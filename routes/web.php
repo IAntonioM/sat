@@ -104,7 +104,5 @@ Route::middleware('check.login')->group(function () {
 
     Route::get('/HLA', [HlaController::class, 'index'])->name('HLA');
 
-    Route::get('/PU', function () {
-        return view('PU'); // Muestra resources/views/about.blade.php
-    });
-});
+    // routes/web.php
+    Route::get('/PU', [App\Http\Controllers\Home\PUController::class, 'index'])->name('PU');});
