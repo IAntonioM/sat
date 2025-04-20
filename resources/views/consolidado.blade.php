@@ -29,8 +29,7 @@
                         <!--end::Details-->
                         <!--begin::Actions-->
                         <div class="d-flex mb-4">
-                            <div
-                                class="border border-gray-300 border-dashed rounded min-w-125px py-3 px-4 me-6 mb-3 badge-light-primary">
+                            <div class="border border-gray-300 border-dashed rounded min-w-125px py-3 px-4 me-6 mb-3 badge-light-primary">
                                 <div class="fw-semibold fs-6 text-gray-400">Su Deuda Actual es:</div>
                                 <!--begin::Number-->
                                 <div class="d-flex align-items-center">
@@ -114,8 +113,6 @@
                     <!--end::Card title-->
                     <!--begin::Card toolbar-->
                     <div class="card-toolbar flex-row-fluid justify-content-end gap-5">
-
-
                         <!--begin::Add product-->
                         <a href="" class="btn btn-primary"><i class="fa-solid fa-print"></i>Imprimir</a>
                         <a href="" class="btn btn-success"><i class="fa-solid fa-money-bill-1-wave"></i>Pagar</a>
@@ -127,8 +124,7 @@
                 <!--begin::Card body-->
                 <div class="card-body pt-0">
                     <!--begin::Table-->
-                    <table class="table align-middle table-row-dashed fs-6 gy-5 table-bordered"
-                        id="kt_ecommerce_sales_table">
+                    <table class="table align-middle table-row-dashed fs-6 gy-5 table-bordered" id="kt_ecommerce_sales_table">
                         <thead>
                             <tr class="text-start text-gray-400 fw-bold fs-7 text-uppercase gs-0"
                                 style="background-color:#f8f8f9;">
@@ -216,7 +212,8 @@
             <!--end::Post-->
         </div>
 
-        @push('scripts')
+
+    @endsection
+    @push('scripts')
             <script src="{{ asset('js/consolidadoJS.js') }}"></script>
         @endpush
-    @endsection

@@ -211,7 +211,8 @@
         <!--end::Post-->
     </div>
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    @push('scripts')
+
+@endsection
+@push('scripts')
         <script src="{{ asset('js/detalladoJS.js') }}?v={{ time() }}"></script>
     @endpush
-@endsection
