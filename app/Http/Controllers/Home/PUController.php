@@ -15,10 +15,10 @@ class PUController extends Controller
     {
         // Get current date formatted as dd/mm/yyyy
         $fechaActual = Carbon::now()->format('d/m/Y');
-        $year = date("Y");
+        $year = '2020';
 
         $usuario = Session::get('usuario');
-        $codigo_contribuyente = Session::get('codigo_contribuyente');
+        $codigo_contribuyente = trim(Session::get('codigo_contribuyente'));
 
         // Get user data from model
         $rw = PUModel::getUserData($codigo_contribuyente);
@@ -51,13 +51,20 @@ class PUController extends Controller
         // If property ID is provided, get property details
         if ($xid_anexo) {
             $propertyDetails = PUModel::getPredioDatos($codigo_contribuyente, $year, $xid_anexo);
-            $viewData['propertyDetails'] = $propertyDetails;
+            if ($propertyDetails) {
+                $viewData['propertyDetails'] = $propertyDetails;
+            } else {
+                // Establece valores predeterminados o un mensaje de error
+                $viewData['propertyDetails'] = (object)[
+                    'direccion' => 'No disponible',
+                    'condicion' => 'No disponible',
+                    // ...otros campos con valores predeterminados
+                ];
+            }
             $viewData['xid_anexo'] = $xid_anexo;
         }
 
-        // Get contributor data
-        $contribuyente = PUModel::obtenerDatosContribuyente($codigo_contribuyente);
-        $viewData['contribuyente'] = $contribuyente;
+        \Debugbar::info('PU Query Result:', ['result' => $viewData]);
 
         return view('PU', $viewData);
     }

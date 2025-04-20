@@ -78,7 +78,7 @@
                                 </div>
                                 <div class="col-xl-12"
                                     style="border-right: 1px solid var(--bs-gray-300); padding:10px;text-align: center">
-                                    {{ $contribuyente->cod_contrib ?? 'N/A' }}
+                                    {{ $contribuyente->codigo ?? 'N/A' }}
                                 </div>
                             </div>
                             <div class="col-xl-6 row">
@@ -121,7 +121,7 @@
                                 </div>
                                 <div class="col-xl-12"
                                     style="border-right: 1px solid var(--bs-gray-300); padding:10px;text-align: center">
-                                    {{ $propertyDetails->condicion ?? 'N/A' }}
+                                    {{ $propertyDetails->construcciones->id_condi ?? 'N/A' }}
                                 </div>
                             </div>
                             <div class="col-xl-4 row">
@@ -131,7 +131,7 @@
                                 </div>
                                 <div class="col-xl-12"
                                     style="border-right: 1px solid var(--bs-gray-300); padding:10px;text-align: center">
-                                    {{ $propertyDetails->condicion_propiedad ?? 'N/A' }}
+                                    {{ $propertyDetails->condicion ?? 'N/A' }}
                                 </div>
                             </div>
                             <div class="col-xl-3 row">
@@ -438,16 +438,27 @@
                                         ÁREA COM. CONST.
                                     </div>
 
-<!--SIGUE DESDE ACÁ-->
+                                    <!--SIGUE DESDE ACÁ-->
 
 
 
+                                    <div class="col-xl-12"
+                                        style="border-right: 1px solid var(--bs-gray-300); padding:10px;text-align: center">
+                                        0.00
+                                    </div>
                                 </div>
-                                <div class="col-xl-12"
-                                    style="border-right: 0px solid var(--bs-gray-300); padding:10px;text-align: center">
-                                    0000004
+                                <div class="row" style="width: 8%">
+                                    <div class="col-xl-12"
+                                        style="font-size:9px;border-right: 0px solid var(--bs-gray-300);border-bottom: 1px solid var(--bs-gray-300); padding:10px;background-color:#f8f8f9;text-align: center">
+                                        VALOR CONST.
+                                    </div>
+                                    <div class="col-xl-12"
+                                        style="border-right: 0px solid var(--bs-gray-300); padding:10px;text-align: center">
+                                        0.00
+                                    </div>
                                 </div>
                             </div>
+                        @endif
                     </div>
                     <div class="col-xl-12 row"
                         style="border: 1px solid var(--bs-gray-300);margin-left: 0;margin-right:0;--bs-gutter-x: 0rem;">
@@ -457,7 +468,8 @@
                                     <b>TOTAL ÁREA CONST.:</b>
                                 </div>
                                 <div class="col-xl-6" style="font-size:10px; padding:10px;text-align: center">
-                                    0.00 M2
+                                    {{ isset($propertyDetails->total_area_const) ? number_format($propertyDetails->total_area_const, 2) : '0.00' }}
+                                    M2
                                 </div>
                             </div>
                             <div class="col-xl-4 row">
@@ -465,7 +477,7 @@
                                     <b>FECHA DE ADQUISICIÓN:</b>
                                 </div>
                                 <div class="col-xl-6" style="font-size:10px; padding:10px;text-align: center">
-                                    30/12/2023
+                                    {{ $propertyDetails->fecha_adquisicion ?? '30/12/2023' }}
                                 </div>
                             </div>
                             <div class="col-xl-4 row"></div>
@@ -474,7 +486,8 @@
                                     <b>ÁREA DE TERRENO:</b>
                                 </div>
                                 <div class="col-xl-6" style="font-size:10px; padding:10px;text-align: center">
-                                    0.00 M2
+                                    {{ isset($propertyDetails->area_terreno) ? number_format($propertyDetails->area_terreno, 2) : '0.00' }}
+                                    M2
                                 </div>
                             </div>
                             <div class="col-xl-4 row">
@@ -482,7 +495,8 @@
                                     <b>ÁREA COMUN DE TERRENO:</b>
                                 </div>
                                 <div class="col-xl-6" style="font-size:10px; padding:10px;text-align: center">
-                                    30/12/2023
+                                    {{ isset($propertyDetails->area_comun_terreno) ? number_format($propertyDetails->area_comun_terreno, 2) : '0.00' }}
+                                    M2
                                 </div>
                             </div>
                             <div class="col-xl-4 row">
@@ -490,7 +504,7 @@
                                     <b>ARANCEL:</b>
                                 </div>
                                 <div class="col-xl-6" style="font-size:10px; padding:10px;text-align: center">
-                                    30/12/2023
+                                    {{ isset($propertyDetails->arancel) ? number_format($propertyDetails->arancel, 2) : '0.00' }}
                                 </div>
                             </div>
                         </div>
@@ -501,7 +515,7 @@
                                     <b>VALOR TOTAL DE LA CONSTRUCCIÓN:</b>
                                 </div>
                                 <div class="col-xl-4" style="font-size:11px; padding:10px;text-align: right">
-                                    0.00
+                                    {{ isset($propertyDetails->valor_total_construccion) ? number_format($propertyDetails->valor_total_construccion, 2) : '0.00' }}
                                 </div>
                             </div>
                             <div class="col-xl-12 row">
@@ -509,7 +523,7 @@
                                     <b>VALOR DE OTRAS INSTALACIÓNES:</b>
                                 </div>
                                 <div class="col-xl-4" style="font-size:11px; padding:10px;text-align: right">
-                                    0.00
+                                    {{ isset($propertyDetails->valor_otras_instalaciones) ? number_format($propertyDetails->valor_otras_instalaciones, 2) : '0.00' }}
                                 </div>
                             </div>
                             <div class="col-xl-12 row">
@@ -517,19 +531,13 @@
                                     <b>VALOR TOTAL DEL TERRENO:</b>
                                 </div>
                                 <div class="col-xl-4" style="font-size:11px; padding:10px;text-align: right">
-                                    0.00
+                                    {{ isset($propertyDetails->valor_total_terreno) ? number_format($propertyDetails->valor_total_terreno, 2) : '0.00' }}
                                 </div>
                             </div>
                         </div>
                     </div>
 
-
-
-
-
-
                     <div class="col-xl-12 row" style="margin-left: 0;margin-right:0;--bs-gutter-x: 0rem;">
-
                         <div class="col-xl-6"
                             style="font-size:9px;border: 0px solid var(--bs-gray-300); padding:20px 0px 0px 0px;">
                             1). APROBADO MEDIANTE R.M. 367-2014 - VIVIENDA DEL MINISTERIO DE VIVIENDA, CONSTRUCCION Y
@@ -545,16 +553,25 @@
                                 <b>VALOR TOTAL DEL PREDIO:</b>
                             </div>
                             <div class="col-xl-2" style="font-size:12px; padding:10px 20px 10px 10px;text-align: right">
-                                0.00
+                                {{ isset($propertyDetails->valor_total_predio) ? number_format($propertyDetails->valor_total_predio, 2) : '0.00' }}
                             </div>
                         </div>
                     </div>
 
-
-
-                    <!--begin::Table-->
-
-                    <!--end::Table-->
+                    <!-- Signature section -->
+                    <div class="col-xl-12 row"
+                        style="margin-left: 0;margin-right:0;--bs-gutter-x: 0rem; margin-top: 40px">
+                        <div class="col-xl-6" style="text-align: center; padding: 30px 0px 0px 0px;">
+                            <div style="border-top: 1px solid #000; width: 200px; margin: 0 auto;">
+                                FIRMA DEL CONTRIBUYENTE
+                            </div>
+                        </div>
+                        <div class="col-xl-6" style="text-align: center; padding: 30px 0px 0px 0px;">
+                            <div style="border-top: 1px solid #000; width: 200px; margin: 0 auto;">
+                                FIRMA Y SELLO DEL FUNCIONARIO
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 <!--end::Card body-->
             </div>
@@ -562,4 +579,11 @@
         </div>
         <!--end::Post-->
     </div>
+
+    <!-- JavaScript for print functionality -->
+    <script>
+        document.getElementById('btnImprimir').addEventListener('click', function() {
+            window.print();
+        });
+    </script>
 @endsection
