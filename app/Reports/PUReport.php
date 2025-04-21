@@ -17,6 +17,10 @@ class PUReport extends FPDF
     public function __construct($xid_anexo = null)
     {
         parent::__construct('L', 'mm', 'A5');
+        $this->SetAutoPageBreak(true, 20);
+
+        // Configuración para caracteres acentuados
+        $this->SetFont('Arial', '', 10);
 
         // Obtener datos de sesión
         $this->codigos = Session::get('codigo_contribuyente');
@@ -27,22 +31,22 @@ class PUReport extends FPDF
         $this->datosPredio = PUModel::getPredioDatos($this->codigos, $this->xid_anexo);
     }
 
-    //Cabecera de página
+    //Cabecera de página - simplificada
     public function Header()
     {
         $imagePath = public_path('assets/media/logos/custom-3-h25-2.png');
 
         // Usar el método Image para insertar la imagen en el encabezado
-        $this->Image($imagePath, 10, 10, 15); // 10, 10 es la posición y 15 es el ancho de la imagen
+        $this->Image($imagePath, 11, 10, 15); // 10, 10 es la posición y 15 es el ancho de la imagen
 
         $this->SetFont('Arial', 'B', 7);
-        $this->SetXY(25, 16);
-        $this->Cell(0, 4, "MUNICIPALIDAD DISTRITAL");
+        $this->SetY(16);
+        $this->Cell(0, 3, "MUNICIPALIDAD DISTRITAL");
         $this->Ln();
 
         $this->SetFont('Arial', 'B', 7);
-        $this->SetXY(25, 19);
-        $this->Cell(0, 4, "DE HUMAY");
+        $this->SetY(19);
+        $this->Cell(0, 3, "DE HUMAY");
         $this->Ln();
 
         $this->SetXY(190, 15);
@@ -55,216 +59,134 @@ class PUReport extends FPDF
         $this->Cell(0, 4, "(PREDIO URBANO)");
         $this->Ln(3);
 
-        $this->SetXY(70, 15);
+        $this->SetY(15);
         $this->SetFont('Arial', 'B', 13);
-        $this->Cell(0, 4, 'IMPUESTO PREDIAL - ' . $this->year);
+        $this->Cell(0, 4, 'IMPUESTO PREDIAL - ' . $this->year, 0, 1, 'C');
         $this->Ln(3);
 
-        $this->SetXY(87, 19);
+        $this->SetY(19);
         $this->SetFont('Arial', 'B', 7);
-        $this->Cell(0, 4, "DECLARACION JURADA");
+        $this->Cell(0, 4, utf8_decode("DECLARACIÓN JURADA"), 0, 1, 'C');
         $this->Ln(3);
 
-        $this->SetXY(62, 23);
+        $this->SetY(23);
         $this->SetFont('Arial', 'B', 7);
-        $this->Cell(0, 4, utf8_decode("T.U.O. DE LA LEY DE TRIBUTACION MUNICIPAL (D.S.N°156-2004-EF)"), 'C');
-        $this->Ln(3);
+        $this->Cell(0, 4, utf8_decode("T.U.O. DE LA LEY DE TRIBUTACIÓN MUNICIPAL (D.S.N°156-2004-EF)"), 0, 1, 'C');
+        $this->Ln(10); // Espacio después del encabezado
     }
 
-    // Sección de datos del contribuyente
+    // Sección de datos del contribuyente - ahora como método separado
     public function DatosContribuyente()
     {
         // Sección I - DATOS DEL CONTRIBUYENTE
         $this->SetXY(5, 38);
-        $header = array('I. DATOS DEL CONTRIBUYENTE');
-        $this->SetFillColor(255, 255, 255);
-        $this->SetTextColor(0);
-        $this->SetDrawColor(0);
-        $this->SetLineWidth(.2);
+        $this->SetFont('Arial', 'B', 7);
+        $this->Cell(200, 4, 'I. DATOS DEL CONTRIBUYENTE', 0, 1, 'L');
 
-        $w = array(200);
-        for($i = 0; $i < count($header); $i++)
-            $this->Cell($w[$i], 4, $header[$i], 0, 0, 'L', 1);
-        $this->Ln();
-
-        $this->SetXY(5, 42);
-        $header = array('CONTRIBUYENTE');
+        // Primera fila
         $this->SetFillColor(229, 229, 229);
-        $this->SetTextColor (0);
-        $this->SetDrawColor(0);
-        $this->SetLineWidth(.2);
+        $this->Cell(28, 5, 'CONTRIBUYENTE', 1, 0, 'C', 1);
 
-        $w = array(28);
-        for($i = 0; $i < count($header); $i++)
-            $this->Cell($w[$i], 5, $header[$i], 1, 0, 'C', 1);
-        $this->Ln();
-
-        $this->SetXY(33, 42);
-        $header = array($this->datosPredio[0]->nombre ?? 'N/A');
         $this->SetFont('Arial', 'B', 6);
         $this->SetFillColor(255, 255, 255);
-        $this->SetTextColor(0);
-        $this->SetDrawColor(0);
-        $this->SetLineWidth(.2);
+        $nombre = isset($this->datosPredio[0]->nombre) ? utf8_decode($this->datosPredio[0]->nombre) : 'N/A';
+        $this->Cell(85, 5, $nombre, 1, 0, 'L', 1);
 
-        $w = array(85);
-        for($i = 0; $i < count($header); $i++)
-            $this->Cell($w[$i], 5, $header[$i], 1, 0, 'L', 1);
-        $this->Ln();
-
-        $this->SetXY(118, 42);
-        $header = array('CODIGO DE CONTRIBUYENTE');
         $this->SetFillColor(229, 229, 229);
-        $this->SetTextColor(0);
-        $this->SetDrawColor(0);
-        $this->SetLineWidth(.2);
+        $this->Cell(35, 5, 'CODIGO DE CONTRIBUYENTE', 1, 0, 'C', 1);
 
-        $w = array(35);
-        for($i = 0; $i < count($header); $i++)
-            $this->Cell($w[$i], 5, $header[$i], 1, 0, 'C', 1);
-        $this->Ln();
-
-        $this->SetXY(118, 47);
-        $header = array($this->datosPredio[0]->codigo ?? 'N/A');
         $this->SetFont('Arial', 'B', 8);
         $this->SetFillColor(255, 255, 255);
-        $this->SetTextColor(0);
-        $this->SetDrawColor(0);
-        $this->SetLineWidth(.2);
+        $codigo = isset($this->datosPredio[0]->codigo) ? $this->datosPredio[0]->codigo : 'N/A';
+        $this->Cell(37, 5, $codigo, 1, 0, 'C', 1);
 
-        $w = array(35);
-        for($i = 0; $i < count($header); $i++)
-            $this->Cell($w[$i], 5, $header[$i], 1, 0, 'C', 1);
         $this->Ln();
 
-        $this->SetXY(153, 42);
-        $header = array('CODIGO PREDIO');
-        $this->SetFillColor(229, 229, 229);
-        $this->SetTextColor(0);
-        $this->SetDrawColor(0);
-        $this->SetLineWidth(.2);
+        // Segunda fila
         $this->SetFont('Arial', 'B', 6);
+        $this->SetFillColor(229, 229, 229);
+        $this->Cell(28, 5, 'DATOS DEL PREDIO', 1, 0, 'C', 1);
 
-        $w = array(35);
-        for($i = 0; $i < count($header); $i++)
-            $this->Cell($w[$i], 5, $header[$i], 1, 0, 'C', 1);
-        $this->Ln();
+        $this->SetFont('Arial', 'B', 5);
+        $this->SetFillColor(255, 255, 255);
+        $direccion = isset($this->datosPredio[0]->direccion) ? utf8_decode($this->datosPredio[0]->direccion) : 'UBICACIÓN: N/A';
+        $this->Cell(85, 5, $direccion, 1, 0, 'L', 1);
 
-        $this->SetXY(153, 47);
-        $header = array($this->datosPredio[0]->id_anexo ?? 'N/A');
+        $this->SetFont('Arial', 'B', 6);
+        $this->SetFillColor(229, 229, 229);
+        $this->Cell(35, 5, 'CODIGO PREDIO', 1, 0, 'C', 1);
+
         $this->SetFont('Arial', 'B', 8);
         $this->SetFillColor(255, 255, 255);
-        $this->SetTextColor(0);
-        $this->SetDrawColor(0);
-        $this->SetLineWidth(.2);
+        $idAnexo = isset($this->datosPredio[0]->id_anexo) ? $this->datosPredio[0]->id_anexo : 'N/A';
+        $this->Cell(37, 5, $idAnexo, 1, 0, 'C', 1);
 
-        $w = array(35);
-        for($i = 0; $i < count($header); $i++)
-            $this->Cell($w[$i], 5, $header[$i], 1, 0, 'C', 1);
         $this->Ln();
 
-        $this->SetXY(5, 47);
-        $header = array('DATOS DEL PREDIO');
-        $this->SetFillColor(229, 229, 229);
-        $this->SetTextColor(0);
-        $this->SetDrawColor(0);
-        $this->SetLineWidth(.2);
-        $this->SetFont('Arial', 'B', 7);
-
-        $w = array(28);
-        for($i = 0; $i < count($header); $i++)
-            $this->Cell($w[$i], 5, $header[$i], 1, 0, 'C', 1);
-        $this->Ln();
-
-        $this->SetXY(33, 47);
-        $header = array('UBICACIÓN: ' . ($this->datosPredio[0]->direccion ?? 'N/A'));
-        $this-> SetFont('Arial', 'B', 6);
-        $this->SetFillColor(255, 255, 255);
-        $this->SetTextColor(0);
-        $this->SetDrawColor(0);
-        $this->SetLineWidth(.2);
-
-        $w = array(85);
-        for($i = 0; $i < count($header); $i++)
-            $this->Cell($w[$i], 5, $header[$i], 1, 0, 'L', 1);
-        $this->Ln();
-
-        // Segunda fila con información adicional
-        $this->SetXY(5, 52);
+        // Tercera fila
         $this->SetFont('Arial', 'B', 6);
         $this->SetFillColor(229, 229, 229);
-        $this->Cell(28, 5, 'CONDICIÓN', 1, 0, 'C', 1);
+        $this->Cell(15, 5, utf8_decode('CONDICIÓN'), 1, 0, 'C', 1);
+
         $this->SetFont('Arial', 'B', 7);
         $this->SetFillColor(255, 255, 255);
-        $this->Cell(20, 5, $this->datosPredio[0]->id_condi ?? 'N/A', 1, 0, 'C', 1);
+        $idCondi = isset($this->datosPredio[0]->id_condi) ? $this->datosPredio[0]->id_condi : 'N/A';
+        $this->Cell(5, 5, $idCondi, 1, 0, 'C', 1);
 
         $this->SetFont('Arial', 'B', 6);
         $this->SetFillColor(229, 229, 229);
-        $this->Cell(30, 5, 'CONDICIÓN DE PROPIEDAD', 1, 0, 'C', 1);
+        $this->Cell(32, 5, utf8_decode('CONDICIÓN DE PROPIEDAD'), 1, 0, 'C', 1);
+
         $this->SetFont('Arial', 'B', 7);
         $this->SetFillColor(255, 255, 255);
-        $this->Cell(35, 5, $this->datosPredio[0]->condi ?? 'N/A', 1, 0, 'C', 1);
+        $condiRaw = isset($this->datosPredio[0]->condi) ? utf8_decode($this->datosPredio[0]->condi) : '';
+        $condi = trim($condiRaw) !== '' ? trim($condiRaw) : 'N/A';
+        $this->Cell(32, 5, $condi, 1, 0, 'C', 1);
 
         $this->SetFont('Arial', 'B', 6);
         $this->SetFillColor(229, 229, 229);
         $this->Cell(25, 5, 'USO DE PREDIO', 1, 0, 'C', 1);
+
         $this->SetFont('Arial', 'B', 7);
         $this->SetFillColor(255, 255, 255);
-        $this->Cell(25, 5, $this->datosPredio[0]->uso ?? 'N/A', 1, 0, 'C', 1);
+        $uso = isset($this->datosPredio[0]->uso) ? utf8_decode($this->datosPredio[0]->uso) : 'N/A';
+        $this->Cell(27, 5, $uso, 1, 0, 'C', 1);
 
         $this->SetFont('Arial', 'B', 6);
         $this->SetFillColor(229, 229, 229);
-        $this->Cell(25, 5, '% DE PROPIEDAD', 1, 0, 'C', 1);
+        $this->Cell(27, 5, '% DE PROPIEDAD', 1, 0, 'C', 1);
+
         $this->SetFont('Arial', 'B', 7);
         $this->SetFillColor(255, 255, 255);
-        $this->Cell(20, 5, number_format($this->datosPredio[0]->porcen ?? 0, 2) . '%', 1, 0, 'C', 1);
-        $this->Ln();
+        $porcen = isset($this->datosPredio[0]->porcen) ? number_format($this->datosPredio[0]->porcen, 2) . '%' : '0.00%';
+        $this->Cell(22, 5, $porcen, 1, 0, 'C', 1);
+
+        $this->Ln(8);
     }
 
     //Pie de página
     public function Footer()
     {
-        $this->SetY(-20);
-        $this->SetX(5);
-        $this->SetFont('Arial', 'B', 5);
-        $this->Cell(0, 3, "NOTA IMPORTANTE :");
-        $this->Ln(3);
-
-        $this->SetX(5);
-        $this->SetFont('Arial', '', 4.7);
-        $this->Cell(200, 3, utf8_decode("BASE LEGAL: ULTIMO PARRAFO DEL ART. 14 DEL TUO DE LA LEY DE TRIBUTACION MUNICIPAL, APROBADA MEDIANTE EL D.S. 156-2004-EF"), 'C');
-        $this->Ln(3);
-
         $this->SetY(-15);
         $this->SetFont('Arial', 'I', 5);
-        $this->Cell(0, 10, 'Pagina ' . $this->PageNo() . '/{nb}', 0, 0, 'C');
+        $this->Cell(0, 10, utf8_decode('Página ' . $this->PageNo() . '/{nb}'), 0, 0, 'C');
     }
 
     public function generarPDF()
     {
         $this->AliasNbPages();
         $this->AddPage();
-        $this->SetFont('Times', '', 7);
+        $this->SetFont('Arial', '', 7);
 
         // Llamar a la función para mostrar los datos del contribuyente
         $this->DatosContribuyente();
 
         // Sección II - DETERMINACIÓN DE AUTOAVALUO
-        $this->SetXY(5, 60);
-        $header = array('II. DETERMINACION DE AUTOAVALUO');
-        $this-> SetFillColor(255, 255, 255);
-        $this->SetTextColor(0);
-        $this->SetDrawColor(0);
-        $this->SetLineWidth(.2);
         $this->SetFont('Arial', 'B', 7);
+        $this->Cell(200, 4, utf8_decode('II. DETERMINACIÓN DE AUTOAVALUO'), 0, 1, 'L');
+        $this->Ln(1);
 
-        $w = array(200);
-        for($i = 0; $i < count($header); $i++)
-            $this->Cell($w[$i], 4, $header[$i], 0, 0, 'L', 1);
-        $this->Ln();
-
-        // Encabezado tabla de construcciones
-        $this->SetXY(5, 65);
+        // Encabezado tabla de construcciones - con alineación mejorada
         $headers = [
             'NIVEL' => 10,
             'TIPO CONST.' => 12,
@@ -285,62 +207,133 @@ class PUReport extends FPDF
         // Encabezados
         $this->SetFillColor(229, 229, 229);
         $this->SetFont('Arial', 'B', 6);
-        foreach($headers as $title => $width) {
-            $this->Cell($width, 6, $title, 1, 0, 'C', 1);
+        $startX = 5; // Posición inicial en X
+        $currentX = $startX;
+
+        foreach ($headers as $title => $width) {
+            $this->SetXY($currentX, $this->GetY());
+            $this->Cell($width, 6, utf8_decode($title), 1, 0, 'C', 1);
+            $currentX += $width;
         }
         $this->Ln();
 
         // Datos de construcciones
         $this->SetFillColor(255, 255, 255);
         $this->SetFont('Arial', '', 7);
+        $currentX = $startX;
 
         // Datos de construcción (una sola fila)
-        $this->Cell($headers['NIVEL'], 6, $this->datosPredio[0]->piso ?? 'N/A', 1, 0, 'C', 1);
-        $this->Cell($headers['TIPO CONST.'], 6, $this->datosPredio[0]->tipo ?? 'N/A', 1, 0, 'C', 1);
-        $this->Cell($headers['AÑO'], 6, $this->datosPredio[0]->anio ?? 'N/A', 1, 0, 'C', 1);
-        $this->Cell($headers['CL'], 6, $this->datosPredio[0]->cl ?? 'N/A', 1, 0, 'C', 1);
-        $this->Cell($headers['MP'], 6, $this->datosPredio[0]->mp ?? 'N/A', 1, 0, 'C', 1);
-        $this->Cell($headers['ESTADO'], 6, $this->datosPredio[0]->estado ?? 'N/A', 1, 0, 'C', 1);
-        $this->Cell($headers['CATEGORIA'], 6, $this->datosPredio[0]->categoria ?? 'N/A', 1, 0, 'C', 1);
-        $this->Cell($headers['V.UNITARIO'], 6, number_format($this->datosPredio[0]->val_unit ?? 0, 2), 1, 0, 'C', 1);
-        $this->Cell($headers['INC.5%'], 6, number_format($this->datosPredio[0]->incremento ?? 0, 2), 1, 0, 'C', 1);
-        $this->Cell($headers['DEPREC.'], 6, number_format($this->datosPredio[0]->deprec ?? 0, 2), 1, 0, 'C', 1);
-        $this->Cell($headers['V.U.DEPREC.'], 6, number_format($this->datosPredio[0]->val_un_dep ?? 0, 2), 1, 0, 'C', 1);
-        $this->Cell($headers['ÁREA CONST.'], 6, number_format($this->datosPredio[0]->area_const ?? 0, 2), 1, 0, 'C', 1);
-        $this->Cell($headers['ÁREA COM.'], 6, number_format($this->datosPredio[0]->area_comun ?? 0, 2), 1, 0, 'C', 1);
-        $this->Cell($headers['VALOR CONST.'], 6, number_format($this->datosPredio[0]->val_const ?? 0, 2), 1, 0, 'C', 1);
+        $piso = isset($this->datosPredio[0]->piso) ? $this->datosPredio[0]->piso : 'N/A';
+        $this->SetXY($currentX, $this->GetY());
+        $this->Cell($headers['NIVEL'], 6, $piso, 1, 0, 'C', 1);
+        $currentX += $headers['NIVEL'];
+
+        $tipo = isset($this->datosPredio[0]->tipo) ? utf8_decode($this->datosPredio[0]->tipo) : 'N/A';
+        $this->SetXY($currentX, $this->GetY());
+        $this->Cell($headers['TIPO CONST.'], 6, $tipo, 1, 0, 'C', 1);
+        $currentX += $headers['TIPO CONST.'];
+
+        $anio = isset($this->datosPredio[0]->anio) ? $this->datosPredio[0]->anio : 'N/A';
+        $this->SetXY($currentX, $this->GetY());
+        $this->Cell($headers['AÑO'], 6, $anio, 1, 0, 'C', 1);
+        $currentX += $headers['AÑO'];
+
+        $cl = isset($this->datosPredio[0]->cl) ? $this->datosPredio[0]->cl : 'N/A';
+        $this->SetXY($currentX, $this->GetY());
+        $this->Cell($headers['CL'], 6, $cl, 1, 0, 'C', 1);
+        $currentX += $headers['CL'];
+
+        $mp = isset($this->datosPredio[0]->mp) ? $this->datosPredio[0]->mp : 'N/A';
+        $this->SetXY($currentX, $this->GetY());
+        $this->Cell($headers['MP'], 6, $mp, 1, 0, 'C', 1);
+        $currentX += $headers['MP'];
+
+        $estado = isset($this->datosPredio[0]->estado) ? utf8_decode($this->datosPredio[0]->estado) : 'N/A';
+        $this->SetXY($currentX, $this->GetY());
+        $this->Cell($headers['ESTADO'], 6, $estado, 1, 0, 'C', 1);
+        $currentX += $headers['ESTADO'];
+
+        $categoria = isset($this->datosPredio[0]->categoria) ? utf8_decode($this->datosPredio[0]->categoria) : 'N/A';
+        $this->SetXY($currentX, $this->GetY());
+        $this->Cell($headers['CATEGORIA'], 6, $categoria, 1, 0, 'C', 1);
+        $currentX += $headers['CATEGORIA'];
+
+        $val_unit = isset($this->datosPredio[0]->val_unit) ? number_format($this->datosPredio[0]->val_unit, 2) : '0.00';
+        $this->SetXY($currentX, $this->GetY());
+        $this->Cell($headers['V.UNITARIO'], 6, $val_unit, 1, 0, 'C', 1);
+        $currentX += $headers['V.UNITARIO'];
+
+        $incremento = isset($this->datosPredio[0]->incremento) ? number_format($this->datosPredio[0]->incremento, 2) : '0.00';
+        $this->SetXY($currentX, $this->GetY());
+        $this->Cell($headers['INC.5%'], 6, $incremento, 1, 0, 'C', 1);
+        $currentX += $headers['INC.5%'];
+
+        $deprec = isset($this->datosPredio[0]->deprec) ? number_format($this->datosPredio[0]->deprec, 2) : '0.00';
+        $this->SetXY($currentX, $this->GetY());
+        $this->Cell($headers['DEPREC.'], 6, $deprec, 1, 0, 'C', 1);
+        $currentX += $headers['DEPREC.'];
+
+        $val_un_dep = isset($this->datosPredio[0]->val_un_dep) ? number_format($this->datosPredio[0]->val_un_dep, 2) : '0.00';
+        $this->SetXY($currentX, $this->GetY());
+        $this->Cell($headers['V.U.DEPREC.'], 6, $val_un_dep, 1, 0, 'C', 1);
+        $currentX += $headers['V.U.DEPREC.'];
+
+        $area_const = isset($this->datosPredio[0]->area_const) ? number_format($this->datosPredio[0]->area_const, 2) : '0.00';
+        $this->SetXY($currentX, $this->GetY());
+        $this->Cell($headers['ÁREA CONST.'], 6, $area_const, 1, 0, 'C', 1);
+        $currentX += $headers['ÁREA CONST.'];
+
+        $area_comun = isset($this->datosPredio[0]->area_comun) ? number_format($this->datosPredio[0]->area_comun, 2) : '0.00';
+        $this->SetXY($currentX, $this->GetY());
+        $this->Cell($headers['ÁREA COM.'], 6, $area_comun, 1, 0, 'C', 1);
+        $currentX += $headers['ÁREA COM.'];
+
+        $val_const = isset($this->datosPredio[0]->val_const) ? number_format($this->datosPredio[0]->val_const, 2) : '0.00';
+        $this->SetXY($currentX, $this->GetY());
+        $this->Cell($headers['VALOR CONST.'], 6, $val_const, 1, 0, 'C', 1);
 
         $this->Ln(8);
 
         // Sección de resumen
         $this->SetFont('Arial', 'B', 7);
-        $this->Cell(80, 6, 'TOTAL ÁREA CONST.: ' . number_format($this->datosPredio[0]->area_const ?? 0, 2) . ' M2', 'LTB', 0, 'L', 0);
-        $this->Cell(70, 6, 'FECHA DE ADQUISICIÓN: ' . ($this->datosPredio[0]->fec_resol ?? '--/--/----'), 'TB', 0, 'L', 0);
-        $this->Cell(50, 6, '', 'RTB', 0, 'L', 0);
+        $area_const_total = isset($this->datosPredio[0]->area_const) ? number_format($this->datosPredio[0]->area_const, 2) : '0.00';
+        $this->Cell(80, 6, utf8_decode('TOTAL ÁREA CONST.: ' . $area_const_total . ' M2'), 'LTB', 0, 'L', 0);
+
+        $fec_resol = isset($this->datosPredio[0]->fec_resol) ? $this->datosPredio[0]->fec_resol : '--/--/----';
+        $this->Cell(70, 6, utf8_decode('FECHA DE ADQUISICIÓN: ' . $fec_resol), 'TB', 0, 'L', 0);
+        $this->Cell(35, 6, '', 'RTB', 0, 'L', 0);
         $this->Ln();
 
-        $this->Cell(80, 6, 'ÁREA DE TERRENO: ' . number_format($this->datosPredio[0]->area_terr ?? 0, 2) . ' M2', 'LTB', 0, 'L', 0);
-        $this->Cell(70, 6, 'ÁREA COMUN DE TERRENO: ' . number_format($this->datosPredio[0]->area_comun ?? 0, 2) . ' M2', 'TB', 0, 'L', 0);
-        $this->Cell(50, 6, 'ARANCEL: ' . number_format($this->datosPredio[0]->arancel ?? 0, 2), 'RTB', 0, 'R', 0);
+        $area_terr = isset($this->datosPredio[0]->area_terr) ? number_format($this->datosPredio[0]->area_terr, 2) : '0.00';
+        $this->Cell(80, 6, utf8_decode('ÁREA DE TERRENO: ' . $area_terr . ' M2'), 'LTB', 0, 'L', 0);
+
+        $area_comun_terr = isset($this->datosPredio[0]->area_comun) ? number_format($this->datosPredio[0]->area_comun, 2) : '0.00';
+        $this->Cell(70, 6, utf8_decode('ÁREA COMÚN DE TERRENO: ' . $area_comun_terr . ' M2'), 'TB', 0, 'L', 0);
+
+        $arancel = isset($this->datosPredio[0]->arancel) ? number_format($this->datosPredio[0]->arancel, 2) : '0.00';
+        $this->Cell(35, 6, 'ARANCEL: ' . $arancel, 'RTB', 0, 'R', 0);
         $this->Ln(10);
 
         // Sección de valores totales
         $this->SetFont('Arial', 'B', 7);
-        $this->Cell(130, 6, 'VALOR TOTAL DE LA CONSTRUCCIÓN:', 0, 0, 'R', 0);
-        $this->Cell(40, 6, number_format($this->datosPredio[0]->tot_constr ?? 0, 2), 0, 0, 'R', 0);
+        $tot_constr = isset($this->datosPredio[0]->tot_constr) ? number_format($this->datosPredio[0]->tot_constr, 2) : '0.00';
+        $this->Cell(130, 6, utf8_decode('VALOR TOTAL DE LA CONSTRUCCIÓN:'), 0, 0, 'R', 0);
+        $this->Cell(40, 6, $tot_constr, 0, 0, 'R', 0);
         $this->Ln();
 
-        $this->Cell(130, 6, 'VALOR DE OTRAS INSTALACIÓNES:', 0, 0, 'R', 0);
-        $this->Cell(40, 6, number_format($this->datosPredio[0]->ot_instal ?? 0, 2), 0, 0, 'R', 0);
+        $ot_instal = isset($this->datosPredio[0]->ot_instal) ? number_format($this->datosPredio[0]->ot_instal, 2) : '0.00';
+        $this->Cell(130, 6, 'VALOR DE OTRAS INSTALACIONES:', 0, 0, 'R', 0);
+        $this->Cell(40, 6, $ot_instal, 0, 0, 'R', 0);
         $this->Ln();
 
+        $tot_terr = isset($this->datosPredio[0]->tot_terr) ? number_format($this->datosPredio[0]->tot_terr, 2) : '0.00';
         $this->Cell(130, 6, 'VALOR TOTAL DEL TERRENO:', 0, 0, 'R', 0);
-        $this->Cell(40, 6, number_format($this->datosPredio[0]->tot_terr ?? 0, 2), 0, 0, 'R', 0);
+        $this->Cell(40, 6, $tot_terr, 0, 0, 'R', 0);
         $this->Ln(5);
 
-        $totalValor = ($this->datosPredio[0]->ot_instal ?? 0) +
-                     ($this->datosPredio[0]->tot_constr ?? 0) +
-                     ($this->datosPredio[0]->tot_terr ?? 0);
+        $totalValor = (isset($this->datosPredio[0]->ot_instal) ? $this->datosPredio[0]->ot_instal : 0) +
+            (isset($this->datosPredio[0]->tot_constr) ? $this->datosPredio[0]->tot_constr : 0) +
+            (isset($this->datosPredio[0]->tot_terr) ? $this->datosPredio[0]->tot_terr : 0);
 
         $this->SetFont('Arial', 'B', 8);
         $this->Cell(130, 6, 'VALOR TOTAL DEL PREDIO:', 0, 0, 'R', 0);
@@ -349,11 +342,11 @@ class PUReport extends FPDF
 
         // Notas legales
         $this->SetFont('Arial', '', 6);
-        $this->Cell(200, 4, '1). APROBADO MEDIANTE R.M. 367-2014 - VIVIENDA DEL MINISTERIO DE VIVIENDA, CONSTRUCCION Y SANEAMIENTO', 0, 0, 'L', 0);
+        $this->Cell(200, 4, utf8_decode('1). APROBADO MEDIANTE R.M. 367-2014 - VIVIENDA DEL MINISTERIO DE VIVIENDA, CONSTRUCCIÓN Y SANEAMIENTO'), 0, 0, 'L', 0);
         $this->Ln();
-        $this->Cell(200, 4, '2). APROBADO MEDIANTE R.M. 126-2007 - VIVIENDA DEL MINISTERIO DE VIVIENDA, CONSTRUCCION Y SANEAMIENTO', 0, 0, 'L', 0);
+        $this->Cell(200, 4, utf8_decode('2). APROBADO MEDIANTE R.M. 126-2007 - VIVIENDA DEL MINISTERIO DE VIVIENDA, CONSTRUCCIÓN Y SANEAMIENTO'), 0, 0, 'L', 0);
         $this->Ln();
-        $this->Cell(200, 4, '3). APROBADO MEDIANTE R.M. 369-2014 - VIVIENDA DEL MINISTERIO DE VIVIENDA, CONSTRUCCION Y SANEAMIENTO', 0, 0, 'L', 0);
+        $this->Cell(200, 4, utf8_decode('3). APROBADO MEDIANTE R.M. 369-2014 - VIVIENDA DEL MINISTERIO DE VIVIENDA, CONSTRUCCIÓN Y SANEAMIENTO'), 0, 0, 'L', 0);
         $this->Ln(15);
 
         // Sección de firmas
