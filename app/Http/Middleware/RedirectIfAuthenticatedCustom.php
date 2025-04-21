@@ -14,7 +14,7 @@ class RedirectIfAuthenticatedCustom
     public function handle(Request $request, Closure $next): Response
     {
         // Si hay sesión activa (usuario ya autenticado), redirige a /principal
-        if (session()->has('usuario')) {
+        if (session()->has('codigo_contribuyente')) {
             return redirect()->route('principal');
         }
 

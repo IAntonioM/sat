@@ -62,7 +62,7 @@ class LoginController extends Controller
        }
 
        session([
-           'usuario' => $user,
+           //'usuario' => $user,
            'cod_usuario' => $user->cidusu,
            'codigo_contribuyente' => $user -> vcodcontr
        ]);

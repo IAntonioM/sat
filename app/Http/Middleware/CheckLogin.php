@@ -9,7 +9,7 @@ class CheckLogin
 {
     public function handle(Request $request, Closure $next)
     {
-        if (!session()->has('usuario')) {
+        if (!session()->has('codigo_contribuyente')) {
             return redirect()->route('login')->withErrors(['password' => 'Debes iniciar sesión.']);
         }
 

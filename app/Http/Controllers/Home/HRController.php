@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Home;
 
 use App\Http\Controllers\Controller;
+use App\Models\Contribuyente;
 use App\Models\HR;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Session;
@@ -11,27 +12,18 @@ use Barryvdh\Debugbar\Facades\Debugbar;
 
 class HRController extends Controller
 {
-    // public function index(Request $request)
-    // {
-    //     // Obtener el código del contribuyente de la sesión o del parámetro
-    //     $codigoContribuyente = session('codigo_contribuyente') ??
-    //     session('cod_usuario') ?? null; // Valor por defecto para pruebas
-
-    //     $usuario =  Session::get('usuario');
-
-    //     return view('HR', compact(
-    //         'usuario'
-    //     ));
-    // }
     public function index(Request $request)
     {
-        // Get current date formatted as dd/mm/yyyy
+        //Fecha Actual
         $fechaActual = Carbon::now()->format('d/m/Y');
+        //Año actual
         $year = date("Y");
 
-        $usuario = Session::get('usuario');
+        $codigo_contribuyente = Session::get('codigo_contribuyente');
+        $usuario = Contribuyente::obtenerDatosContri($codigo_contribuyente);
+
         // Get user data from model
-        $rw = HR::getUserData(Session::get('codigo_contribuyente'));
+        $rw = HR::validarDatosCont(Session::get('codigo_contribuyente'));
 
         if (!$rw) {
             return redirect()->route('login')->with('error', 'No se encontraron datos de usuario');
@@ -44,7 +36,7 @@ class HRController extends Controller
         Session::put('vnrdoc', $vnrdoc);
         $cejerci = $request->input('cejerci');
 
-        // Get summary from model
+        //Valdiar resumen
         $fecha = $request->input('fecha') ?? '';
         $resumenData = HR::getResumenData(Session::get('codigo_contribuyente'), $fecha, $cejerci);
 
@@ -53,16 +45,6 @@ class HRController extends Controller
             $totalg = $resumenData->total;
         }
 
-        // Initialize variables
-        $timpins = 0;
-        $tcosemi = 0;
-        $ttotals = 0;
-        $timprea = 0;
-        $timpmor = 0;
-
-        // Get property details from model
-        $propertyData = HR::getPropertyData(Session::get('codigo_contribuyente'), $year);
-        // Get count from model
         $contribuyente = HR::obtenerDatosContribuyente(Session::get('codigo_contribuyente'));
         $relacionPredios = HR::obtenerRelacionPredios(Session::get('codigo_contribuyente'),$year);
         $totales = HR::obtenerTotales(Session::get('codigo_contribuyente'),$year);
@@ -81,21 +63,9 @@ class HRController extends Controller
             'cidpers' => $cidpers,
             'vnrdoc' => $vnrdoc,
             'cejerci' => $cejerci,
-            'totalg' => $totalg,
-            'propertyData' => $propertyData
+            'totalg' => $totalg
         ]);
     }
 
-    public function detallePredio(Request $request)
-    {
-        $xid_anexo = $request->input('xid_anexo');
-
-        // Fetch property details using the model
-        $propertyDetails = HR::getPropertyDetails(Session::get('codigo_contribuyente'), $xid_anexo);
-
-        return view('HR', [
-            'propertyDetails' => $propertyDetails
-        ]);
-    }
 }
 

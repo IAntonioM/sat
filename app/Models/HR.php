@@ -14,7 +14,7 @@ class HR extends Model
      * @param string $userId
      * @return object
      */
-    public static function getUserData($userId)
+    public static function validarDatosCont($userId)
     {
         $result = DB::select("EXEC pxConsultasWeb2 '4', @vcodcontr=?", [$userId]);
         return !empty($result) ? $result[0] : null;

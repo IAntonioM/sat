@@ -40,7 +40,17 @@ class HRReport extends FPDF
     // Usar el método Image para insertar la imagen en el encabezado
     // $this->Image( ruta, x, y, width, height);
     // Puedes ajustar la posición (x, y) y el tamaño de la imagen (width, height)
-        $this->Image($imagePath, 10, 15, 25); // 10, 10 es la posición y 40 es el ancho de la imagen
+    $this->Image($imagePath, 10, 10, 15); // 10, 10 es la posición y 40 es el ancho de la imagen
+
+        $this->SetFont('Arial', 'B', 7);
+        $this->SetXY(25, 16);
+        $this->Cell(0, 4, "MUNICIPALIDAD DISTRITAL");
+        $this->Ln();
+
+        $this->SetFont('Arial', 'B', 7);
+        $this->SetXY(25, 19);
+        $this->Cell(0, 4, "DE HUMAY");
+        $this->Ln();
 
         $this->SetXY(190, 15);
         $this->SetFont('Arial', 'B', 14);
@@ -92,7 +102,8 @@ class HRReport extends FPDF
         $this->Ln();
 
         $this->SetXY(33, 42);
-        $header = array($this->datosContribuyente->nombre);
+        $nombre_formateado = utf8_decode($this->datosContribuyente->nombre);
+        $header = array($nombre_formateado);
         $this->SetFont('Arial', 'B', 6);
         $this->SetFillColor(255, 255, 255);
         $this->SetTextColor(0);
@@ -169,7 +180,8 @@ class HRReport extends FPDF
         $this->Ln();
 
         $this->SetXY(33, 47);
-        $header = array($this->datosContribuyente->direcc);
+        $direccion_formateada = utf8_decode($this->datosContribuyente->direcc);
+        $header = array($direccion_formateada);
         $this->SetFont('Arial', 'B', 6);
         $this->SetFillColor(255, 255, 255);
         $this->SetTextColor(0);
