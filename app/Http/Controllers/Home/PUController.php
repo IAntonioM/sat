@@ -44,8 +44,6 @@ class PUController extends Controller
         $datos_predio = PUModel::getPredioDatos($codigo_contribuyente, $xid_anexo);
         $viewData['datos_predio'] = $datos_predio;
 
-        \Debugbar::info('PU Query Result:', ['result' => $viewData]);
-
         return view('PU', $viewData);
     }
 }

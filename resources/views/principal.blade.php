@@ -149,10 +149,8 @@
 
 
 
-<div class="col-xl-6">
-    <!--begin::Tables Widget 9-->
+<!--<div class="col-xl-6">
     <div class="card ">
-        <!--begin::Header-->
         <div class="card-header border-0 pt-5 bg-light-info">
             <h3 class="card-title align-items-start flex-column ">
                 <span class="card-label fw-bold fs-3 mb-1 text-info">Ultimas Notificaciones</span>
@@ -163,25 +161,15 @@
                 <i class="ki-duotone ki-plus fs-2"></i>Ir a Buzón de Notificaciones</a>
             </div>
         </div>
-        <!--end::Header-->
-        <!--begin::Body-->
         <div class="card-body py-3">
-            <!--begin::Table container-->
             <div class="table-responsive">
-                <!--begin::Table-->
                 <table class="table table-row-dashed table-row-gray-300 align-middle gs-0 gy-4 table-bordered">
-                    <!--begin::Table head-->
                     <thead>
                         <tr class="fw-bold text-muted" style="background-color:#f8f8f9;">
-
                             <th style="width: 80%;text-align: center;">Concepto</th>
                             <th style="width: 20%;text-align: center;">Fecha</th>
-
-
                         </tr>
                     </thead>
-                    <!--end::Table head-->
-                    <!--begin::Table body-->
                     <tbody>
                         <tr>
                             <td style="padding-top: 13px;  padding-bottom: 13px;">
@@ -198,7 +186,6 @@
                                     </div>
                                 </div>
                             </td>
-
                         </tr>
                         <tr>
                             <td style="padding-top: 13px;  padding-bottom: 13px;">
@@ -215,7 +202,6 @@
                                     </div>
                                 </div>
                             </td>
-
                         </tr>
                         <tr>
                             <td style="padding-top: 13px;  padding-bottom: 13px;">
@@ -232,7 +218,6 @@
                                     </div>
                                 </div>
                             </td>
-
                         </tr>
                         <tr>
                             <td style="padding-top: 13px;  padding-bottom: 13px;">
@@ -249,7 +234,6 @@
                                     </div>
                                 </div>
                             </td>
-
                         </tr>
                         <tr>
                             <td style="padding-top: 13px;  padding-bottom: 13px;">
@@ -266,23 +250,15 @@
                                     </div>
                                 </div>
                             </td>
-
                         </tr>
                     </tbody>
-                    <!--end::Table body-->
                 </table>
-                <!--end::Table-->
             </div>
-            <!--end::Table container-->
         </div>
-        <!--begin::Body-->
     </div>
-    <!--end::Tables Widget 9-->
 </div>
 <div class="col-xl-6">
-    <!--begin::Tables Widget 9-->
     <div class="card ">
-        <!--begin::Header-->
         <div class="card-header border-0 pt-5 bg-light-danger">
             <h3 class="card-title align-items-start flex-column">
                 <span class="card-label fw-bold fs-3 mb-1 text-danger">Ultimas Órdenes de Pago</span>
@@ -293,24 +269,15 @@
                 <i class="ki-duotone ki-plus fs-2"></i>Ir a Buzón de Ordenes de Pago</a>
             </div>
         </div>
-        <!--end::Header-->
-        <!--begin::Body-->
         <div class="card-body py-3">
-            <!--begin::Table container-->
             <div class="table-responsive">
-                <!--begin::Table-->
                 <table class="table table-row-dashed table-row-gray-300 align-middle gs-0 gy-4 table-bordered">
-                    <!--begin::Table head-->
                     <thead>
                         <tr class="fw-bold text-muted" style="background-color:#f8f8f9;">
-
                             <th style="width: 80%;text-align: center;">Concepto</th>
                             <th style="width: 20%;text-align: center;">Fecha</th>
-
                         </tr>
                     </thead>
-                    <!--end::Table head-->
-                    <!--begin::Table body-->
                     <tbody>
                         <tr>
                             <td style="padding-top: 13px;  padding-bottom: 13px;">
@@ -327,7 +294,6 @@
                                     </div>
                                 </div>
                             </td>
-
                         </tr>
                         <tr>
                             <td style="padding-top: 13px;  padding-bottom: 13px;">
@@ -344,7 +310,6 @@
                                     </div>
                                 </div>
                             </td>
-
                         </tr>
                         <tr>
                             <td style="padding-top: 13px;  padding-bottom: 13px;">
@@ -361,7 +326,6 @@
                                     </div>
                                 </div>
                             </td>
-
                         </tr>
                         <tr>
                             <td style="padding-top: 13px;  padding-bottom: 13px;">
@@ -378,7 +342,6 @@
                                     </div>
                                 </div>
                             </td>
-
                         </tr>
                         <tr>
                             <td style="padding-top: 13px;  padding-bottom: 13px;">
@@ -395,23 +358,15 @@
                                     </div>
                                 </div>
                             </td>
-
                         </tr>
                     </tbody>
-                    <!--end::Table body-->
                 </table>
-                <!--end::Table-->
             </div>
-            <!--end::Table container-->
         </div>
-        <!--begin::Body-->
     </div>
-    <!--end::Tables Widget 9-->
 </div>
 <div class="col-xl-6">
-    <!--begin::Tables Widget 9-->
     <div class="card ">
-        <!--begin::Header-->
         <div class="card-header border-0 pt-5 bg-light-warning">
             <h3 class="card-title align-items-start flex-column ">
                 <span class="card-label fw-bold fs-4 mb-1 text-warning ">Ultimas Resoluciones de Determinación</span>
@@ -422,24 +377,15 @@
                 <i class="ki-duotone ki-plus fs-2"></i>Ir a Buzón de Resoluciones</a>
             </div>
         </div>
-        <!--end::Header-->
-        <!--begin::Body-->
         <div class="card-body py-3">
-            <!--begin::Table container-->
             <div class="table-responsive">
-                <!--begin::Table-->
                 <table class="table table-row-dashed table-row-gray-300 align-middle gs-0 gy-4 table-bordered">
-                    <!--begin::Table head-->
                     <thead>
                         <tr class="fw-bold text-muted" style="background-color:#f8f8f9;">
-
                             <th style="width: 80%;text-align: center;">Concepto</th>
                             <th style="width: 20%;text-align: center;">Fecha</th>
-
                         </tr>
                     </thead>
-                    <!--end::Table head-->
-                    <!--begin::Table body-->
                     <tbody>
                         <tr>
                             <td style="padding-top: 13px;  padding-bottom: 13px;">
@@ -457,7 +403,6 @@
                                     </div>
                                 </div>
                             </td>
-
                         </tr>
                         <tr>
                             <td style="padding-top: 13px;  padding-bottom: 13px;">
@@ -475,7 +420,6 @@
                                     </div>
                                 </div>
                             </td>
-
                         </tr>
                         <tr>
                             <td style="padding-top: 13px;  padding-bottom: 13px;">
@@ -493,7 +437,6 @@
                                     </div>
                                 </div>
                             </td>
-
                         </tr>
                         <tr>
                             <td style="padding-top: 13px;  padding-bottom: 13px;">
@@ -511,7 +454,6 @@
                                     </div>
                                 </div>
                             </td>
-
                         </tr>
                         <tr>
                             <td style="padding-top: 13px;  padding-bottom: 13px;">
@@ -529,23 +471,15 @@
                                     </div>
                                 </div>
                             </td>
-
                         </tr>
                     </tbody>
-                    <!--end::Table body-->
                 </table>
-                <!--end::Table-->
             </div>
-            <!--end::Table container-->
         </div>
-        <!--begin::Body-->
     </div>
-    <!--end::Tables Widget 9-->
 </div>
 <div class="col-xl-6">
-    <!--begin::Tables Widget 9-->
     <div class="card ">
-        <!--begin::Header-->
         <div class="card-header border-0 pt-5 bg-light-success">
             <h3 class="card-title align-items-start flex-column">
                 <span class="card-label fw-bold fs-5 mb-1 text-success">Ultimos Documentos en Instancia Coactiva</span>
@@ -556,33 +490,21 @@
                 <i class="ki-duotone ki-plus fs-2"></i>Ir a Buzón de Documentos</a>
             </div>
         </div>
-        <!--end::Header-->
-        <!--begin::Body-->
         <div class="card-body py-3">
-            <!--begin::Table container-->
             <div class="table-responsive">
-                <!--begin::Table-->
                 <table class="table table-row-dashed table-row-gray-300 align-middle gs-0 gy-4 table-bordered">
-                    <!--begin::Table head-->
                     <thead>
                         <tr class="fw-bold text-muted" style="background-color:#f8f8f9;">
-
                             <th style="width: 80%;text-align: center;">Concepto</th>
                             <th style="width: 20%;text-align: center;">Fecha</th>
-
-
-
                         </tr>
                     </thead>
-                    <!--end::Table head-->
-                    <!--begin::Table body-->
                     <tbody>
                         <tr>
                             <td style="padding-top: 13px;  padding-bottom: 13px;">
                                 <div class="d-flex align-items-center">
                                     <div class="d-flex justify-content-start flex-column">
                                         <span class="text-muted fw-semibold text-muted d-block fs-7" style="padding-left: 10px; padding-right: 10px">Impuesto predial</span>
-
                                     </div>
                                 </div>
                             </td>
@@ -593,14 +515,12 @@
                                     </div>
                                 </div>
                             </td>
-
                         </tr>
                         <tr>
                             <td style="padding-top: 13px;  padding-bottom: 13px;">
                                 <div class="d-flex align-items-center">
                                     <div class="d-flex justify-content-start flex-column">
                                         <span class="text-muted fw-semibold text-muted d-block fs-7" style="padding-left: 10px; padding-right: 10px">Impuesto predial</span>
-
                                     </div>
                                 </div>
                             </td>
@@ -611,14 +531,12 @@
                                     </div>
                                 </div>
                             </td>
-
                         </tr>
                         <tr>
                             <td style="padding-top: 13px;  padding-bottom: 13px;">
                                 <div class="d-flex align-items-center">
                                     <div class="d-flex justify-content-start flex-column">
                                         <span class="text-muted fw-semibold text-muted d-block fs-7" style="padding-left: 10px; padding-right: 10px">Impuesto predial</span>
-
                                     </div>
                                 </div>
                             </td>
@@ -629,14 +547,12 @@
                                     </div>
                                 </div>
                             </td>
-
                         </tr>
                         <tr>
                             <td style="padding-top: 13px;  padding-bottom: 13px;">
                                 <div class="d-flex align-items-center">
                                     <div class="d-flex justify-content-start flex-column">
                                         <span class="text-muted fw-semibold text-muted d-block fs-7" style="padding-left: 10px; padding-right: 10px">Impuesto predial</span>
-
                                     </div>
                                 </div>
                             </td>
@@ -647,14 +563,12 @@
                                     </div>
                                 </div>
                             </td>
-
                         </tr>
                         <tr>
                             <td style="padding-top: 13px;  padding-bottom: 13px;">
                                 <div class="d-flex align-items-center">
                                     <div class="d-flex justify-content-start flex-column">
                                         <span class="text-muted fw-semibold text-muted d-block fs-7" style="padding-left: 10px; padding-right: 10px">Impuesto predial</span>
-
                                     </div>
                                 </div>
                             </td>
@@ -665,17 +579,11 @@
                                     </div>
                                 </div>
                             </td>
-
                         </tr>
                     </tbody>
-                    <!--end::Table body-->
                 </table>
-                <!--end::Table-->
             </div>
-            <!--end::Table container-->
         </div>
-        <!--begin::Body-->
     </div>
-    <!--end::Tables Widget 9-->
-</div>
+</div>-->
 @endsection
