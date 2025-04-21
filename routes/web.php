@@ -32,6 +32,10 @@ Route::middleware('guest.redirect')->group(function () {
     Route::get('/', [LoginController::class, 'formLogin'])->name('login');
 
     Route::post('/', [LoginController::class, 'login']);
+
+    Route::get('/solicitarAcceso', function () {
+        return view('registro'); // Muestra resources/views/about.blade.php
+    });
 });
 
 // REDIRIGE A LOS USUARIO LOGUEADOS
