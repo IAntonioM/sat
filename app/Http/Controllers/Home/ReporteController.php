@@ -3,35 +3,29 @@
 namespace App\Http\Controllers\Home;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
-use App\Helpers\PDFHelper;
 use App\Reports\HRReport;
+use App\Reports\PUReport;
+use Illuminate\Http\Request;
 
 class ReporteController extends Controller
 {
-    public function reporte($tipo)
+    public function reporte(Request $request, $tipo)
     {
         switch ($tipo) {
             case 'reporteHR':
-                return $this->reporteHR(new HRReport());
+                $report = new HRReport();
+                return $report->generarPDF();
+                break;
+
             case 'reportePU':
-                return $this->reporteHR(new HRReport());
-            case 'reporteHLA':
-                return $this->reporteHR(new HRReport());
+                $xid_anexo = $request->input('xid_anexo');
+                $report = new PUReport($xid_anexo);
+                return $report->generarPDF();
+                break;
+
             default:
-                abort(404, 'Tipo de reporte no encontrado');
+                return redirect()->back()->with('error', 'Tipo de reporte no válido');
+                break;
         }
-
-        abort(404, 'Tipo de reporte no válido');
-    }
-
-    public function reporteHR()
-    {
-        $report = new HRReport();      // 👈 crea la instancia
-        $pdf = $report->generarPDF();  // ✅ llamado correctamente
-
-        return response($pdf, 200)
-            ->header('Content-Type', 'application/pdf');
     }
 }
-

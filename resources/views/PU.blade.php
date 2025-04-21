@@ -23,8 +23,10 @@
                         <!--end::Details-->
                         <!--begin::Actions-->
                         <div class="d-flex mb-4">
-                            <a href="{{ route('reporte', ['tipo' => 'reporteHR']) }}" class="btn btn-primary" id="btnImprimir"><i
-                                    class="fa-solid fa-print"></i> Imprimir</a>
+                            <a href="{{ route('reporte', ['tipo' => 'reportePU', 'xid_anexo' => $datos_predio[0]->id_anexo ?? '']) }}"
+                                class="btn btn-primary" id="btnImprimir">
+                                <i class="fa-solid fa-print"></i> Imprimir
+                            </a>
                         </div>
                         <!--end::Actions-->
                     </div>
@@ -332,7 +334,7 @@
                                     <b>ÁREA DE TERRENO:</b>
                                 </div>
                                 <div class="col-xl-6" style="font-size:10px; padding:10px;text-align: center">
-                                    {{number_format($datos_predio[0]->area_terr, 2) ?? '0.00' }}
+                                    {{ number_format($datos_predio[0]->area_terr, 2) ?? '0.00' }}
                                     M2
                                 </div>
                             </div>
@@ -341,7 +343,7 @@
                                     <b>ÁREA COMUN DE TERRENO:</b>
                                 </div>
                                 <div class="col-xl-6" style="font-size:10px; padding:10px;text-align: center">
-                                    {{number_format($datos_predio[0]->area_comun, 2) ?? '0.00' }}
+                                    {{ number_format($datos_predio[0]->area_comun, 2) ?? '0.00' }}
                                     M2
                                 </div>
                             </div>
@@ -350,7 +352,7 @@
                                     <b>ARANCEL:</b>
                                 </div>
                                 <div class="col-xl-6" style="font-size:10px; padding:10px;text-align: center">
-                                    {{number_format($datos_predio[0]->arancel, 2) ?? '0.00' }}
+                                    {{ number_format($datos_predio[0]->arancel, 2) ?? '0.00' }}
                                 </div>
                             </div>
                         </div>
@@ -361,7 +363,7 @@
                                     <b>VALOR TOTAL DE LA CONSTRUCCIÓN:</b>
                                 </div>
                                 <div class="col-xl-4" style="font-size:11px; padding:10px;text-align: right">
-                                    {{number_format($datos_predio[0]->tot_constr, 2) ?? '0.00' }}
+                                    {{ number_format($datos_predio[0]->tot_constr, 2) ?? '0.00' }}
                                 </div>
                             </div>
                             <div class="col-xl-12 row">
@@ -369,7 +371,7 @@
                                     <b>VALOR DE OTRAS INSTALACIÓNES:</b>
                                 </div>
                                 <div class="col-xl-4" style="font-size:11px; padding:10px;text-align: right">
-                                    {{number_format($datos_predio[0]->ot_instal, 2) ?? '0.00' }}
+                                    {{ number_format($datos_predio[0]->ot_instal, 2) ?? '0.00' }}
                                 </div>
                             </div>
                             <div class="col-xl-12 row">
@@ -377,7 +379,7 @@
                                     <b>VALOR TOTAL DEL TERRENO:</b>
                                 </div>
                                 <div class="col-xl-4" style="font-size:11px; padding:10px;text-align: right">
-                                    {{number_format($datos_predio[0]->tot_terr, 2) ?? '0.00' }}
+                                    {{ number_format($datos_predio[0]->tot_terr, 2) ?? '0.00' }}
                                 </div>
                             </div>
                         </div>
@@ -400,9 +402,9 @@
                             </div>
                             <div class="col-xl-2" style="font-size:12px; padding:10px 20px 10px 10px;text-align: right">
                                 {{ number_format(
-                                    ($datos_predio[0]->ot_instal ?? 0) +
-                                    ($datos_predio[0]->tot_constr ?? 0) +
-                                    ($datos_predio[0]->tot_terr ?? 0), 2) }}
+                                    ($datos_predio[0]->ot_instal ?? 0) + ($datos_predio[0]->tot_constr ?? 0) + ($datos_predio[0]->tot_terr ?? 0),
+                                    2,
+                                ) }}
                             </div>
                         </div>
                     </div>
