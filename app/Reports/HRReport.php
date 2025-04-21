@@ -40,17 +40,7 @@ class HRReport extends FPDF
     // Usar el método Image para insertar la imagen en el encabezado
     // $this->Image( ruta, x, y, width, height);
     // Puedes ajustar la posición (x, y) y el tamaño de la imagen (width, height)
-    $this->Image($imagePath, 10, 10, 15); // 10, 10 es la posición y 40 es el ancho de la imagen
-
-        $this->SetFont('Arial', 'B', 7);
-        $this->SetXY(25, 16);
-        $this->Cell(0, 4, "MUNICIPALIDAD DISTRITAL");
-        $this->Ln();
-
-        $this->SetFont('Arial', 'B', 7);
-        $this->SetXY(25, 19);
-        $this->Cell(0, 4, "DE HUMAY");
-        $this->Ln();
+        $this->Image($imagePath, 10, 15, 25); // 10, 10 es la posición y 40 es el ancho de la imagen
 
         $this->SetXY(190, 15);
         $this->SetFont('Arial', 'B', 14);

@@ -37,17 +37,7 @@ class PUReport extends FPDF
         $imagePath = public_path('assets/media/logos/custom-3-h25-2.png');
 
         // Usar el método Image para insertar la imagen en el encabezado
-        $this->Image($imagePath, 11, 10, 15); // 10, 10 es la posición y 15 es el ancho de la imagen
-
-        $this->SetFont('Arial', 'B', 7);
-        $this->SetY(16);
-        $this->Cell(0, 3, "MUNICIPALIDAD DISTRITAL");
-        $this->Ln();
-
-        $this->SetFont('Arial', 'B', 7);
-        $this->SetY(19);
-        $this->Cell(0, 3, "DE HUMAY");
-        $this->Ln();
+        $this->Image($imagePath, 11, 16, 25); // 10, 10 es la posición y 15 es el ancho de la imagen
 
         $this->SetXY(190, 15);
         $this->SetFont('Arial', 'B', 14);
