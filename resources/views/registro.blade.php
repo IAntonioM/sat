@@ -18,7 +18,7 @@
 
                 <!--begin::Separator-->
                 <div class="separator separator-content my-14"></div>
-
+                @csrf
                 <div class="col-xl-12 row pb-5">
                     <div class="col-xl-6" style="padding: 0px 5px 0px 0px">
                         <select class="form-select bg-transparent"
@@ -89,7 +89,7 @@
                 <div class="col-xl-12 row pt-15 " >
                     <div class="col-xl-6 "  style="padding: 0px 5px 0px 0px">
                         <div class="d-grid mb-10">
-                            <button  id="kt_sign_in_submit" class="btn" style="color: #fff;border-color: #015e80;background-color: #015e80;">
+                            <button  class="btn" style="color: #fff;border-color: #015e80;background-color: #015e80;">
                                 <!--begin::Indicator label-->
                                 <a href="{{ route('login')}}"></a>
                                 <span class="indicator-label">REGRESAR</span>
@@ -103,7 +103,7 @@
                     </div>
                     <div class="col-xl-6 "  style="padding: 0px 0px 0px 5px">
                         <div class="d-grid mb-10">
-                            <button type="submit" id="kt_sign_in_submit" class="btn" style="color: #fff;border-color: #015e80;background-color: #015e80;">
+                            <button type="submit"  class="btn" style="color: #fff;border-color: #015e80;background-color: #015e80;">
                                 <!--begin::Indicator label-->
                                 <span class="indicator-label">SOLICITAR ACCESO</span>
                                 <!--end::Indicator label-->

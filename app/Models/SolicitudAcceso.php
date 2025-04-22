@@ -3,7 +3,6 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
 
 class SolicitudAcceso extends Model
@@ -55,7 +54,7 @@ class SolicitudAcceso extends Model
 
     public static function registrarSolicitud($params)
     {
-        $sql = "
+        $sql = <<<SQL
             EXEC dbo.SolicitudAcceso
                 @Accion = 1,
                 @iTipoDocuId = :iTipoDocuId,
@@ -71,9 +70,29 @@ class SolicitudAcceso extends Model
                 @cRutaFile = :cRutaFile,
                 @cSizeFile = :cSizeFile,
                 @cEstacionSolicitud = :cEstacionSolicitud
-        ";
+        SQL;
 
-        return DB::select($sql, $params);
+        // Filtramos solo los parámetros necesarios para evitar errores
+        $requiredParams = [
+            'iTipoDocuId',
+            'nNumDocuId',
+            'cRazonSocial',
+            'cApePate',
+            'cApeMate',
+            'cNombres',
+            'cAsunto',
+            'cDireccion',
+            'correoDestino',
+            'cExtension',
+            'cRutaFile',
+            'cSizeFile',
+            'cEstacionSolicitud'
+        ];
+
+        $filteredParams = array_intersect_key($params, array_flip($requiredParams));
+
+        return DB::select($sql, $filteredParams);
     }
+
 
 }

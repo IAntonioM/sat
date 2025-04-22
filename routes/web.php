@@ -39,7 +39,7 @@ Route::middleware('guest.redirect')->group(function () {
 
     Route::get('/solicitarAcceso', [SolicitarAccesoController::class, 'index'])->name('solicitarAcceso');
 
-    Route::post('/solicitarAcceso', [SolicitarAccesoController::class, 'solcitarAcceso']);
+    Route::post('/solicitarAcceso', [SolicitarAccesoController::class, 'insertarSolcitudAcceso']);
 });
 
 // REDIRIGE A LOS USUARIO LOGUEADOS
