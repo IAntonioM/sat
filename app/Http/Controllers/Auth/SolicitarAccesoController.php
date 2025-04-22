@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Auth\SolicitudAccesoRequest;
 use App\Models\SolicitudAcceso;
 use Barryvdh\Debugbar\Facades\Debugbar;
 use App\Models\TipoDocumento;
@@ -17,7 +18,7 @@ class SolicitarAccesoController extends Controller
         return view('registro', compact('tiposDocumento'));
     }
 
-    public function insertarSolcitudAcceso(Request $request)
+    public function insertarSolcitudAcceso(SolicitudAccesoRequest $request)
     {
         // Obtener todos los datos directamente
         $data = $request->all();
@@ -58,21 +59,25 @@ class SolicitarAccesoController extends Controller
                 ]);
             }
 
-            return redirect()->route('solicitarAcceso')->with([
-                'alert' => [
-                    'type' => 'error',
-                    'title' => 'Error inesperado',
-                    'message' => 'No se obtuvo una respuesta del sistema. Intenta nuevamente.'
-                ]
-            ]);
+            return redirect()->route('solicitarAcceso')
+                ->withInput() // Esto devuelve los datos del formulario
+                ->with([
+                    'alert' => [
+                        'type' => 'error',
+                        'title' => 'Error inesperado',
+                        'message' => 'No se obtuvo una respuesta del sistema. Intenta nuevamente.'
+                    ]
+                ]);
         } catch (\Exception $e) {
-            return redirect()->route('solicitarAcceso')->with([
-                'alert' => [
-                    'type' => 'error',
-                    'title' => 'Error al registrar solicitud',
-                    'message' => $e->getMessage()
-                ]
-            ]);
+            return redirect()->route('solicitarAcceso')
+                ->withInput() // Esto devuelve los datos del formulario
+                ->with([
+                    'alert' => [
+                        'type' => 'error',
+                        'title' => 'Error al registrar solicitud',
+                        'message' => $e->getMessage()
+                    ]
+                ]);
         }
     }
 }

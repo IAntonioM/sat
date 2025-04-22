@@ -1,8 +1,10 @@
 <?php
 
-namespace App\Http\Requests;
+namespace App\Http\Requests\Auth;
 
+use App\Models\TipoDocumento;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class SolicitudAccesoRequest extends FormRequest
 {
@@ -19,19 +21,52 @@ class SolicitudAccesoRequest extends FormRequest
      */
     public function rules(): array
     {
-        return [
-            'iTipoDocuId' => 'required|numeric',
-            'nNumDocuId' => 'required|string|max:20',
-            'cRazonSocial' => 'required_without_all:cApePate,cApeMate,cNombres|string|max:255',
-            'cApePate' => 'required_without:cRazonSocial|string|max:100',
-            'cApeMate' => 'nullable|string|max:100',
-            'cNombres' => 'required_without:cRazonSocial|string|max:100',
+        $rules = [
+            'iTipoDocuId' => 'required|string|exists:T_DOC,id_doc',
             'cAsunto' => 'required|string|max:255',
             'cDireccion' => 'required|string|max:255',
             'correoDestino' => 'required|email|max:100',
             'telefono' => 'required|string|max:20',
             'archivo' => 'required|file|mimes:pdf,jpg,jpeg,png|max:2048',
         ];
+
+        // Obtener el tipo de documento seleccionado
+        $tipoDocId = $this->input('iTipoDocuId');
+
+        // Buscar el tipo de documento en la base de datos
+        $tipoDocumento = null;
+        if ($tipoDocId) {
+            $tiposDocumento = TipoDocumento::obtenerTipoDocs($tipoDocId);
+            if (!empty($tiposDocumento)) {
+                $tipoDocumento = $tiposDocumento[0];
+            }
+        }
+
+        // Validar el número de documento según el tipo
+        if ($tipoDocumento && $tipoDocumento->digitos > 0) {
+            $rules['nNumDocuId'] = [
+                'required',
+                'string',
+                'digits:' . $tipoDocumento->digitos
+            ];
+        } else {
+            $rules['nNumDocuId'] = 'required|string|max:20';
+        }
+
+        // Si es RUC (02), requerir razón social, si no, requerir nombres y apellidos
+        if ($tipoDocId === '02') {
+            $rules['cRazonSocial'] = 'required|string|max:255';
+            $rules['cApePate'] = 'nullable|string|max:100';
+            $rules['cApeMate'] = 'nullable|string|max:100';
+            $rules['cNombres'] = 'nullable|string|max:100';
+        } else {
+            $rules['cRazonSocial'] = 'nullable|string|max:255';
+            $rules['cApePate'] = 'required|string|max:100';
+            $rules['cApeMate'] = 'required|string|max:100';
+            $rules['cNombres'] = 'required|string|max:100';
+        }
+
+        return $rules;
     }
 
     /**
@@ -41,20 +76,22 @@ class SolicitudAccesoRequest extends FormRequest
     {
         return [
             'iTipoDocuId.required' => 'El tipo de documento es obligatorio.',
-            'iTipoDocuId.numeric' => 'El tipo de documento debe ser numérico.',
+            'iTipoDocuId.exists' => 'El tipo de documento seleccionado no es válido.',
 
             'nNumDocuId.required' => 'El número de documento es obligatorio.',
             'nNumDocuId.max' => 'El número de documento no puede exceder los 20 caracteres.',
+            'nNumDocuId.digits' => 'El número de documento debe tener exactamente :digits dígitos.',
 
-            'cRazonSocial.required_without_all' => 'La razón social es obligatoria cuando no se proporcionan nombres y apellidos.',
+            'cRazonSocial.required' => 'La razón social es obligatoria para documentos de tipo RUC.',
             'cRazonSocial.max' => 'La razón social no puede exceder los 255 caracteres.',
 
-            'cApePate.required_without' => 'El apellido paterno es obligatorio cuando no se proporciona razón social.',
+            'cApeMate.required' => 'El apellido paterno es obligatorio.',
+            'cApeMate.max' => 'El apellido paterno no puede exceder los 100 caracteres.',
+
+            'cApePate.required' => 'El apellido materno es obligatorio.',
             'cApePate.max' => 'El apellido paterno no puede exceder los 100 caracteres.',
 
-            'cApeMate.max' => 'El apellido materno no puede exceder los 100 caracteres.',
-
-            'cNombres.required_without' => 'Los nombres son obligatorios cuando no se proporciona razón social.',
+            'cNombres.required' => 'Los nombres son obligatorios.',
             'cNombres.max' => 'Los nombres no pueden exceder los 100 caracteres.',
 
             'cAsunto.required' => 'El asunto es obligatorio.',

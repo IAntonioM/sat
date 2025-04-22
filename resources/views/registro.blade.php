@@ -29,32 +29,52 @@
                                 data-kt-ecommerce-order-filter="Seleccione el Tipo de Documento">
                             <option></option>
                             @foreach($tiposDocumento as $tipo)
-                                <option value="{{ $tipo->id_doc }}">{{ trim($tipo->doc) }}</option>
+                                <option value="{{ $tipo->id_doc }}" {{ old('iTipoDocuId') == $tipo->id_doc ? 'selected' : '' }}>
+                                    {{ trim($tipo->doc) }}
+                                </option>
                             @endforeach
                         </select>
+                        @error('iTipoDocuId')
+                            <div style="color: #d12d2d">{{ $message }}</div>
+                        @enderror
                     </div>
 
                     <div class="col-xl-6" style="padding: 0px 0px 0px 5px">
-                        <input type="text" placeholder="Nro. Documento" name="nNumDocuId" autocomplete="off" class="form-control bg-transparent" />
+                        <input type="text" placeholder="Nro. Documento" name="nNumDocuId" autocomplete="off" class="form-control bg-transparent" value="{{ old('nNumDocuId') }}" />
+                        @error('nNumDocuId')
+                            <div style="color: #d12d2d">{{ $message }}</div>
+                        @enderror
                     </div>
                 </div>
 
                 <div class="col-xl-12 pb-5" >
 
                     <div class="col-xl-12 " >
-                        <input type="text" placeholder="Razón Social" name="cRazonSocial" autocomplete="off" class="form-control bg-transparent" />
+                        <input type="text" placeholder="Razón Social" name="cRazonSocial" autocomplete="off" class="form-control bg-transparent" value="{{ old('cRazonSocial') }}"/>
+                        @error('cRazonSocial')
+                            <div style="color: #d12d2d">{{ $message }}</div>
+                        @enderror
                     </div>
 
                 </div>
                 <div class="col-xl-12 row pb-5 " >
                     <div class="col-xl-4 "  style="padding: 0px 5px 0px 0px">
-                        <input type="text" placeholder="Apellido Paterno" name="cApePate" autocomplete="off" class="form-control bg-transparent" />
+                        <input type="text" placeholder="Apellido Paterno" name="cApePate" autocomplete="off" class="form-control bg-transparent" value="{{ old('cApePate') }}"/>
+                        @error('cApePate')
+                            <div style="color: #d12d2d">{{ $message }}</div>
+                        @enderror
                     </div>
                     <div class="col-xl-4" style="padding: 0px 5px 0px 5px" >
-                        <input type="text" placeholder="Apellido Materno" name="cApeMate" autocomplete="off" class="form-control bg-transparent" />
+                        <input type="text" placeholder="Apellido Materno" name="cApeMate" autocomplete="off" class="form-control bg-transparent" value="{{ old('cApeMate') }}"/>
+                        @error('cApeMate')
+                            <div style="color: #d12d2d">{{ $message }}</div>
+                        @enderror
                     </div>
                     <div class="col-xl-4" style="padding: 0px 0px 0px 5px" >
-                        <input type="text" placeholder="Nombres" name="cNombres" autocomplete="off" class="form-control bg-transparent" />
+                        <input type="text" placeholder="Nombres" name="cNombres" autocomplete="off" class="form-control bg-transparent" value="{{ old('cNombres') }}"/>
+                        @error('cNombres')
+                            <div style="color: #d12d2d">{{ $message }}</div>
+                        @enderror
                     </div>
                 </div>
                 <!--end::Separator-->
@@ -62,28 +82,43 @@
                 <div class="col-xl-12 row pb-5 " >
                     <!--begin::Email-->
                     <div class="col-xl-8 "  style="padding: 0px 5px 0px 0px">
-                        <input type="text" placeholder="Email" name="correoDestino" autocomplete="off" class="form-control bg-transparent" />
+                        <input type="text" placeholder="Email" name="correoDestino" autocomplete="off" class="form-control bg-transparent" value="{{ old('cNombres') }}"/>
+                        @error('correoDestino')
+                            <div style="color: #d12d2d">{{ $message }}</div>
+                        @enderror
                     </div>
                     <div class="col-xl-4 "  style="padding: 0px 0px 0px 5px">
-                        <input type="text" placeholder="Telefóno" name="telefono" autocomplete="off" class="form-control bg-transparent" />
+                        <input type="text" placeholder="Telefóno" name="telefono" autocomplete="off" class="form-control bg-transparent" value="{{ old('telefono') }}"/>
+                        @error('telefono')
+                            <div style="color: #d12d2d">{{ $message }}</div>
+                        @enderror
                     </div>
                     <!--end::Email-->
                 </div>
 
                 <div class="col-xl-12 row pb-5 " >
                     <!--begin::Email-->
-                    <textarea class="form-control bg-transparent" name="cAsunto" placeholder="Asunto/Sumilla"></textarea>
+                    <textarea class="form-control bg-transparent" name="cAsunto" placeholder="Asunto/Sumilla" >{{ old('cAsunto') }}</textarea>
+                    @error('cAsunto')
+                        <div style="color: #d12d2d">{{ $message }}</div>
+                    @enderror
                     <!--end::Email-->
                 </div>
 
                 <div class="col-xl-12 row pb-5 " >
                     <!--begin::Email-->
-                    <input type="text" placeholder="Dirección" name="cDireccion" autocomplete="off" class="form-control bg-transparent" />
+                    <input type="text" placeholder="Dirección" name="cDireccion" autocomplete="off" class="form-control bg-transparent"  value="{{ old('cDireccion') }}"/>
+                    @error('cDireccion')
+                        <div style="color: #d12d2d">{{ $message }}</div>
+                    @enderror
                     <!--end::Email-->
                 </div>
                 <div class="col-xl-12 row pb-5 " >
                     <!--begin::Email-->
-                    <input type="file" placeholder="Archivo PDF/Imagen" name="archivo" autocomplete="off" class="form-control bg-transparent" />
+                    <input type="file" placeholder="Archivo PDF/Imagen" name="archivo" autocomplete="off" class="form-control bg-transparent"  value="{{ old('archivo') }}"/>
+                    @error('archivo')
+                        <div style="color: #d12d2d">{{ $message }}</div>
+                    @enderror
                     <!--end::Email-->
                 </div>
                 <div class="col-xl-12 row pt-15 " >
