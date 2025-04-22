@@ -42,6 +42,7 @@ class SolicitudAcceso extends Model
         'cUsuarioActualizacion',
         'dFechaActualizacion',
         'cEstacionActualizacion',
+        'telefono'
     ];
 
     // Opcional: Accessors/Casting fechas
