@@ -49,7 +49,8 @@ class PendientesController extends Controller
                 'fechaActualizacion' => $fechaActualizacion,
             ]
         ];
-
+        Debugbar::info('Pene');
+        Debugbar::info($viewData);
         return view('pendientes', $viewData);
     }
 

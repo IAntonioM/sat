@@ -49,10 +49,10 @@ Route::middleware('check.login')->group(function () {
 
     //CAMBIAR CLAVE
     //formulario
-    Route::get('/cambiarClave',[ChangePassword::class, 'formCambiarClave'])->name('cambiarClave');
+    Route::get('/cambiarClave', [ChangePassword::class, 'formCambiarClave'])->name('cambiarClave');
 
     //cambio de clave
-    Route::post('/cambiarClave',[ChangePassword::class, 'cambiarClave']);
+    Route::post('/cambiarClave', [ChangePassword::class, 'cambiarClave']);
 
     //PANTALLA PRINCIPAL|
     Route::get('/principal', [PrincipalController::class, 'viewPrincipal'])->name('principal');
@@ -73,7 +73,9 @@ Route::middleware('check.login')->group(function () {
     Route::post('/consolidado/pagar', [DeudaConsolidadaController::class, 'prepararPago'])->name('consolidado.preparar-pago');
 
     // Vista de pago (esta ruta debería ir a un controlador de pagos)
-    Route::get('/consolidado/pago', function () {return redirect()->route('pagos.index');})->name('consolidado.pago');
+    Route::get('/consolidado/pago', function () {
+        return redirect()->route('pagos.index');
+    })->name('consolidado.pago');
 
 
     //DETALLADO
@@ -92,7 +94,9 @@ Route::middleware('check.login')->group(function () {
     Route::post('/detallado/pagar', [DetalladoController::class, 'prepararPago'])->name('detallado.preparar-pago');
 
     // Vista de pago (esta ruta debería ir a un controlador de pagos)
-    Route::get('/detallado/pago', function () {return redirect()->route('pagos.index');})->name('detallado.pago');
+    Route::get('/detallado/pago', function () {
+        return redirect()->route('pagos.index');
+    })->name('detallado.pago');
 
 
 
@@ -106,10 +110,13 @@ Route::middleware('check.login')->group(function () {
 
     Route::get('/HLA', [HlaController::class, 'index'])->name('HLA');
     // routes/web.php
-    Route::get('/PU', [PUController::class, 'index'])->name('PU');});
+    Route::get('/PU', [PUController::class, 'index'])->name('PU');
+});
 
-    Route::get('/UsuariosAdmin', [UsuariosAdminController::class, 'index'])->name('UsuariosAdmin');
-    // routes/web.php
-    Route::get('/Pendiente', [PendientesController::class, 'index'])->name('Pendiente');
+Route::get('/UsuariosAdmin', [UsuariosAdminController::class, 'index'])->name('UsuariosAdmin');
 
-
+// Rutas para pendientes
+Route::get('/Pendiente', [PendientesController::class, 'index'])->name('Pendiente');
+Route::post('/Pendiente/filtrar', [PendientesController::class, 'filtrar'])->name('Pendiente.filtrar');
+Route::post('/Pendiente/actualizar/{id}', [PendientesController::class, 'actualizar'])->name('Pendiente.actualizar');
+Route::get('/Pendiente/imprimir', [PendientesController::class, 'imprimir'])->name('Pendiente.imprimir');
