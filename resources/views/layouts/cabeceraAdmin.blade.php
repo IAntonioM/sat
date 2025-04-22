@@ -177,8 +177,13 @@
 
 											<!--begin::Menu item-->
 											<div class="menu-item px-5">
-												<a href="" class="menu-link px-5">Cerrar Sesión</a>
-											</div>
+                                                <form method="POST" action="{{ route('logout') }}">
+                                                    @csrf
+                                                    <button type="submit" class="menu-link px-5" style="background: none; border: none; padding: 0; margin: 0; cursor: pointer;">
+                                                        Cerrar Sesión
+                                                    </button>
+                                                </form>
+                                            </div>
 											<!--end::Menu item-->
 										</div>
 										<!--end::User account menu-->

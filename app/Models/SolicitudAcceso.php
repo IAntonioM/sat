@@ -55,7 +55,7 @@ class SolicitudAcceso extends Model
 
     public static function registrarSolicitud($params)
     {
-        $sql = <<<SQL
+        $sql = '
             EXEC dbo.SolicitudAcceso
                 @Accion = 1,
                 @iTipoDocuId = :iTipoDocuId,
@@ -73,7 +73,7 @@ class SolicitudAcceso extends Model
                 @cEstacionSolicitud = :cEstacionSolicitud,
                 @telefono = :telefono
 
-        SQL;
+        ';
 
         // Filtramos solo los parámetros necesarios para evitar errores
         $requiredParams = [
@@ -98,5 +98,19 @@ class SolicitudAcceso extends Model
         return DB::select($sql, $filteredParams);
     }
 
+    public static function listarSolicitud($params)
+    {
+        $sql = "
+        EXEC dbo.SolicitudAcceso
+            @Accion = 2,
+            @nFlgEstado = :nFlgEstado,
+            @NombreRuc = :NombreRuc,
+            @cAsunto = :cAsunto,
+            @dFechaSolicitud = :dFechaSolicitud,
+            @dFechaActualizacion = :dFechaActualizacion
+    ";
+
+        return DB::select($sql, $params);
+    }
 
 }
