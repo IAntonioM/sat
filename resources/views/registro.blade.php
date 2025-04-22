@@ -82,7 +82,7 @@
                 <div class="col-xl-12 row pb-5 " >
                     <!--begin::Email-->
                     <div class="col-xl-8 "  style="padding: 0px 5px 0px 0px">
-                        <input type="text" placeholder="Email" name="correoDestino" autocomplete="off" class="form-control bg-transparent" value="{{ old('cNombres') }}"/>
+                        <input type="text" placeholder="Email" name="correoDestino" autocomplete="off" class="form-control bg-transparent" value="{{ old('correoDestino') }}"/>
                         @error('correoDestino')
                             <div style="color: #d12d2d">{{ $message }}</div>
                         @enderror
@@ -124,16 +124,15 @@
                 <div class="col-xl-12 row pt-15 " >
                     <div class="col-xl-6 "  style="padding: 0px 5px 0px 0px">
                         <div class="d-grid mb-10">
-                            <button  class="btn" style="color: #fff;border-color: #015e80;background-color: #015e80;">
+                            <a href="{{ route('login') }}"  class="btn" style="color: #fff;border-color: #015e80;background-color: #015e80; text-decoration: none; display: inline-block; text-align: center;">
                                 <!--begin::Indicator label-->
-                                <a href="{{ route('login')}}"></a>
                                 <span class="indicator-label">REGRESAR</span>
                                 <!--end::Indicator label-->
                                 <!--begin::Indicator progress-->
                                 <span class="indicator-progress">Espere por favor...
                                 <span class="spinner-border spinner-border-sm align-middle ms-2"></span></span>
                                 <!--end::Indicator progress-->
-                            </button>
+                            </a>
                         </div>
                     </div>
                     <div class="col-xl-6 "  style="padding: 0px 0px 0px 5px">

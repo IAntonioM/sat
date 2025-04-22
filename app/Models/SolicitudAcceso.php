@@ -113,4 +113,32 @@ class SolicitudAcceso extends Model
         return DB::select($sql, $params);
     }
 
+
+    public static function existeSolicitudPendiente($nNumDocuId)
+    {
+        $sql = '
+            EXEC dbo.SolicitudAcceso
+                @Accion = 3,
+                @nNumDocuId = :nNumDocuId
+        ';
+
+        $result = DB::select($sql, ['nNumDocuId' => $nNumDocuId]);
+
+        return !empty($result) && $result[0]->Existe == 1;
+    }
+
+    public static function usuarioRegistrado($nNumDocuId)
+    {
+        $sql = '
+            EXEC dbo.SolicitudAcceso
+                @Accion = 4,
+                @nNumDocuId = :nNumDocuId
+        ';
+
+        $result = DB::select($sql, ['nNumDocuId' => $nNumDocuId]);
+
+        return !empty($result) && $result[0]->Existe == 1;
+    }
+
+
 }
