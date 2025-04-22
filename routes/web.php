@@ -3,6 +3,7 @@
 use App\Http\Controllers\Auth\ChangePassword;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\LogoutController;
+use App\Http\Controllers\Auth\SolicitarAccesoController;
 use App\Http\Controllers\Home\PrincipalController;
 use App\Http\Controllers\Home\DeudaConsolidadaController;
 use App\Http\Controllers\Home\DetalladoController;
@@ -33,9 +34,7 @@ Route::middleware('guest.redirect')->group(function () {
 
     Route::post('/', [LoginController::class, 'login']);
 
-    Route::get('/solicitarAcceso', function () {
-        return view('registro'); // Muestra resources/views/about.blade.php
-    });
+    Route::get('/solicitarAcceso', [SolicitarAccesoController::class, 'index'])->name('solicitarAcceso');
 });
 
 // REDIRIGE A LOS USUARIO LOGUEADOS

@@ -12,32 +12,39 @@
                     <!--begin::Title-->
                     <h1 class="fw-bolder mb-3" style="color:#015e80;">SOLICITAR ACCESO A ESTADO DE CUENTA</h1>
                     <!--end::Title-->
-                    
+
                 </div>
                 <!--begin::Heading-->
-                
+
                 <!--begin::Separator-->
                 <div class="separator separator-content my-14"></div>
 
-                <div class="col-xl-12 row pb-5 " >
-                    <div class="col-xl-6 "  style="padding: 0px 5px 0px 0px">
-                        <select class="form-select bg-transparent"  data-control="select2" data-hide-search="true" data-placeholder="Seleccione el Tipo de Documento" data-kt-ecommerce-order-filter="Seleccione el Tipo de Documento">
+                <div class="col-xl-12 row pb-5">
+                    <div class="col-xl-6" style="padding: 0px 5px 0px 0px">
+                        <select class="form-select bg-transparent"
+                                name="tipo_documento"
+                                data-control="select2"
+                                data-hide-search="true"
+                                data-placeholder="Seleccione el Tipo de Documento"
+                                data-kt-ecommerce-order-filter="Seleccione el Tipo de Documento">
                             <option></option>
-                            <option value="">DNI</option>
-                            <option value="">RUC</option>
-                        </select> 
+                            @foreach($tiposDocumento as $tipo)
+                                <option value="{{ $tipo->id_doc }}">{{ trim($tipo->doc) }}</option>
+                            @endforeach
+                        </select>
                     </div>
-                    <div class="col-xl-6" style="padding: 0px 0px 0px 5px" >
+
+                    <div class="col-xl-6" style="padding: 0px 0px 0px 5px">
                         <input type="text" placeholder="Nro. Documento" name="ndoc" autocomplete="off" class="form-control bg-transparent" />
                     </div>
                 </div>
 
                 <div class="col-xl-12 pb-5" >
-                    
+
                     <div class="col-xl-12 " >
                         <input type="text" placeholder="Razón Social" name="" autocomplete="off" class="form-control bg-transparent" />
                     </div>
-                    
+
                 </div>
                 <div class="col-xl-12 row pb-5 " >
                     <div class="col-xl-4 "  style="padding: 0px 5px 0px 0px">
@@ -83,13 +90,14 @@
 
 
 
-              
-               
+
+
                 <div class="col-xl-12 row pt-15 " >
                     <div class="col-xl-6 "  style="padding: 0px 5px 0px 0px">
                         <div class="d-grid mb-10">
-                            <button type="submit" id="kt_sign_in_submit" class="btn" style="color: #fff;border-color: #015e80;background-color: #015e80;">
+                            <button  id="kt_sign_in_submit" class="btn" style="color: #fff;border-color: #015e80;background-color: #015e80;">
                                 <!--begin::Indicator label-->
+                                <a href="{{ route('login')}}"></a>
                                 <span class="indicator-label">REGRESAR</span>
                                 <!--end::Indicator label-->
                                 <!--begin::Indicator progress-->
@@ -118,9 +126,9 @@
         </div>
         <!--end::Wrapper-->
         <!--begin::Footer-->
-        
+
         <!--end::Footer-->
     </div>
     <!--end::Card-->
 </div>
-@endsection		
+@endsection

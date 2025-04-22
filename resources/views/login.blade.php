@@ -65,16 +65,16 @@
 									</button>
 								</div>
                                 <div class="d-grid mb-10">
-									<button  id="kt_sign_in_submit" class="btn" style="color: #fff;border-color: #015e80;background-color: #015e80;">
-										<!--begin::Indicator label-->
-										<span class="indicator-label">SOLICITAR ACCESO</span>
-										<!--end::Indicator label-->
-										<!--begin::Indicator progress-->
-										<span class="indicator-progress">Espere por favor...
-										<span class="spinner-border spinner-border-sm align-middle ms-2"></span></span>
-										<!--end::Indicator progress-->
-									</button>
-								</div>
+                                    <a href="{{ route('solicitarAcceso') }}"  class="btn" style="color: #fff;border-color: #015e80;background-color: #015e80; text-decoration: none; display: inline-block; text-align: center;">
+                                        <!--begin::Indicator label-->
+                                        <span class="indicator-label">SOLICITAR ACCESO</span>
+                                        <!--end::Indicator label-->
+                                        <!--begin::Indicator progress-->
+                                        <span class="indicator-progress">Espere por favor...
+                                        <span class="spinner-border spinner-border-sm align-middle ms-2"></span></span>
+                                        <!--end::Indicator progress-->
+                                    </a>
+                                </div>
 								<!--end::Submit button-->
 
 								{{-- @if ($errors->any())
