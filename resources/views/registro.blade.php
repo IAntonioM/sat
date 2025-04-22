@@ -6,7 +6,7 @@
         <!--begin::Wrapper-->
         <div class="d-flex flex-center flex-column  px-lg-10  ">
             <!--begin::Form-->
-            <form class="form w-100" novalidate="novalidate" id="kt_sign_in_form"  action="#">
+            <form class="form w-100" novalidate="novalidate" id="kt_sign_in_form"  method="POST" action="{{route('solicitarAcceso')}}">
                 <!--begin::Heading-->
                 <div class="text-center mb-3">
                     <!--begin::Title-->
@@ -22,7 +22,7 @@
                 <div class="col-xl-12 row pb-5">
                     <div class="col-xl-6" style="padding: 0px 5px 0px 0px">
                         <select class="form-select bg-transparent"
-                                name="tipo_documento"
+                                name="iTipoDocuId"
                                 data-control="select2"
                                 data-hide-search="true"
                                 data-placeholder="Seleccione el Tipo de Documento"
@@ -35,26 +35,26 @@
                     </div>
 
                     <div class="col-xl-6" style="padding: 0px 0px 0px 5px">
-                        <input type="text" placeholder="Nro. Documento" name="ndoc" autocomplete="off" class="form-control bg-transparent" />
+                        <input type="text" placeholder="Nro. Documento" name="nNumDocuId" autocomplete="off" class="form-control bg-transparent" />
                     </div>
                 </div>
 
                 <div class="col-xl-12 pb-5" >
 
                     <div class="col-xl-12 " >
-                        <input type="text" placeholder="Razón Social" name="" autocomplete="off" class="form-control bg-transparent" />
+                        <input type="text" placeholder="Razón Social" name="cRazonSocial" autocomplete="off" class="form-control bg-transparent" />
                     </div>
 
                 </div>
                 <div class="col-xl-12 row pb-5 " >
                     <div class="col-xl-4 "  style="padding: 0px 5px 0px 0px">
-                        <input type="text" placeholder="Apellido Paterno" name="apaterno" autocomplete="off" class="form-control bg-transparent" />
+                        <input type="text" placeholder="Apellido Paterno" name="cApePate" autocomplete="off" class="form-control bg-transparent" />
                     </div>
                     <div class="col-xl-4" style="padding: 0px 5px 0px 5px" >
-                        <input type="text" placeholder="Apellido Materno" name="amaterno" autocomplete="off" class="form-control bg-transparent" />
+                        <input type="text" placeholder="Apellido Materno" name="cApeMate" autocomplete="off" class="form-control bg-transparent" />
                     </div>
                     <div class="col-xl-4" style="padding: 0px 0px 0px 5px" >
-                        <input type="text" placeholder="Nombres" name="nombre" autocomplete="off" class="form-control bg-transparent" />
+                        <input type="text" placeholder="Nombres" name="cNombres" autocomplete="off" class="form-control bg-transparent" />
                     </div>
                 </div>
                 <!--end::Separator-->
@@ -62,7 +62,7 @@
                 <div class="col-xl-12 row pb-5 " >
                     <!--begin::Email-->
                     <div class="col-xl-8 "  style="padding: 0px 5px 0px 0px">
-                        <input type="text" placeholder="Email" name="email" autocomplete="off" class="form-control bg-transparent" />
+                        <input type="text" placeholder="Email" name="correoDestino" autocomplete="off" class="form-control bg-transparent" />
                     </div>
                     <div class="col-xl-4 "  style="padding: 0px 0px 0px 5px">
                         <input type="text" placeholder="Telefóno" name="telefono" autocomplete="off" class="form-control bg-transparent" />
@@ -72,13 +72,13 @@
 
                 <div class="col-xl-12 row pb-5 " >
                     <!--begin::Email-->
-                    <textarea class="form-control bg-transparent" name="asunto" placeholder="Asunto/Sumilla"></textarea>
+                    <textarea class="form-control bg-transparent" name="cAsunto" placeholder="Asunto/Sumilla"></textarea>
                     <!--end::Email-->
                 </div>
 
                 <div class="col-xl-12 row pb-5 " >
                     <!--begin::Email-->
-                    <input type="text" placeholder="Dirección" name="direccion" autocomplete="off" class="form-control bg-transparent" />
+                    <input type="text" placeholder="Dirección" name="cDireccion" autocomplete="off" class="form-control bg-transparent" />
                     <!--end::Email-->
                 </div>
                 <div class="col-xl-12 row pb-5 " >
@@ -86,12 +86,6 @@
                     <input type="file" placeholder="Archivo PDF/Imagen" name="archivo" autocomplete="off" class="form-control bg-transparent" />
                     <!--end::Email-->
                 </div>
-
-
-
-
-
-
                 <div class="col-xl-12 row pt-15 " >
                     <div class="col-xl-6 "  style="padding: 0px 5px 0px 0px">
                         <div class="d-grid mb-10">

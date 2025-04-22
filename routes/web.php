@@ -38,6 +38,8 @@ Route::middleware('guest.redirect')->group(function () {
     Route::post('/', [LoginController::class, 'login']);
 
     Route::get('/solicitarAcceso', [SolicitarAccesoController::class, 'index'])->name('solicitarAcceso');
+
+    Route::post('/solicitarAcceso', [SolicitarAccesoController::class, 'solcitarAcceso']);
 });
 
 // REDIRIGE A LOS USUARIO LOGUEADOS
