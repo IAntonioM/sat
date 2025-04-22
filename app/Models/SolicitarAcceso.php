@@ -76,4 +76,18 @@ class SolicitudAcceso extends Model
         return DB::select($sql, $params);
     }
 
+    public static function listarSolicitud($params)
+    {
+        $sql = "
+            EXEC dbo.SolicitudAcceso
+                @Accion = 2,
+                @nFlgEstado = nFlgEstado,
+                @NombreRuc = NombreRuc,
+                @cAsunto = cAsunto,
+                @dFechaSolicitud = dFechaSolicitud,
+                @dFechaActualizacion = FechaActualizacion,
+        ";
+
+        return DB::select($sql, $params);
+    }
 }
