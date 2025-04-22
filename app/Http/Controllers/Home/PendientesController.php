@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Home;
 
 use App\Http\Controllers\Controller;
-use App\Models\PUModel;
+use App\Models\SolicitudAcceso;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Http\Request;
