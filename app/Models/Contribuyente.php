@@ -49,7 +49,7 @@ class Contribuyente extends Model
     //Obteenr contribuyente por vcodcontr
     public static function obtenerDatosContri($vcodcontr)
     {
-        return self::where('vcodcontr', $vcodcontr)->first();
+        return self::where('vcodcontr', trim($vcodcontr))->first();
     }
 
 }

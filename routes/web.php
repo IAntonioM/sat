@@ -10,6 +10,9 @@ use App\Http\Controllers\Home\DetalladoController;
 use App\Http\Controllers\Home\HlaController;
 use App\Http\Controllers\Home\HRController;
 use App\Http\Controllers\Home\ReporteController;
+use App\Http\Controllers\Home\PUController;
+use App\Http\Controllers\Home\UsuariosAdminController;
+use App\Http\Controllers\Home\PendientesController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -49,7 +52,7 @@ Route::middleware('check.login')->group(function () {
     //cambio de clave
     Route::post('/cambiarClave',[ChangePassword::class, 'cambiarClave']);
 
-    //PANTALLA PRINCIPAL
+    //PANTALLA PRINCIPAL|
     Route::get('/principal', [PrincipalController::class, 'viewPrincipal'])->name('principal');
 
     ///CONSOLIDADO
@@ -92,13 +95,7 @@ Route::middleware('check.login')->group(function () {
 
 
     Route::get('/HR', [HRController::class, 'index'])->name('HR');
-
-
-
     Route::get('/reporte/{tipo}', [ReporteController::class, 'reporte'])->name('reporte');
-
-
-
 
     Route::get('/pagos', function () {
         return view('pagos'); // Muestra resources/views/about.blade.php
@@ -106,6 +103,11 @@ Route::middleware('check.login')->group(function () {
 
 
     Route::get('/HLA', [HlaController::class, 'index'])->name('HLA');
-
     // routes/web.php
-    Route::get('/PU', [App\Http\Controllers\Home\PUController::class, 'index'])->name('PU');});
+    Route::get('/PU', [PUController::class, 'index'])->name('PU');});
+
+    Route::get('/UsuariosAdmin', [UsuariosAdminController::class, 'index'])->name('UsuariosAdmin');
+    // routes/web.php
+    Route::get('/Pendiente', [PendientesController::class, 'index'])->name('Pendiente');
+
+
