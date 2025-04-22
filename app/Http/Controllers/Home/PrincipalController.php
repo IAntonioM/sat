@@ -10,14 +10,19 @@ use Illuminate\Support\Facades\Session;
 
 class PrincipalController extends Controller
 {
-    public function viewPrincipal(){
-
+    public function viewPrincipal()
+    {
         $codigo_contribuyente = Session::get('codigo_contribuyente');
 
-        // Lo muestra en Debugbar
+        // Obtener datos del contribuyente
         $usuario = Contribuyente::obtenerDatosContri($codigo_contribuyente);
 
         Debugbar::info('📄 Datos contribuyente:', $usuario);
+
+        // Validar el estado y retornar la vista correspondiente
+        if (in_array($usuario->vestado, ['002', '003'])) {
+            return view('principalAdmin', compact('usuario'));
+        }
 
         return view('principal', compact('usuario'));
     }

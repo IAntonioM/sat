@@ -32,15 +32,15 @@
 	<body id="kt_body" class="header-fixed header-tablet-and-mobile-fixed toolbar-enabled">
 		<!--begin::Theme mode setup on page load-->
 		<script>
-            var defaultThemeMode = "light"; 
-            var themeMode; 
-            if ( document.documentElement ) { 
-                if ( document.documentElement.hasAttribute("data-bs-theme-mode")) 
-                { themeMode = document.documentElement.getAttribute("data-bs-theme-mode"); } 
-                else { 
-                    if ( localStorage.getItem("data-bs-theme") !== null ) { themeMode = localStorage.getItem("data-bs-theme"); } 
-                    else { themeMode = defaultThemeMode; } } 
-                    if (themeMode === "system") { themeMode = window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light"; } 
+            var defaultThemeMode = "light";
+            var themeMode;
+            if ( document.documentElement ) {
+                if ( document.documentElement.hasAttribute("data-bs-theme-mode"))
+                { themeMode = document.documentElement.getAttribute("data-bs-theme-mode"); }
+                else {
+                    if ( localStorage.getItem("data-bs-theme") !== null ) { themeMode = localStorage.getItem("data-bs-theme"); }
+                    else { themeMode = defaultThemeMode; } }
+                    if (themeMode === "system") { themeMode = window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light"; }
                     document.documentElement.setAttribute("data-bs-theme", themeMode); }
         </script>
 		<!--end::Theme mode setup on page load-->
@@ -67,10 +67,10 @@
 							<!--end::Heaeder menu toggle-->
 							<!--begin::Header Logo-->
 							<div class="header-logo me-5 me-md-10 flex-grow-1 flex-lg-grow-0">
-								
+
 									<img alt="Logo" src="assets/media/logos/custom-3-h25.png" class="logo-default h-25px" />
 									<img alt="Logo" src="assets/media/logos/custom-3-h25-2.png" class="logo-sticky h-25px" />
-								
+
 							</div>
 							<!--end::Header Logo-->
 							<!--begin::Wrapper-->
@@ -84,25 +84,25 @@
 											<!--begin:Menu item-->
 											<div data-kt-menu-trigger="{default: 'click', lg: 'hover'}" data-kt-menu-placement="bottom-start" class="menu-item here show menu-here-bg menu-lg-down-accordion me-0 me-lg-2">
 												<!--begin:Menu link-->
-												<a  href="{{ route('usuarios') }}">
+												<a  href="{{ route('UsuariosAdmin') }}">
 													Mantenimiento de Usuarios
 												</a>
 												<!--end:Menu link-->
 												<!--begin:Menu sub-->
-												
+
 												<!--end:Menu sub-->
 											</div>
 											<!--end:Menu item-->
-											
+
 											<!--begin:Menu item-->
 											<div data-kt-menu-trigger="{default: 'click', lg: 'hover'}" data-kt-menu-placement="bottom-start" class="menu-item menu-lg-down-accordion menu-sub-lg-down-indention me-0 me-lg-2">
 												<!--begin:Menu link-->
-												<a  href="{{ route('pendientes') }}">Pendientes por Aprobar</a>
+												<a  href="{{ route('Pendiente') }}">Pendientes por Aprobar</a>
 												<!--end:Menu link-->
-												
+
 											</div>
 											<!--end:Menu item-->
-											
+
 											<div data-kt-menu-trigger="{default: 'click', lg: 'hover'}" data-kt-menu-placement="bottom-start" class="menu-item menu-lg-down-accordion menu-sub-lg-down-indention me-0 me-lg-2">
 												<!--begin:Menu link-->
 												<span class="menu-link py-3">
@@ -110,7 +110,7 @@
 													<span class="menu-arrow d-lg-none"></span>
 												</span>
 												<!--end:Menu link-->
-												
+
 											</div>
 											<!--end:Menu item-->
 										</div>
@@ -121,13 +121,13 @@
 								<!--end::Navbar-->
 								<!--begin::Toolbar wrapper-->
 								<div class="topbar d-flex align-items-stretch flex-shrink-0">
-									
-									
-									
-									
-									
+
+
+
+
+
 									<!--begin::Theme mode-->
-									
+
 									<!--end::Theme mode-->
 									<!--begin::User-->
 									<div class="d-flex align-items-center me-lg-n2 ms-1 ms-lg-3" id="kt_header_user_menu_toggle">
@@ -148,10 +148,10 @@
 													<!--begin::Username-->
 													<div class="d-flex flex-column">
 														<div class="fw-bold d-flex align-items-center fs-8">
-															MÉNDEZ ORTEGA OSCAR ANTONIO
+															{{ $usuario->vnombre ?? 'Usuario' }}
 															<!--<span class="badge badge-light-success fw-bold fs-8 px-2 py-1 ms-2">Pro</span>-->
 														</div>
-														<a href="#" class="fw-semibold text-muted text-hover-primary fs-7">0000004</a>
+														<a href="#" class="fw-semibold text-muted text-hover-primary fs-7">{{ $usuario->vcodcontr ?? 'Sin Codigo Contribuyente' }}</a>
 													</div>
 													<!--end::Username-->
 												</div>
@@ -166,15 +166,15 @@
 											</div>
 											<!--end::Menu item-->
 											<!--begin::Menu item-->
-											
+
 											<!--end::Menu item-->
-											
-											
+
+
 											<!--begin::Menu separator-->
 											<div class="separator my-2"></div>
 											<!--end::Menu separator-->
-											
-											
+
+
 											<!--begin::Menu item-->
 											<div class="menu-item px-5">
 												<a href="" class="menu-link px-5">Cerrar Sesión</a>
@@ -202,19 +202,19 @@
 							<!--begin::Page title-->
 							<div class="page-title d-flex flex-column me-3">
 								<!--begin::Title-->
-								<h1 class="d-flex text-white fw-bold my-1 fs-3">MÉNDEZ ORTEGA OSCAR ANTONIO</h1>
+								<h1 class="d-flex text-white fw-bold my-1 fs-3">{{ $usuario->vnombre ?? 'Usuario' }}</h1>
 								<!--end::Title-->
 								<!--begin::Breadcrumb-->
 								<ul class="breadcrumb breadcrumb-separatorless fw-semibold fs-7 my-1">
 									<li class="breadcrumb-item text-white opacity-75">
-										<i class="fa-solid fa-house text-white" style="padding-right: 5px; font-size: 9.5px;"></i>  AV. JUAN VICENTE NICOLINI 241 URB.PALAO - SMP
+										<i class="fa-solid fa-house text-white" style="padding-right: 5px; font-size: 9.5px;"></i>  {{ $usuario->vdirec ?? 'Sin dirección registrada' }}
 									</li>
-									
+
 								</ul>
 								<!--end::Breadcrumb-->
 							</div>
 							<!--end::Page title-->
-							
+
 						</div>
 						<!--end::Container-->
 					</div>
@@ -223,14 +223,14 @@
 					<div id="kt_content_container" class="d-flex flex-column-fluid align-items-start container-xxl">
 						<!--begin::Post-->
 						<div class="content flex-row-fluid" id="kt_content">
-							
+
 							<!--begin::Row-->
 							<div class="row gy-5 g-xl-8">
 								@yield('content')
-                    
+
 
 							</div>
-							
+
 						</div>
 						<!--end::Post-->
 					</div>
@@ -244,7 +244,7 @@
 								<span class="text-muted fw-semibold me-1">2025&copy;</span>
 								SAT-ICA - Servicio de Administración Tributaria de Ica
 							</div>
-							
+
 						</div>
 						<!--end::Container-->
 					</div>
@@ -254,7 +254,7 @@
 			</div>
 			<!--end::Page-->
 		</div>
-		
+
 		<!--begin::Javascript-->
 		<script>var hostUrl = "assets/";</script>
 		<!--begin::Global Javascript Bundle(mandatory for all pages)-->
