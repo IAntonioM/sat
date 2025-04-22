@@ -6,7 +6,7 @@
         <!--begin::Wrapper-->
         <div class="d-flex flex-center flex-column  px-lg-10  ">
             <!--begin::Form-->
-            <form class="form w-100" novalidate="novalidate" id="kt_sign_in_form"  method="POST" action="{{route('solicitarAcceso')}}">
+            <form class="form w-100" novalidate="novalidate" id="kt_sign_in_form"  method="POST" action="{{route('solicitarAcceso')}}" enctype="multipart/form-data">>
                 <!--begin::Heading-->
                 <div class="text-center mb-3">
                     <!--begin::Title-->

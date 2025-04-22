@@ -69,7 +69,9 @@ class SolicitudAcceso extends Model
                 @cExtension = :cExtension,
                 @cRutaFile = :cRutaFile,
                 @cSizeFile = :cSizeFile,
-                @cEstacionSolicitud = :cEstacionSolicitud
+                @cEstacionSolicitud = :cEstacionSolicitud,
+                @telefono = :telefono
+
         SQL;
 
         // Filtramos solo los parámetros necesarios para evitar errores
@@ -86,7 +88,8 @@ class SolicitudAcceso extends Model
             'cExtension',
             'cRutaFile',
             'cSizeFile',
-            'cEstacionSolicitud'
+            'cEstacionSolicitud',
+            'telefono'
         ];
 
         $filteredParams = array_intersect_key($params, array_flip($requiredParams));
