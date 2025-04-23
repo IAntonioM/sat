@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Home;
 
 use App\Http\Controllers\Controller;
 use App\Models\SolicitudAcceso;
+use App\Models\Contribuyente;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Http\Request;
@@ -18,7 +19,7 @@ class PendientesController extends Controller
         $codigoContribuyente = session('codigo_contribuyente') ??
         session('cod_usuario') ?? null; // Valor por defecto para pruebas
 
-        $usuario =  Session::get('usuario');
+        $usuario = Contribuyente::obtenerDatosContri($codigoContribuyente);
 
         if (!$codigoContribuyente) {
             // Si no hay código de contribuyente, redirigir al login

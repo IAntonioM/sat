@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Home;
 
 use App\Http\Requests\Opciones\DeudaConsolidadaRequest;
 use App\Models\DeudaConsolidada;
+use App\Models\Contribuyente;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Carbon\Carbon;
@@ -24,7 +25,7 @@ class DeudaConsolidadaController extends Controller
         $codigoContribuyente = session('codigo_contribuyente') ??
         session('cod_usuario') ?? null; // Valor por defecto para pruebas
 
-        $usuario =  Session::get('usuario');
+        $usuario = Contribuyente::obtenerDatosContri($codigoContribuyente);
 
         if (!$codigoContribuyente) {
             // Si no hay código de contribuyente, redirigir al login

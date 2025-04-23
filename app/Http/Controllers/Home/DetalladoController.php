@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Home;
 
 use App\Http\Requests\Opciones\DetalladoRequest;
 use App\Models\Detallado;
+use App\Models\Contribuyente;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
@@ -24,7 +25,7 @@ class DetalladoController extends Controller
         $codigoContribuyente = session('codigo_contribuyente') ??
         session('cod_usuario') ?? null; // Valor por defecto para pruebas
 
-        $usuario =  Session::get('usuario');
+        $usuario = Contribuyente::obtenerDatosContri($codigoContribuyente);
 
         if (!$codigoContribuyente) {
             // Si no hay código de contribuyente, redirigir al login

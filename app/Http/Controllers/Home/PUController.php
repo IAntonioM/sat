@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Home;
 use App\Http\Controllers\Controller;
 use App\Models\PUModel;
 use Carbon\Carbon;
+use App\Models\Contribuyente;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Http\Request;
 use Barryvdh\Debugbar\Facades\Debugbar;
@@ -18,8 +19,8 @@ class PUController extends Controller
         $fechaActual = Carbon::now()->format('d/m/Y');
         $year = Date('Y');
 
-        $usuario = Session::get('usuario');
         $codigo_contribuyente = trim(Session::get('codigo_contribuyente'));
+        $usuario = Contribuyente::obtenerDatosContri($codigo_contribuyente);
 
         // Get user data from model
         $rw = PUModel::getUserData($codigo_contribuyente);
