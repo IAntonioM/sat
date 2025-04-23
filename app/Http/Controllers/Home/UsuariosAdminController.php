@@ -42,6 +42,9 @@ class UsuariosAdminController extends Controller
         $tipoAdministrador = $request->tipoAdministrador ?? '%';
         $estadoSeleccionado  = $request->estadoSeleccionado ?? '%';
 
+        Debugbar::info('Estado seleccionado:', $estadoSeleccionado);
+        Debugbar::info('tipoAdministrador seleccionado:', $tipoAdministrador);
+
         // Obtener las usuarios detalladas
         $usuarios = UsuariosAdmins::obtenerUsuarios($tipoAdministrador, $estadoSeleccionado );
 

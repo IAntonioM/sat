@@ -49,9 +49,10 @@
                                         <option></option>
                                         <option value="%" {{ $estadoSeleccionado == '%' ? 'selected' : '' }}>Todos
                                         </option>
-                                        @foreach ($estadosDisponibles as $anio)
-                                            <option value="{{ $anio }}"
-                                                {{ $estadoSeleccionado == $anio ? 'selected' : '' }}>{{ $anio }}
+                                        @foreach ($estadosDisponibles as $estado)
+                                            <option value="{{ $estado->vestado_cuenta }}"
+                                                {{ $estadoSeleccionado == $estado->vestado_cuenta ? 'selected' : '' }}>
+                                                {{ $estado->nombre_estado }}
                                             </option>
                                         @endforeach
                                     </select>
@@ -60,16 +61,15 @@
                                 </div>
                                 <div class="w-200 mw-250px">
                                     <!--begin::Select2-->
-                                    <select class="form-select form-select-solid" name="tipo_tributo"
-                                        id="tipo_tributo_select" data-control="select2" data-hide-search="true"
+                                    <select class="form-select form-select-solid" name="tipoAdministrador" id="tipo_admin_select" data-control="select2" data-hide-search="true"
                                         data-placeholder="Seleccione el Tributo">
                                         <option></option>
-                                        <option value="%" {{ $tipoTributo == '%' ? 'selected' : '' }}>Todos
+                                        <option value="%" {{ $tipoAdministrador == '%' ? 'selected' : '' }}>Todos
                                         </option>
-                                        @foreach ($tiposAdmins as $tributo)
-                                            <option value="{{ $tributo->tipo }}"
-                                                {{ $tipoTributo == $tributo->tipo ? 'selected' : '' }}>
-                                                {{ $tributo->mtipo }}
+                                        @foreach ($tiposAdmins as $tipoAdmin)
+                                            <option value="{{ $tipoAdmin->vestado }}"
+                                                {{ $tipoAdministrador == $tipoAdmin->vestado ? 'selected' : '' }}>
+                                                {{ $tipoAdmin->nombre_tipo_admin }}
                                             </option>
                                         @endforeach
                                     </select>
@@ -118,15 +118,11 @@
                             @forelse($Usuarios as $usuario)
                                 <tr style="text-align: center; font-size:12px">
                                     <td>{{ $usuario->cidusu }}</td>
-                                    <td>{{ trim($usuario->vpater . ' ' . $usuario->vmater . ' ' . $usuario->vnombre) }}</td>
+                                    <td>{{ trim($usuario->vpater . ' ' . $usuario->vmater . ' ' . $usuario->vnombre) }}
+                                    </td>
                                     <td>{{ $usuario->dfecregist ? date('d/m/Y', strtotime($usuario->dfecregist)) : '' }}
                                     <td>{{ $usuario->tipo_admin ?? 'N/A' }}</td>
-                                    <td>
-                                        <div class="badge badge-light-{{ $usuario->vestado_cuenta == 1 ? 'success' : 'danger' }}"
-                                            style="font-size:12px">
-                                            {{ $usuario->vestado_cuenta == 1 ? 'Activo' : 'Desactivado' }}
-                                        </div>
-                                    </td>
+                                    <td>{{ $usuario->estado_nombre ?? 'N/A' }}</td>
                                     <td>
                                         <a href="#" class="btn btn-active-color-primary btn-sm me-1"
                                             style="padding: 0rem;">
