@@ -30,7 +30,7 @@
 
     <div id="kt_content_container" class="d-flex flex-column-fluid align-items-start "
         style="padding-right: calc(0px * .5); padding-left: calc(0px * .5);">
-        <!--begin::PUT-->
+        <!--begin::Post-->
         <div class="content flex-row-fluid" id="kt_content">
             <!--begin::Products-->
             <div class="card card-flush">
@@ -38,43 +38,35 @@
                 <div class="card-header align-items-center py-5 gap-2 gap-md-5">
                     <!--begin::Card title-->
                     <div class="card-title">
-                        <form action="{{ route('admin/Pendiente.filtrar') }}" method="PUT" id="formFiltrar">
+                        <!--begin::Search-->
+                        <form id="filtroForm" action="{{ route('admin/Pendiente') }}" method="POST">
                             @csrf
-                            <div class="d-flex align-items-center position-relative my-1">
-                                <div class="w-200 mw-250px" style="padding-right: 10px;">
-                                    <select class="form-select form-select-solid" name="estado" data-control="select2"
-                                        data-hide-search="true" data-placeholder="Estado">
-                                        <option value="">Todos</option>
-                                        <option value="1"
-                                            {{ isset($filtros['estado']) && $filtros['estado'] == 1 ? 'selected' : '' }}>
-                                            Activo</option>
-                                        <option value="0"
-                                            {{ isset($filtros['estado']) && $filtros['estado'] == 0 ? 'selected' : '' }}>
-                                            Desactivado</option>
+                            <div class="d-flex flex-row">
+                                <div class="w-200 mw-250px me-3">
+                                    <!--begin::Select2-->
+                                    <select class="form-select form-select-solid" name="estadoSeleccionado" id="estado_select"
+                                        data-control="select2" data-hide-search="true"
+                                        data-placeholder="Seleccione el Estado">
+                                        <option></option>
+                                        <option value="%" {{ $estadoSeleccionado == '%' ? 'selected' : '' }}>Todos
+                                        </option>
+                                        @foreach ($estadosDisponibles as $estado)
+                                            <option value="{{ $estado->nFlgEstado }}"
+                                                {{ $estadoSeleccionado == $estado->nFlgEstado ? 'selected' : '' }}>
+                                                {{ $estado->nombre_estado }}
+                                            </option>
+                                        @endforeach
                                     </select>
+                                    <!--end::Select2-->
                                 </div>
-                                <div class="w-300 mw-350px" style="padding-right: 10px;">
-                                    <input type="text" name="nombreRuc" value="{{ $filtros['nombreRuc'] ?? '' }}"
-                                        placeholder="Nombre/RUC" class="form-control bg-transparent">
-                                </div>
-                                <div class="w-300 mw-350px" style="padding-right: 10px;">
-                                    <input type="text" name="asunto" value="{{ $filtros['asunto'] ?? '' }}"
-                                        placeholder="Asunto" class="form-control bg-transparent">
-                                </div>
-                                <button type="submit" class="btn btn-primary">Filtrar</button>
-                            </div>
-                            <div class="d-flex align-items-center position-relative my-1 mt-3">
-                                <div class="w-200 mw-250px" style="padding-right: 10px;">
-                                    <input type="date" name="fechaRegistro" value="{{ $filtros['fechaRegistro'] ?? '' }}"
-                                        placeholder="Fecha Registro" class="form-control bg-transparent">
-                                </div>
-                                <div class="w-200 mw-250px" style="padding-right: 10px;">
-                                    <input type="date" name="fechaActualizacion"
-                                        value="{{ $filtros['fechaActualizacion'] ?? '' }}" placeholder="Fecha Actualización"
-                                        class="form-control bg-transparent">
+                                <div>
+                                    <button id="btnFiltrar" class="btn btn-success" type="submit">
+                                        <i class="fa-solid fa-filter"></i>
+                                        Filtrar</button>
                                 </div>
                             </div>
                         </form>
+                        <!--end::Search-->
                     </div>
                     <!--end::Card title-->
                     <!--begin::Card toolbar-->
@@ -103,8 +95,8 @@
                             </tr>
                         </thead>
                         <tbody class="fw-semibold text-gray-600">
-                            @if (count($solicitudes) > 0)
-                                @foreach ($solicitudes as $solicitud)
+                            @if (count($Pendientes) > 0)
+                                @foreach ($Pendientes as $solicitud)
                                     <tr style="text-align: center; font-size:12px">
                                         <td>{{ $solicitud->cRazonSocial ?? $solicitud->cNombres . ' ' . $solicitud->cApePate . ' ' . $solicitud->cApeMate }}
                                         </td>
@@ -115,10 +107,13 @@
                                         <td>{{ $solicitud->cUsuarioActualizacion ?? '-' }}</td>
                                         <td>
                                             @if ($solicitud->nFlgEstado == 1)
-                                                <div class="badge badge-light-success" style="font-size:12px">Activo</div>
+                                                <div class="badge badge-light-success" style="font-size:12px">Aceptado</div>
+                                            @elseif ($solicitud->nFlgEstado == 0)
+                                                <div class="badge badge-light-danger" style="font-size:12px">Denegado</div>
+                                            @elseif ($solicitud->nFlgEstado == 2)
+                                                <div class="badge badge-light-warning" style="font-size:12px">En espera</div>
                                             @else
-                                                <div class="badge badge-light-danger" style="font-size:12px">Desactivado
-                                                </div>
+                                                <div class="badge badge-light-secondary" style="font-size:12px">No especificado</div>
                                             @endif
                                         </td>
                                         <td>
@@ -150,7 +145,7 @@
             </div>
             <!--end::Products-->
         </div>
-        <!--end::PUT-->
+        <!--end::Post-->
     </div>
 
     <!-- Modal para editar solicitud -->
@@ -225,8 +220,9 @@
                                     <label class="required fw-semibold fs-6 mb-2">Estado</label>
 
                                     <select class="form-select form-select-solid" name="estado" id="estado">
-                                        <option value="1">Activo</option>
-                                        <option value="0">Desactivado</option>
+                                        <option value="1">Aceptado</option>
+                                        <option value="0">Denegado</option>
+                                        <option value="2">En espera</option>
                                     </select>
                                 </div>
                                 <!--end::Input-->
@@ -281,8 +277,7 @@
                 var estado = $(this).data('estado');
 
                 // Actualizar la acción del formulario con el ID correcto
-                var actionUrl = "#";
-                actionUrl = actionUrl.replace(':id', id);
+                var actionUrl = "{{ route('admin/Pendiente') }}";
                 $('#kt_modal_add_user_form').attr('action', actionUrl);
 
                 // Llenar los campos del formulario
