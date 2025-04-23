@@ -97,20 +97,46 @@ class SolicitudAcceso extends Model
 
         return DB::select($sql, $filteredParams);
     }
-
-    public static function listarSolicitud($params)
+    /**
+     * Obtiene los datos del contribuyente
+     *
+     * @param string $codigoContribuyente
+     * @return array
+     */
+    public static function obtenerDatosContribuyente($codigoContribuyente)
     {
-        $sql = "
-        EXEC dbo.SolicitudAcceso
-            @Accion = 2,
-            @nFlgEstado = :nFlgEstado,
-            @NombreRuc = :NombreRuc,
-            @cAsunto = :cAsunto,
-            @dFechaSolicitud = :dFechaSolicitud,
-            @dFechaActualizacion = :dFechaActualizacion
-    ";
+        $result = DB::select('EXEC pxConsultasWeb2 @msquery = ?, @paramt1 = ?', [1, $codigoContribuyente]);
+        return $result ? $result[0] : null;
+    }
 
-        return DB::select($sql, $params);
+    /**
+     * Obtiene el detalle de las deudas por periodo
+     *
+     * @param string $tipoAdministrador
+     * @param string $estado
+     * @return array
+     */
+    public static function obtenerSolicitudes($estado)
+    {
+        return DB::select(
+            'EXEC SolicitudAcceso @Accion = 2, @nFlgEstado = ?;',[$estado]
+        );
+    }
+
+    /**
+     * Obtiene los estados disponibles
+     *
+     * @return array
+     */
+    public static function obtenerEstadosDisponibles()
+    {
+        $result = DB::select('SELECT DISTINCT nFlgEstado, CASE
+                           WHEN nFlgEstado = 0 THEN \'Denegado\'
+                           WHEN nFlgEstado = 1 THEN \'Aceptado\'
+                           WHEN nFlgEstado = 2 THEN \'En espera\'
+                           ELSE \'No especificado\' END AS nombre_estado
+                          FROM SOLICITUD_ACCESO');
+        return $result;
     }
 
 
@@ -139,6 +165,4 @@ class SolicitudAcceso extends Model
 
         return !empty($result) && $result[0]->Existe == 1;
     }
-
-
 }

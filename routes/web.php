@@ -103,5 +103,5 @@ Route::middleware(['check.login', 'force.password.change', 'admin.access'])->gro
     Route::post('/admin/UsuariosAdmin', [UsuariosAdminController::class, 'index'])->name('admin/UsuariosAdmin');
     // Rutas para pendientes
     Route::get('/admin/Pendiente', [PendientesController::class, 'index'])->name('admin/Pendiente');
-    Route::post('/admin/Pendiente/filtrar', [PendientesController::class, 'filtrar'])->name('admin/Pendiente.filtrar');
+    Route::post('/admin/Pendiente', [PendientesController::class, 'index'])->name('admin/Pendiente');
 });

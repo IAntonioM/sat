@@ -14,66 +14,52 @@ class PendientesController extends Controller
 {
     public function index(Request $request)
     {
-        $usuario = Session::get('usuario');
-        $estado = $request->estado ?? null;
-        $nombreRuc = $request->nombreRuc ?? null;
-        $asunto = $request->asunto ?? null;
-        $fechaRegistro = $request->fechaRegistro ?? null;
-        $fechaActualizacion = $request->fechaActualizacion ?? null;
+        // Obtener el código del contribuyente de la sesión o del parámetro
+        $codigoContribuyente = session('codigo_contribuyente') ??
+        session('cod_usuario') ?? null; // Valor por defecto para pruebas
 
-        // Preparar parámetros para el procedimiento almacenado
-        $params = [
-            'nFlgEstado' => $estado,
-            'NombreRuc' => $nombreRuc,
-            'cAsunto' => $asunto,
-            'dFechaSolicitud' => $fechaRegistro,
-            'dFechaActualizacion' => $fechaActualizacion,
-        ];
+        $usuario =  Session::get('usuario');
 
-        // Obtener las solicitudes
-        $solicitudes = SolicitudAcceso::listarSolicitud($params);
+        if (!$codigoContribuyente) {
+            // Si no hay código de contribuyente, redirigir al login
+            return redirect()->route('login')->with([
+                'alert' => [
+                    'type' => 'error',
+                    'title' => 'Sesión inválida',
+                    'message' => 'No se encontró el código de contribuyente en la sesión'
+                ]
+            ]);
+        }
 
-        // Fecha de actualización para mostrar en la vista
+        // Obtener datos del contribuyente
+        $contribuyente = SolicitudAcceso::obtenerDatosContribuyente($codigoContribuyente);
+
+        if (!$contribuyente) {
+            return redirect()->route('login')->with('error', 'No se encontró el contribuyente');
+        }
+
+        // Obtener los filtros
+        $estadoSeleccionado  = $request->estadoSeleccionado ?? '%';
+
+        // Obtener las usuarios detalladas
+        $usuarios = SolicitudAcceso::obtenerSolicitudes($estadoSeleccionado );
+
+        // Preparar datos para la vista
+        $estados = SolicitudAcceso::obtenerEstadosDisponibles();
         $fechaActual = Carbon::now()->format('d/m/Y');
 
-        // Data to send to the view
         $viewData = [
-            'usuario' => $usuario,
-            'solicitudes' => $solicitudes,
-            'fechaActual' => $fechaActual,
-            'filtros' => [
-                'estado' => $estado,
-                'nombreRuc' => $nombreRuc,
-                'asunto' => $asunto,
-                'fechaRegistro' => $fechaRegistro,
-                'fechaActualizacion' => $fechaActualizacion,
-            ]
+            'contribuyente' => $contribuyente,
+            'Pendientes'=> $usuarios,
+            'estadosDisponibles'=> $estados,
+            'estadoSeleccionado'=> $estadoSeleccionado ,
+            'fechaActual'=> $fechaActual,
+            'usuario' => $usuario
         ];
-        Debugbar::info('Pene');
-        Debugbar::info($viewData);
+
+        Debugbar::info('Datos:', $viewData);
+
         return view('pendientes', $viewData);
     }
 
-    public function filtrar(Request $request)
-    {
-        // Esta función redirige al index con los parámetros de filtro
-        return $this->index($request);
-    }
-
-    public function actualizar(Request $request, $id)
-    {
-        // Buscar la solicitud por ID
-        $solicitud = SolicitudAcceso::findOrFail($id);
-
-        // Actualizar únicamente el estado
-        $solicitud->nFlgEstado = $request->estado;
-        $solicitud->cUsuarioActualizacion = Session::get('usuario')['cUsuario'] ?? 'sistema';
-        $solicitud->dFechaActualizacion = now();
-        $solicitud->cEstacionActualizacion = $request->ip();
-
-        // Guardar los cambios
-        $solicitud->save();
-
-        return redirect()->route('Pendiente')->with('success', 'Estado de solicitud actualizado correctamente');
-    }
 }

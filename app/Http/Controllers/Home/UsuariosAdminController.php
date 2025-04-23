@@ -42,9 +42,6 @@ class UsuariosAdminController extends Controller
         $tipoAdministrador = $request->tipoAdministrador ?? '%';
         $estadoSeleccionado  = $request->estadoSeleccionado ?? '%';
 
-        Debugbar::info('Estado seleccionado:', $estadoSeleccionado);
-        Debugbar::info('tipoAdministrador seleccionado:', $tipoAdministrador);
-
         // Obtener las usuarios detalladas
         $usuarios = UsuariosAdmins::obtenerUsuarios($tipoAdministrador, $estadoSeleccionado );
 
@@ -64,73 +61,6 @@ class UsuariosAdminController extends Controller
             'usuario' => $usuario
         ];
 
-        Debugbar::info('Data:', $viewData);
-
         return view('usuarios', $viewData);
-    }
-
-    /**
-     * Filtra los usuarios por estado
-     *
-     * @param Request $request
-     * @return \Illuminate\Http\JsonResponse
-     */
-    public function filtrar(Request $request)
-    {
-        try {
-            Debugbar::info('Filtro recibido', $request->all());
-
-            $codigoContribuyente = $request->session()->get('codigo_contribuyente');
-            $tipoAdministrador = $request->tipoAdministrador ?? '%';
-            $estadoSeleccionado  = $request->estadoSeleccionado ?? '%';
-
-            if (!$codigoContribuyente) {
-                return response()->json([
-                    'status' => 'error',
-                    'message' => 'No se encontró el código de contribuyente en la sesión'
-                ], 400);
-            }
-
-            // Obtener las deudas detalladas
-            $deudas = UsuariosAdmins::obtenerUsuarios($tipoAdministrador, $estadoSeleccionado );
-
-            // Verificar si hay una propiedad 'año' en los registros
-            // El nombre de la propiedad podría variar según la codificación
-            $keyAnio = 'año';
-            if (!empty($deudas) && !isset($deudas[0]->$keyAnio)) {
-                // Buscamos la clave correcta para agrupar
-                $firstRecord = (array)$deudas[0];
-                $possibleKeys = ['año', 'ano', 'anio', 'year'];
-
-                foreach ($possibleKeys as $key) {
-                    if (array_key_exists($key, $firstRecord)) {
-                        $keyAnio = $key;
-                        break;
-                    }
-                }
-
-                Debugbar::info('Clave de agrupación encontrada', ['keyAnio' => $keyAnio]);
-            }
-
-            // Agrupar por la clave identificada
-            $deudas = collect($deudas)->groupBy($keyAnio);
-
-            Debugbar::info('Deudas encontradas', ['cantidad' => count($deudas)]);
-
-            return response()->json([
-                'status' => 'success',
-                'deudas' => $deudas,
-            ]);
-        } catch (\Exception $e) {
-            Debugbar::error('Error al filtrar deudas', [
-                'error' => $e->getMessage(),
-                'trace' => $e->getTraceAsString()
-            ]);
-
-            return response()->json([
-                'status' => 'error',
-                'message' => 'Error al filtrar las deudas: ' . $e->getMessage()
-            ], 500);
-        }
     }
 }

@@ -44,8 +44,9 @@
                             <div class="d-flex flex-row">
                                 <div class="w-200 mw-250px me-3">
                                     <!--begin::Select2-->
-                                    <select class="form-select form-select-solid" name="anio" id="anio_select"
-                                        data-control="select2" data-hide-search="true" data-placeholder="Seleccione el Año">
+                                    <select class="form-select form-select-solid" name="estadoSeleccionado" id="anio_select"
+                                        data-control="select2" data-hide-search="true"
+                                        data-placeholder="Seleccione el Estado">
                                         <option></option>
                                         <option value="%" {{ $estadoSeleccionado == '%' ? 'selected' : '' }}>Todos
                                         </option>
@@ -61,7 +62,8 @@
                                 </div>
                                 <div class="w-200 mw-250px">
                                     <!--begin::Select2-->
-                                    <select class="form-select form-select-solid" name="tipoAdministrador" id="tipo_admin_select" data-control="select2" data-hide-search="true"
+                                    <select class="form-select form-select-solid" name="tipoAdministrador"
+                                        id="tipo_admin_select" data-control="select2" data-hide-search="true"
                                         data-placeholder="Seleccione el Tributo">
                                         <option></option>
                                         <option value="%" {{ $tipoAdministrador == '%' ? 'selected' : '' }}>Todos
