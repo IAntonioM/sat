@@ -27,18 +27,17 @@
 		<script>// Frame-busting to prevent site from being loaded within a frame without permission (click-jacking) if (window.top != window.self) { window.top.location.replace(window.self.location.href); }</script>
 	</head>
 	<style>
-		body {
-    background-image: url('assets/media/auth/bg4.jpg');
-    background-repeat: no-repeat;
-    background-size: cover;         /* o 'contain' según lo que necesites */
-    background-position: center;    /* centra la imagen */
-}
+ body {
+        background-image: url('{{ asset('assets/media/auth/bg4.jpg') }}') !important;
+        background-repeat: no-repeat !important;
+        background-size: cover !important;
+        background-position: center !important;
+        background-attachment: fixed !important;
+    }
 
-[data-bs-theme=light] body:not(.app-blank) {
-    background-image: url(assets/media/auth/bg4.jpg);
-}
-
-
+    [data-bs-theme="dark"] body {
+        background-image: url('{{ asset('assets/media/auth/bg4-dark.jpg') }}') !important;
+    }
 
 			@keyframes aparecer {
   0% {
