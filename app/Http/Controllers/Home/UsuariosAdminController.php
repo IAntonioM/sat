@@ -14,6 +14,7 @@ class UsuariosAdminController extends Controller
 {
     public function index(Request $request)
     {
+        Debugbar::info('Request estado:', ['estado' => $request->estado]);
         // Obtener el código del contribuyente de la sesión o del parámetro
         $codigoContribuyente = session('codigo_contribuyente') ??
         session('cod_usuario') ?? null; // Valor por defecto para pruebas
@@ -40,10 +41,10 @@ class UsuariosAdminController extends Controller
 
         // Obtener los filtros
         $tipoAdministrador = $request->tipoAdministrador ?? '%';
-        $estado = $request->estado ?? '%';
+        $estadoSeleccionado  = $request->estadoSeleccionado ?? '%';
 
         // Obtener las usuarios detalladas
-        $usuarios = UsuariosAdmins::obtenerUsuarios($tipoAdministrador, $estado);
+        $usuarios = UsuariosAdmins::obtenerUsuarios($tipoAdministrador, $estadoSeleccionado );
 
         // Preparar datos para la vista
         $estados = UsuariosAdmins::obtenerEstadosDisponibles();
@@ -55,7 +56,7 @@ class UsuariosAdminController extends Controller
             'usuarios'=> $usuarios,
             'estados'=> $estados,
             'tipoAdministrador'=> $tipoAdministrador,
-            'estado'=> $estado,
+            'estadoSeleccionado '=> $estadoSeleccionado ,
             'tiposAdmins'=> $tiposAdmins,
             'fechaActual'=> $fechaActual,
             'usuario' => $usuario
