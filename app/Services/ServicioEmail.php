@@ -7,6 +7,7 @@ use App\Services\CorreoGenerico;
 use Exception;
 use Illuminate\Support\Facades\Log;
 
+use Barryvdh\Debugbar\Facades\Debugbar;
 class ServicioEmail
 {
     /**
@@ -22,15 +23,18 @@ class ServicioEmail
      */
     public function enviar($para, $asunto, $contenido, $adjuntos = [], $cc = [], $bcc = [])
     {
+        DebugBar::info('Iniciando envío de correo a: ' . $para);
         try {
             Mail::to($para)
                 ->cc($cc)
                 ->bcc($bcc)
                 ->send(new CorreoGenerico($asunto, $contenido, $adjuntos));
 
+            DebugBar::info('Correo enviado exitosamente');
             return true;
         } catch (Exception $e) {
-            Log::error('Error al enviar correo: ' . $e->getMessage());
+            DebugBar::error('Error al enviar correo: ' . $e->getMessage());
+            DebugBar::error('Trace: ' . $e->getTraceAsString());
             return false;
         }
     }

@@ -15,7 +15,28 @@ class SolicitarAccesoController extends Controller
     public function index()
     {
         $tiposDocumento = TipoDocumento::obtenerTipoDocs();
+        // $servicioEmail = app(ServicioEmail::class);
 
+
+        // Usar el correo proporcionado en la solicitud
+        // $destinatario = 'logerkaizer@gmail.com';
+
+        // // Asunto del correo
+        // $asunto = 'Nueva solicitud de acceso al sistema SIAT';
+
+        // // Contenido del correo - simplificado solo con la información esencial
+        // $contenido = "
+        //     <h2>Nueva solicitud de acceso</h2>
+        //     <p>Se ha solicitado el registro al sistema SIAT con los siguientes datos:</p>
+        //     <p>Por favor, revise esta solicitud en el panel administrativo.</p>
+        // ";
+
+        // // Enviar el correo
+        // $servicioEmail->enviar($destinatario, $asunto, $contenido);
+
+        // // Log para verificar que se está ejecutando
+        // DebugBar::info('Correo de notificación enviado a: ' . $destinatario);
+        // DebugBar::info('Correo de notificación enviado a: ' . $contenido);
         return view('registro', compact('tiposDocumento'));
     }
 
@@ -161,25 +182,28 @@ class SolicitarAccesoController extends Controller
             // Obtener el servicio de email mediante el contenedor de servicios
             $servicioEmail = app(ServicioEmail::class);
 
-
             // Usar el correo proporcionado en la solicitud
-            $destinatario = $data['correoDestino'] ?? 'admin@example.com';
+            $destinatario = $data['correoDestino'] ?? 'loger.com';
 
             // Asunto del correo
             $asunto = 'Nueva solicitud de acceso al sistema SITA';
 
-            // Contenido del correo - simplificado solo con la información esencial
-            $contenido = "
-                <h2>Nueva solicitud de acceso</h2>
-                <p>Se ha solicitado el registro al sistema SITA con los siguientes datos:</p>
-                <ul>
-                    <li><strong>{$data['nombreDocumento']}:</strong> {$solicitud->nNumDocuId}</li>
-                    <li><strong>Nombres/Razón social:</strong> {$nombreCompleto}</li>
-                    <li><strong>Correo electrónico:</strong> {$data['correoDestino']}</li>
-                    <li><strong>Teléfono:</strong> {$data['telefono']}</li>
-                </ul>
-                <p>Por favor, revise esta solicitud en el panel administrativo.</p>
-            ";
+            // Verificar que todos los datos necesarios existan
+            $nombreDocumento = $data['nombreDocumento'] ?? 'Documento';
+            $numDocumento = $data['nNumDocuId'] ?? 'No especificado';
+            $email = $data['correoDestino'] ?? 'No especificado';
+            $telefono = $data['telefono'] ?? 'No especificado';
+
+            // Contenido del correo usando concatenación para evitar problemas con comillas
+            $contenido = '<h2>Nueva solicitud de acceso</h2>' .
+                    '<p>Se ha solicitado el registro al sistema SITA con los siguientes datos:</p>' .
+                    '<ul>' .
+                        '<li><strong>' . htmlspecialchars($nombreDocumento) . ':</strong> ' . htmlspecialchars($numDocumento) . '</li>' .
+                        '<li><strong>Nombres/Razón social:</strong> ' . htmlspecialchars($nombreCompleto) . '</li>' .
+                        '<li><strong>Correo electrónico:</strong> ' . htmlspecialchars($email) . '</li>' .
+                        '<li><strong>Teléfono:</strong> ' . htmlspecialchars($telefono) . '</li>' .
+                    '</ul>' .
+                    '<p>Por favor, revise esta solicitud en el panel administrativo.</p>';
 
             // Enviar el correo
             $servicioEmail->enviar($destinatario, $asunto, $contenido);
