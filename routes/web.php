@@ -11,6 +11,7 @@ use App\Http\Controllers\Home\HlaController;
 use App\Http\Controllers\Home\HRController;
 use App\Http\Controllers\Home\ReporteController;
 use App\Http\Controllers\Home\PUController;
+use App\Http\Controllers\Home\PRController;
 use App\Http\Controllers\Home\UsuariosAdminController;
 use App\Http\Controllers\Home\PendientesController;
 use Illuminate\Support\Facades\Route;
@@ -111,6 +112,7 @@ Route::middleware('check.login')->group(function () {
     Route::get('/HLA', [HlaController::class, 'index'])->name('HLA');
     // routes/web.php
     Route::get('/PU', [PUController::class, 'index'])->name('PU');
+    Route::get('/PR', [PRController::class, 'index'])->name('PR');
 });
 
 // En routes/web.php
