@@ -39,13 +39,9 @@ class RecordPapeletaController extends Controller
 
         $total = $totalDeuda - $totalDescuento; // Si "total" significa el valor sin descuento
 
-        Debugbar::error('Resumen DATA', $resumenData);
-        Debugbar::error('Totales', $totales);
-        Debugbar::info('Total Deuda', $totalDeuda);
-        Debugbar::info('Total Descuento', $totalDescuento);
-        Debugbar::info('Total', $total);
 
-        return view('record', compact('usuario', 'resumenData', 'totales', 'totalDeuda', 'totalDescuento', 'total','fechaActual'));
+
+        return view('record', compact('usuario', 'resumenData', 'totales', 'totalDeuda', 'totalDescuento', 'total','fechaActual','termBusq'));
     }
 
 }

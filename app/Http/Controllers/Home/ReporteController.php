@@ -24,7 +24,8 @@ class ReporteController extends Controller
                 break;
 
             case 'reporteRecordPapeletas':
-                $report = new HRReport();
+                $termBusq = $request->input('termBusq');
+                $report = new HRReport($termBusq);
                 return $report->generarPDF();
                 break;
 

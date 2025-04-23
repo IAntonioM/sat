@@ -29,7 +29,7 @@
                         <!--end::Details-->
                         <!--begin::Actions-->
                         <div class="d-flex mb-4">
-                            <a href="{{ route('reporte', ['tipo' => 'reporteHR']) }}" class="btn btn-primary" target="_blank"><i class="fa-solid fa-print"></i>Imprimir</a>
+                            <a href="{{ route('reporte', ['tipo' => 'reporteHR','termBusq'=>$termBusq]) }}" class="btn btn-primary" target="_blank"><i class="fa-solid fa-print"></i>Imprimir</a>
                         </div>
                         <!--end::Actions-->
                     </div>
