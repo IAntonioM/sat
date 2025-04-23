@@ -109,7 +109,7 @@
     </div>
     <!--end::Card widget 3-->
 </div>
-<div class="col-xl-3">
+{{-- <div class="col-xl-3">
     <!--begin::Card widget 3-->
     <div class="card card-flush bgi-repeat bgi-size-contain bgi-position-x-end h-xl-100 " style="background-color: #009ef7;background-image:url('assets/media/svg/shapes/widget-bg-1.png'); ">
         <!--begin::Header-->
@@ -143,7 +143,7 @@
         <!--end::Card footer-->
     </div>
     <!--end::Card widget 3-->
-</div>
+</div> --}}
 
 
 

@@ -41,12 +41,12 @@ Route::middleware('guest.redirect')->group(function () {
     Route::post('/solicitarAcceso', [SolicitarAccesoController::class, 'insertarSolcitudAcceso']);
 });
 
-// Ruta de cambio de clave y logout (accesible para todos los usuarios autenticados)
+// Ruta de cambio de clave obligatorio
 Route::middleware(['check.login', 'cforce.password.change'])->group(function () {
     Route::get('/cambiarClave', [ChangePassword::class, 'formCambiarClave'])->name('cambiarClave');
     Route::post('/cambiarClave', [ChangePassword::class, 'cambiarClave']);
 });
-// Ruta de cambio de clave y logout (accesible para todos los usuarios autenticados)
+//logout (accesible para todos los usuarios autenticados)
 Route::middleware(['check.login'])->group(function () {
     Route::post('/logout', [LogoutController::class, 'logout'])->name('logout');
 });
