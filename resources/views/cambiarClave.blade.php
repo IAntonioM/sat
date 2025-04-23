@@ -27,7 +27,7 @@
 								<!--begin::Input group=-->
 								<div class="fv-row mb-8">
 									<!--begin::Email-->
-									<input type="text" placeholder="Usuario" name="usuario" autocomplete="off" class="form-control bg-transparent" value="{{ old('usuario', $usuario->vcodcontr ?? '') }}"  readonly/>
+									<input type="text" placeholder="Usuario" name="usuario" autocomplete="off" class="form-control bg-transparent" value="{{ old('usuario', $codigo_contribuyente ?? '') }}"  readonly/>
 									<!--end::Email-->
 								</div>
 								<!--end::Input group=-->

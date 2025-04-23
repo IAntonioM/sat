@@ -52,6 +52,7 @@ class Kernel extends HttpKernel
      *
      * @var array<string, class-string|string>
      */
+
     protected $middlewareAliases = [
         'auth' => \App\Http\Middleware\Authenticate::class,
         'auth.basic' => \Illuminate\Auth\Middleware\AuthenticateWithBasicAuth::class,
@@ -66,5 +67,9 @@ class Kernel extends HttpKernel
         'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
         'check.login' => \App\Http\Middleware\CheckLogin::class,
         'guest.redirect' => \App\Http\Middleware\RedirectIfAuthenticatedCustom::class,
+        'force.password.change' => \App\Http\Middleware\ForcePasswordChange::class,
+        'user.access' => \App\Http\Middleware\UserAccess::class,
+        'moderator.access' => \App\Http\Middleware\ModeratorAccess::class,
+        'admin.access' => \App\Http\Middleware\AdminAccess::class,
     ];
 }

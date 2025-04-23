@@ -24,8 +24,8 @@ class ChangePassword extends Controller
         if (session('errors')) {
             Debugbar::error('⚠️ Errores de sesión', session('errors')->all());
         }
-        $usuario = Session::get('usuario');
-        return view('cambiarClave', compact('usuario'));
+        $codigo_contribuyente = Session::get('codigo_contribuyente');
+        return view('cambiarClave', compact('codigo_contribuyente'));
     }
 
     public function cambiarClave(ChangePassRequest $request)

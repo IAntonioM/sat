@@ -103,7 +103,7 @@
 					<!--begin::Aside-->
 					<div class="d-flex flex-center flex-lg-start flex-column">
 						<!--begin::Logo-->
-						<a href="../../demo2/dist/index.html" class="mb-7 caja">
+						<a href="#" class="mb-7 caja">
 							<img alt="Logo" src="assets/media/logos/custom-3.png" />
 						</a>
 						<!--end::Logo-->

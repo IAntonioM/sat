@@ -156,7 +156,7 @@
 													<!--begin:Menu item-->
 													<div class="menu-item">
 														<!--begin:Menu link-->
-														<a class="menu-link py-3" href="https://preview.keenthemes.com/html/metronic/docs/base/utilities" target="_blank" data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-dismiss="click" data-bs-placement="right">
+														<a class="menu-link py-3" href="{{ route('HR') }}" data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-dismiss="click" data-bs-placement="right">
 															<span class="menu-icon">
 																<i class="ki-duotone ki-rocket fs-2">
 																	<span class="path1"></span>
@@ -172,7 +172,7 @@
 													<!--begin:Menu item-->
 													<div class="menu-item">
 														<!--begin:Menu link-->
-														<a class="menu-link py-3" href="https://preview.keenthemes.com/html/metronic/docs" target="_blank" data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-dismiss="click" data-bs-placement="right">
+														<a class="menu-link py-3" href="#" data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-dismiss="click" data-bs-placement="right">
 															<span class="menu-icon">
 																<i class="ki-duotone ki-abstract-26 fs-2">
 																	<span class="path1"></span>
