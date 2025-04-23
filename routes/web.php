@@ -113,7 +113,9 @@ Route::middleware('check.login')->group(function () {
     Route::get('/PU', [PUController::class, 'index'])->name('PU');
 });
 
+// En routes/web.php
 Route::get('/UsuariosAdmin', [UsuariosAdminController::class, 'index'])->name('UsuariosAdmin');
+Route::post('/UsuariosAdmin', [UsuariosAdminController::class, 'index'])->name('UsuariosAdmin');
 
 // Rutas para pendientes
 Route::get('/Pendiente', [PendientesController::class, 'index'])->name('Pendiente');

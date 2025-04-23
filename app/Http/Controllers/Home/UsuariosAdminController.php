@@ -16,12 +16,19 @@ class UsuariosAdminController extends Controller
     {
         $usuario = Session::get('usuario');
 
+        // Obtener el filtro de estado
+        $estadoSeleccionado = $request->estado ?? '%';
+
         // Preparar parámetros para el procedimiento almacenado
         $params = [
+            'vestado_cuenta' => $estadoSeleccionado
         ];
 
         // Obtener las solicitudes
         $usuarios = UsuariosAdmins::listarUsuarios($params);
+
+        // Obtener estados disponibles
+        $estadosDisponibles = UsuariosAdmins::obtenerEstadosDisponibles();
 
         // Fecha de actualización para mostrar en la vista
         $fechaActual = Carbon::now()->format('d/m/Y');
@@ -31,9 +38,54 @@ class UsuariosAdminController extends Controller
             'usuario' => $usuario,
             'Usuarios' => $usuarios,
             'fechaActual' => $fechaActual,
+            'estadosDisponibles' => $estadosDisponibles,
+            'estadoSeleccionado' => $estadoSeleccionado
         ];
-        Debugbar::info('Pene');
-        Debugbar::info($viewData);
+
         return view('usuarios', $viewData);
+    }
+
+    /**
+     * Filtra los usuarios por estado
+     *
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function filtrar(Request $request)
+    {
+        try {
+            Debugbar::info('Filtro recibido', $request->all());
+
+            $estadoSeleccionado = $request->estado ?? '%';
+
+            Debugbar::info('Parámetros de filtrado', [
+                'estado' => $estadoSeleccionado
+            ]);
+
+            // Preparar parámetros para el procedimiento almacenado
+            $params = [
+                'vestado_cuenta' => $estadoSeleccionado
+            ];
+
+            // Obtener los usuarios filtrados
+            $usuarios = UsuariosAdmins::listarUsuarios($params);
+
+            Debugbar::info('Usuarios encontrados', ['cantidad' => count($usuarios)]);
+
+            return response()->json([
+                'status' => 'success',
+                'usuarios' => $usuarios,
+            ]);
+        } catch (\Exception $e) {
+            Debugbar::error('Error al filtrar usuarios', [
+                'error' => $e->getMessage(),
+                'trace' => $e->getTraceAsString()
+            ]);
+
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Error al filtrar los usuarios: ' . $e->getMessage()
+            ], 500);
+        }
     }
 }
