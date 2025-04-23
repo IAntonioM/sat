@@ -42,7 +42,7 @@
                         <form id="filtroForm" action="{{ route('admin/UsuariosAdmin') }}" method="POST">
                             @csrf
                             <div class="d-flex flex-row">
-                                <div class="w-200 mw-250px" style="padding-right: 10px;">
+                                <div class="w-200 mw-250px me-3">
                                     <!--begin::Select2-->
                                     <select class="form-select form-select-solid" name="estado" id="estado_select"
                                         data-control="select2" data-hide-search="true"
@@ -318,18 +318,9 @@
             </div>
         </div>
     </div>
-
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     @push('scripts')
-        <script>
-            $(document).ready(function() {
-                // Configurar el modal de eliminación
-                $('.eliminar-usuario').on('click', function() {
-                    const userId = $(this).data('id');
-                    const formAction = $('#form-eliminar-usuario').attr('action');
-                    $('#form-eliminar-usuario').attr('action', formAction.replace(/\/[^\/]*$/, '/' + userId));
-                });
-            });
-        </script>
+        <script src="{{ asset('js/usuariosJS.js') }}?v={{ time() }}"></script>
     @endpush
 @endsection
 ```

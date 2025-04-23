@@ -14,33 +14,54 @@ class UsuariosAdminController extends Controller
 {
     public function index(Request $request)
     {
-        $usuario = Session::get('usuario');
+        // Obtener el código del contribuyente de la sesión o del parámetro
+        $codigoContribuyente = session('codigo_contribuyente') ??
+        session('cod_usuario') ?? null; // Valor por defecto para pruebas
 
-        // Obtener el filtro de estado
-        $estadoSeleccionado = $request->estado ?? '%';
+        $usuario =  Session::get('usuario');
 
-        // Preparar parámetros para el procedimiento almacenado
-        $params = [
-            'vestado_cuenta' => $estadoSeleccionado
-        ];
+        if (!$codigoContribuyente) {
+            // Si no hay código de contribuyente, redirigir al login
+            return redirect()->route('login')->with([
+                'alert' => [
+                    'type' => 'error',
+                    'title' => 'Sesión inválida',
+                    'message' => 'No se encontró el código de contribuyente en la sesión'
+                ]
+            ]);
+        }
 
-        // Obtener las solicitudes
-        $usuarios = UsuariosAdmins::listarUsuarios($params);
+        // Obtener datos del contribuyente
+        $contribuyente = UsuariosAdmins::obtenerDatosContribuyente($codigoContribuyente);
 
-        // Obtener estados disponibles
-        $estadosDisponibles = UsuariosAdmins::obtenerEstadosDisponibles();
+        if (!$contribuyente) {
+            return redirect()->route('login')->with('error', 'No se encontró el contribuyente');
+        }
 
-        // Fecha de actualización para mostrar en la vista
+        // Obtener los filtros
+        $tipoAdministrador = $request->tipoAdministrador ?? '%';
+        $estado = $request->estado ?? '%';
+
+        // Obtener las usuarios detalladas
+        $usuarios = UsuariosAdmins::obtenerUsuarios($tipoAdministrador, $estado);
+
+        // Preparar datos para la vista
+        $estados = UsuariosAdmins::obtenerEstadosDisponibles();
+        $tiposAdmins = UsuariosAdmins::obtenerTipoAdminDisponibles();
         $fechaActual = Carbon::now()->format('d/m/Y');
 
-        // Data to send to the view
         $viewData = [
-            'usuario' => $usuario,
-            'Usuarios' => $usuarios,
-            'fechaActual' => $fechaActual,
-            'estadosDisponibles' => $estadosDisponibles,
-            'estadoSeleccionado' => $estadoSeleccionado
+            'contribuyente' => $contribuyente,
+            'usuarios'=> $usuarios,
+            'estados'=> $estados,
+            'tipoAdministrador'=> $tipoAdministrador,
+            'estado'=> $estado,
+            'tiposAdmins'=> $tiposAdmins,
+            'fechaActual'=> $fechaActual,
+            'usuario' => $usuario
         ];
+
+        Debugbar::info('Data:', $viewData);
 
         return view('usuarios', $viewData);
     }
@@ -53,39 +74,6 @@ class UsuariosAdminController extends Controller
      */
     public function filtrar(Request $request)
     {
-        try {
-            Debugbar::info('Filtro recibido', $request->all());
 
-            $estadoSeleccionado = $request->estado ?? '%';
-
-            Debugbar::info('Parámetros de filtrado', [
-                'estado' => $estadoSeleccionado
-            ]);
-
-            // Preparar parámetros para el procedimiento almacenado
-            $params = [
-                'vestado_cuenta' => $estadoSeleccionado
-            ];
-
-            // Obtener los usuarios filtrados
-            $usuarios = UsuariosAdmins::listarUsuarios($params);
-
-            Debugbar::info('Usuarios encontrados', ['cantidad' => count($usuarios)]);
-
-            return response()->json([
-                'status' => 'success',
-                'usuarios' => $usuarios,
-            ]);
-        } catch (\Exception $e) {
-            Debugbar::error('Error al filtrar usuarios', [
-                'error' => $e->getMessage(),
-                'trace' => $e->getTraceAsString()
-            ]);
-
-            return response()->json([
-                'status' => 'error',
-                'message' => 'Error al filtrar los usuarios: ' . $e->getMessage()
-            ], 500);
-        }
     }
 }
