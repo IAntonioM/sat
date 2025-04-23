@@ -116,11 +116,16 @@ Route::middleware('check.login')->group(function () {
 });
 
 // En routes/web.php
-Route::get('/UsuariosAdmin', [UsuariosAdminController::class, 'index'])->name('UsuariosAdmin');
-Route::post('/UsuariosAdmin', [UsuariosAdminController::class, 'index'])->name('UsuariosAdmin');
+Route::get('/admin/UsuariosAdmin', [UsuariosAdminController::class, 'index'])->name('admin/UsuariosAdmin');
+Route::post('/admin/UsuariosAdmin', [UsuariosAdminController::class, 'index'])->name('admin/UsuariosAdmin');
+
+Route::get('/moderador/UsuariosAdmin', [UsuariosAdminController::class, 'index'])->name('moderador/UsuariosAdmin');
+Route::post('/moderador/UsuariosAdmin', [UsuariosAdminController::class, 'index'])->name('moderador/UsuariosAdmin');
 
 // Rutas para pendientes
-Route::get('/Pendiente', [PendientesController::class, 'index'])->name('Pendiente');
-Route::post('/Pendiente/filtrar', [PendientesController::class, 'filtrar'])->name('Pendiente.filtrar');
-Route::post('/Pendiente/actualizar/{id}', [PendientesController::class, 'actualizar'])->name('Pendiente.actualizar');
-Route::get('/Pendiente/imprimir', [PendientesController::class, 'imprimir'])->name('Pendiente.imprimir');
+Route::get('/admin/Pendiente', [PendientesController::class, 'index'])->name('admin/Pendiente');
+Route::post('/admin/Pendiente/filtrar', [PendientesController::class, 'filtrar'])->name('admin/Pendiente.filtrar');
+
+// Rutas para pendientes
+Route::get('/moderador/Pendiente', [PendientesController::class, 'index'])->name('moderador/Pendiente');
+Route::post('/moderador/Pendiente/filtrar', [PendientesController::class, 'filtrar'])->name('moderador/Pendiente.filtrar');

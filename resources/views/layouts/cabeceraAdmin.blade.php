@@ -84,7 +84,7 @@
 											<!--begin:Menu item-->
 											<div data-kt-menu-trigger="{default: 'click', lg: 'hover'}" data-kt-menu-placement="bottom-start" class="menu-item here show menu-here-bg menu-lg-down-accordion me-0 me-lg-2">
 												<!--begin:Menu link-->
-												<a  href="{{ route('UsuariosAdmin') }}">
+												<a  href="{{ route('admin/UsuariosAdmin') }}">
 													Mantenimiento de Usuarios
 												</a>
 												<!--end:Menu link-->
@@ -97,7 +97,7 @@
 											<!--begin:Menu item-->
 											<div data-kt-menu-trigger="{default: 'click', lg: 'hover'}" data-kt-menu-placement="bottom-start" class="menu-item menu-lg-down-accordion menu-sub-lg-down-indention me-0 me-lg-2">
 												<!--begin:Menu link-->
-												<a  href="{{ route('Pendiente') }}">Pendientes por Aprobar</a>
+												<a  href="{{ route('admin/Pendiente') }}">Pendientes por Aprobar</a>
 												<!--end:Menu link-->
 
 											</div>

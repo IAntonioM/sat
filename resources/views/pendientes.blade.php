@@ -38,7 +38,7 @@
                 <div class="card-header align-items-center py-5 gap-2 gap-md-5">
                     <!--begin::Card title-->
                     <div class="card-title">
-                        <form action="{{ route('Pendiente.filtrar') }}" method="PUT" id="formFiltrar">
+                        <form action="{{ route('admin/Pendiente.filtrar') }}" method="PUT" id="formFiltrar">
                             @csrf
                             <div class="d-flex align-items-center position-relative my-1">
                                 <div class="w-200 mw-250px" style="padding-right: 10px;">
@@ -79,7 +79,7 @@
                     <!--end::Card title-->
                     <!--begin::Card toolbar-->
                     <div class="card-toolbar flex-row-fluid justify-content-end gap-5">
-                        <a href="{{ route('Pendiente.imprimir') }}" class="btn btn-primary"><i
+                        <a href="#" class="btn btn-primary"><i
                                 class="fa-solid fa-print"></i> Imprimir</a>
                     </div>
                     <!--end::Card toolbar-->
@@ -177,7 +177,7 @@
                 <!--begin::Modal body-->
                 <div class="modal-body px-5 my-7">
                     <!--begin::Form-->
-                    <form id="kt_modal_add_user_form" class="form" action="{{ route('Pendiente') }}" method="PUT">
+                    <form id="kt_modal_add_user_form" class="form" action="{{ route('admin/Pendiente') }}" method="PUT">
                         @csrf
                         @method('PUT')
                         <input type="hidden" name="solicitud_id" id="solicitud_id">
@@ -281,7 +281,7 @@
                 var estado = $(this).data('estado');
 
                 // Actualizar la acción del formulario con el ID correcto
-                var actionUrl = "{{ route('Pendiente.actualizar', ':id') }}";
+                var actionUrl = "#";
                 actionUrl = actionUrl.replace(':id', id);
                 $('#kt_modal_add_user_form').attr('action', actionUrl);
 
