@@ -168,8 +168,9 @@
     <div class="col-xl-12 row" style="border: 1px solid var(--bs-gray-300);margin-left: 0;margin-right:0;--bs-gutter-x: 0rem; border-top: none;">
         <!-- CODIGO DATA -->
         <div class="col-xl-1" style="border-right: 1px solid #ccc; padding:10px; text-align:center;">
-            <a href="{{ $predio->tipo_predio == 'PR' ? url('PR?xid_anexo=' . $predio->cod_pred) : url('PU?xid_anexo=' . $predio->cod_pred) }}">
-                {{ $predio->cod_pred }}
+            <a href="{{ $predio->tipo_predio == 'PR' ? url('PR?xid_anexo=' . trim($predio->cod_pred)) : url('PU?xid_anexo=' . trim($predio->cod_pred)) }}"
+               style="color: rgb(0, 54, 233); text-decoration: underline; font-size: 12px;">
+                {{ trim($predio->cod_pred) }}
             </a>
         </div>
 

@@ -186,7 +186,7 @@ class SolicitarAccesoController extends Controller
             $destinatario = $data['correoDestino'] ?? 'loger.com';
 
             // Asunto del correo
-            $asunto = 'Nueva solicitud de acceso al sistema SITA';
+            $asunto = 'Nueva solicitud de acceso al sistema SAT ICA';
 
             // Verificar que todos los datos necesarios existan
             $nombreDocumento = $data['nombreDocumento'] ?? 'Documento';
@@ -196,7 +196,7 @@ class SolicitarAccesoController extends Controller
 
             // Contenido del correo usando concatenación para evitar problemas con comillas
             $contenido = '<h2>Nueva solicitud de acceso</h2>' .
-                    '<p>Se ha solicitado el registro al sistema SITA con los siguientes datos:</p>' .
+                    '<p>Se ha solicitado el registro al sistema SAT ICA con los siguientes datos:</p>' .
                     '<ul>' .
                         '<li><strong>' . htmlspecialchars($nombreDocumento) . ':</strong> ' . htmlspecialchars($numDocumento) . '</li>' .
                         '<li><strong>Nombres/Razón social:</strong> ' . htmlspecialchars($nombreCompleto) . '</li>' .
