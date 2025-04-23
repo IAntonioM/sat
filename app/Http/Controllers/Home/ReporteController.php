@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Home;
 use App\Http\Controllers\Controller;
 use App\Reports\HRReport;
 use App\Reports\PUReport;
+use App\Reports\RecordReport;
 use Illuminate\Http\Request;
 
 class ReporteController extends Controller
@@ -25,7 +26,7 @@ class ReporteController extends Controller
 
             case 'reporteRecordPapeletas':
                 $termBusq = $request->input('termBusq');
-                $report = new HRReport($termBusq);
+                $report = new RecordReport($termBusq);
                 return $report->generarPDF();
                 break;
 

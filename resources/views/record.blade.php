@@ -90,7 +90,7 @@
 
 
                     <!--begin::Add product-->
-                    <a href="{{ route('reporte', ['tipo' => 'reporteRecordPapeletas']) }}" class="btn btn-primary"><i class="fa-solid fa-print"></i>Imprimir Record de Infracciones</a>
+                    <a href="{{ route('reporte', ['tipo' => 'reporteRecordPapeletas','termBusq'=>$termBusq]) }}" class="btn btn-primary"><i class="fa-solid fa-print"></i>Imprimir Record de Infracciones</a>
 
                     <!--end::Add product-->
                 </div>
