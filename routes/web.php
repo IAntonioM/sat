@@ -14,6 +14,7 @@ use App\Http\Controllers\Home\PUController;
 use App\Http\Controllers\Home\PRController;
 use App\Http\Controllers\Home\UsuariosAdminController;
 use App\Http\Controllers\Home\PendientesController;
+use App\Http\Controllers\Home\RecordPapeletaController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -81,6 +82,7 @@ Route::middleware(['check.login', 'force.password.change', 'user.access'])->grou
     Route::get('/HLA', [HlaController::class, 'index'])->name('HLA');
     Route::get('/PU', [PUController::class, 'index'])->name('PU');
     Route::get('/PR', [PRController::class, 'index'])->name('PR');
+    Route::get('/record_papeleta', [RecordPapeletaController::class, 'index'])->name('record_papeleta');
 });
 
 // lo peude ver vestado 002 y 003
