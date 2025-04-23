@@ -68,6 +68,7 @@ class Kernel extends HttpKernel
         'check.login' => \App\Http\Middleware\CheckLogin::class,
         'guest.redirect' => \App\Http\Middleware\RedirectIfAuthenticatedCustom::class,
         'force.password.change' => \App\Http\Middleware\ForcePasswordChange::class,
+        'cforce.password.change' => \App\Http\Middleware\CForcePasswordChange::class,
         'user.access' => \App\Http\Middleware\UserAccess::class,
         'moderator.access' => \App\Http\Middleware\ModeratorAccess::class,
         'admin.access' => \App\Http\Middleware\AdminAccess::class,

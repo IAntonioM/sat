@@ -340,6 +340,24 @@
     <!--end::Custom Javascript-->
     <!--end::Javascript-->
 </body>
+@if (session('alert'))
+<script>
+    Swal.fire({
+        icon: '{{ session('alert.type') }}',
+        title: '{{ session('alert.title') }}',
+        html: `{!! session('alert.message') !!}`,
+        confirmButtonText: 'Aceptar',
+        customClass: {
+            confirmButton: 'btn btn-light-{{
+                session("alert.type") === "success" ? "success" :
+                (session("alert.type") === "warning" ? "warning" :
+                (session("alert.type") === "info" ? "info" :
+                (session("alert.type") === "error" ? "danger" : "primary")))
+            }}'
+        }
+    });
+</script>
+@endif
 <!--end::Body-->
 
 </html>

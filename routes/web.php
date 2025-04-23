@@ -42,9 +42,12 @@ Route::middleware('guest.redirect')->group(function () {
 });
 
 // Ruta de cambio de clave y logout (accesible para todos los usuarios autenticados)
-Route::middleware(['check.login'])->group(function () {
+Route::middleware(['check.login', 'cforce.password.change'])->group(function () {
     Route::get('/cambiarClave', [ChangePassword::class, 'formCambiarClave'])->name('cambiarClave');
     Route::post('/cambiarClave', [ChangePassword::class, 'cambiarClave']);
+});
+// Ruta de cambio de clave y logout (accesible para todos los usuarios autenticados)
+Route::middleware(['check.login'])->group(function () {
     Route::post('/logout', [LogoutController::class, 'logout'])->name('logout');
 });
 
@@ -81,31 +84,22 @@ Route::middleware(['check.login', 'force.password.change', 'user.access'])->grou
 });
 
 // lo peude ver vestado 002 y 003
-// Rutas para moderadores (vestado 002) y administradores (vestado 003)
 Route::middleware(['check.login', 'force.password.change', 'moderator.access'])->group(function () {
     // Área de moderador
-    Route::get('/moderador/UsuariosAdmin', [UsuariosAdminController::class, 'index'])->name('moderador/UsuariosAdmin');
-    Route::post('/moderador/UsuariosAdmin', [UsuariosAdminController::class, 'index']);
-
+    // Rutas para pendientes
     Route::get('/moderador/Pendiente', [PendientesController::class, 'index'])->name('moderador/Pendiente');
     Route::post('/moderador/Pendiente/filtrar', [PendientesController::class, 'filtrar'])->name('moderador/Pendiente.filtrar');
-
-    // Rutas de nivel superior (compatibles con áreas de moderador)
-    Route::get('/Pendiente', [PendientesController::class, 'index'])->name('Pendiente');
-    Route::post('/Pendiente/filtrar', [PendientesController::class, 'filtrar'])->name('Pendiente.filtrar');
-    Route::post('/Pendiente/actualizar/{id}', [PendientesController::class, 'actualizar'])->name('Pendiente.actualizar');
-    Route::get('/Pendiente/imprimir', [PendientesController::class, 'imprimir'])->name('Pendiente.imprimir');
-
-    Route::get('/UsuariosAdmin', [UsuariosAdminController::class, 'index'])->name('UsuariosAdmin');
-    Route::post('/UsuariosAdmin', [UsuariosAdminController::class, 'index']);
+    Route::get('/moderador/UsuariosAdmin', [UsuariosAdminController::class, 'index'])->name('moderador/UsuariosAdmin');
+    Route::post('/moderador/UsuariosAdmin', [UsuariosAdminController::class, 'index'])->name('moderador/UsuariosAdmin');
 });
 
 // Rutas exclusivas para administradores (vestado 003)
 Route::middleware(['check.login', 'force.password.change', 'admin.access'])->group(function () {
     // Área de administrador
+    // En routes/web.php
     Route::get('/admin/UsuariosAdmin', [UsuariosAdminController::class, 'index'])->name('admin/UsuariosAdmin');
-    Route::post('/admin/UsuariosAdmin', [UsuariosAdminController::class, 'index']);
-
+    Route::post('/admin/UsuariosAdmin', [UsuariosAdminController::class, 'index'])->name('admin/UsuariosAdmin');
+    // Rutas para pendientes
     Route::get('/admin/Pendiente', [PendientesController::class, 'index'])->name('admin/Pendiente');
     Route::post('/admin/Pendiente/filtrar', [PendientesController::class, 'filtrar'])->name('admin/Pendiente.filtrar');
 });
