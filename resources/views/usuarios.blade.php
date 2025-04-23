@@ -44,16 +44,32 @@
                             <div class="d-flex flex-row">
                                 <div class="w-200 mw-250px me-3">
                                     <!--begin::Select2-->
-                                    <select class="form-select form-select-solid" name="estado" id="estado_select"
-                                        data-control="select2" data-hide-search="true"
-                                        data-placeholder="Seleccione el Estado">
+                                    <select class="form-select form-select-solid" name="anio" id="anio_select"
+                                        data-control="select2" data-hide-search="true" data-placeholder="Seleccione el Año">
                                         <option></option>
                                         <option value="%" {{ $estadoSeleccionado == '%' ? 'selected' : '' }}>Todos
                                         </option>
-                                        @foreach ($estadosDisponibles as $estado)
-                                            <option value="{{ $estado->vestado_cuenta }}"
-                                                {{ $estadoSeleccionado == $estado->vestado_cuenta ? 'selected' : '' }}>
-                                                {{ $estado->nombre_estado }}
+                                        @foreach ($estadosDisponibles as $anio)
+                                            <option value="{{ $anio }}"
+                                                {{ $estadoSeleccionado == $anio ? 'selected' : '' }}>{{ $anio }}
+                                            </option>
+                                        @endforeach
+                                    </select>
+
+                                    <!--end::Select2-->
+                                </div>
+                                <div class="w-200 mw-250px">
+                                    <!--begin::Select2-->
+                                    <select class="form-select form-select-solid" name="tipo_tributo"
+                                        id="tipo_tributo_select" data-control="select2" data-hide-search="true"
+                                        data-placeholder="Seleccione el Tributo">
+                                        <option></option>
+                                        <option value="%" {{ $tipoTributo == '%' ? 'selected' : '' }}>Todos
+                                        </option>
+                                        @foreach ($tiposAdmins as $tributo)
+                                            <option value="{{ $tributo->tipo }}"
+                                                {{ $tipoTributo == $tributo->tipo ? 'selected' : '' }}>
+                                                {{ $tributo->mtipo }}
                                             </option>
                                         @endforeach
                                     </select>
