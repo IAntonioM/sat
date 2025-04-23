@@ -164,7 +164,7 @@
 </div>
 
 <!-- Data Rows -->
-@foreach ($relacionPredios as $predio)
+@forelse ($relacionPredios as $predio)
     <div class="col-xl-12 row" style="border: 1px solid var(--bs-gray-300);margin-left: 0;margin-right:0;--bs-gutter-x: 0rem; border-top: none;">
         <!-- CODIGO DATA -->
         <div class="col-xl-1" style="border-right: 1px solid #ccc; padding:10px; text-align:center;">
@@ -199,7 +199,13 @@
             {{ number_format($predio->Valor_Afecto, 2) }}
         </div>
     </div>
-@endforeach
+    @empty
+        <div class="col-xl-12 row" style="border: 1px solid var(--bs-gray-300);margin-left: 0;margin-right:0;--bs-gutter-x: 0rem; border-top: none;">
+            <div class="col-xl-12" style="border-right: 1px solid #ccc; padding:10px; text-align:center;">
+
+            </div>
+    </div>
+@endforelse
 
                     <div class="col-xl-12" style="border: 0px solid var(--bs-gray-300); padding:10px;">
                         III. DETERMINACIÓN DE IMPUESTOS

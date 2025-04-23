@@ -25,14 +25,25 @@ class HRController extends Controller
         // Get user data from model
         $rw = HR::validarDatosCont(Session::get('codigo_contribuyente'));
 
-        if (!$rw) {
-            return redirect()->route('login')->with('error', 'No se encontraron datos de usuario');
+        $contribuyente = HR::obtenerDatosContribuyente(Session::get('codigo_contribuyente'));
+    //     if (!$rw) {
+    //         return view('HR', [
+    //             'fechaActual' => $fechaActual,
+    //             'contribuyente' => $contribuyente,
+    //             'usuario'=>$usuario,
+    //         ]);
+    //    }
+        $vdirecc = isset($rw) && !empty($rw->dirfiscal) ? $rw->dirfiscal : '&nbsp;';
+        $cidpers = $request->input('cidpers');
+
+        if ($rw) {
+            $vnombre = str_replace('Ñ', '&Ntilde;', $rw->nombre ?? '');
+            $vnrdoc = $rw->num_doc ?? '';
+        } else {
+            $vnombre = '&nbsp;';
+            $vnrdoc = '';
         }
 
-        $vdirecc = strlen($rw->dirfiscal) == 0 ? '&nbsp;' : $rw->dirfiscal;
-        $vnombre = str_replace('Ñ', '&Ntilde;', $rw->nombre);
-        $cidpers = $request->input('cidpers');
-        $vnrdoc = $rw->num_doc;
         Session::put('vnrdoc', $vnrdoc);
         $cejerci = $request->input('cejerci');
 
@@ -45,7 +56,6 @@ class HRController extends Controller
             $totalg = $resumenData->total;
         }
 
-        $contribuyente = HR::obtenerDatosContribuyente(Session::get('codigo_contribuyente'));
         $relacionPredios = HR::obtenerRelacionPredios(Session::get('codigo_contribuyente'),$year);
         $totales = HR::obtenerTotales(Session::get('codigo_contribuyente'),$year);
         Debugbar::info('relacionPredios', $relacionPredios);

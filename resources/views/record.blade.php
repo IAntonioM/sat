@@ -23,7 +23,7 @@
                         </div>
                         <!--end::Status-->
                         <!--begin::Description-->
-                        <div class="d-flex flex-wrap fw-semibold mb-4 fs-5 text-gray-400">Papeletas del Infractor al    15/04/2025</div>
+                        <div class="d-flex flex-wrap fw-semibold mb-4 fs-5 text-gray-400">Papeletas del Infractor al    {{ $fechaActual }}</div>
                         <!--end::Description-->
                     </div>
                     <!--end::Details-->
@@ -37,21 +37,21 @@
                                     <span class="path1"></span>
                                     <span class="path2"></span>
                                 </i>-->
-                                <div class=" fw-bold" data-kt-countup="true" data-kt-countup-value="15000" data-kt-countup-prefix="S/." style="font-size:30px">0</div>
+                                <div class=" fw-bold" data-kt-countup="true" data-kt-countup-value="{{$totales}}" data-kt-countup-prefix="S/." style="font-size:30px">0</div>
                             </div>
                             <!--end::Number-->
                             <!--begin::Label-->
-                            
+
                             <!--end::Label-->
                         </div>
                         <!--begin::Menu-->
-                        
+
                         <!--end::Menu-->
                     </div>
                     <!--end::Actions-->
                 </div>
                 <!--end::Head-->
-                
+
             </div>
         </div>
     </div>
@@ -67,22 +67,31 @@
                 <!--begin::Card title-->
                 <div class="card-title">
                     <!--begin::Search-->
-                    
-                    <div class="w-300 mw-350px">
-                        <!--begin::Select2-->
-                        <input type="text" placeholder="Buscar por  DNI o Placa..."  autocomplete="off" class="form-control bg-transparent" />
-                        <!--end::Select2-->
-                    </div>
+
+                    <form id="search_form" action="{{ route('record_papeleta') }}" method="GET" class="d-flex align-items-center gap-2">
+                        @csrf
+                        <div class="w-300 mw-350px">
+                            <input type="text" name="termBusq" id="search_input" placeholder="Buscar por DNI o Placa..."
+                                   autocomplete="off" class="form-control bg-transparent"
+                                   value="{{ request()->input('termBusq') }}">
+                        </div>
+                        <div>
+                            <button id="btnFiltrar" class="btn btn-success" type="submit">
+                                <i class="fa-solid fa-filter"></i>
+                                Filtrar
+                            </button>
+                        </div>
+                    </form>
                     <!--end::Search-->
                 </div>
                 <!--end::Card title-->
                 <!--begin::Card toolbar-->
                 <div class="card-toolbar flex-row-fluid justify-content-end gap-5">
-                    
-                    
+
+
                     <!--begin::Add product-->
-                    <a href="" class="btn btn-primary"><i class="fa-solid fa-print"></i>Imprimir Record de Infracciones</a>
-                    
+                    <a href="{{ route('reporte', ['tipo' => 'reporteRecordPapeletas']) }}" class="btn btn-primary"><i class="fa-solid fa-print"></i>Imprimir Record de Infracciones</a>
+
                     <!--end::Add product-->
                 </div>
                 <!--end::Card toolbar-->
@@ -94,8 +103,8 @@
                 <table class="table align-middle table-row-dashed fs-6 gy-5 table-bordered" id="kt_ecommerce_sales_table">
                     <thead>
                         <tr class="text-start text-gray-400 fw-bold fs-7 text-uppercase gs-0" style="background-color:#f8f8f9;">
-                            
-                            <th class="min-w-30px" style="text-align: center;">Nro DNI</th>
+
+                            <th class="min-w-30px" style="text-align: center;">DNI/RUC</th>
                             <th class="min-w-175px" style="text-align: center;">Nro. Papeleta</th>
                             <th class="min-w-30px" style="text-align: center;">Placa</th>
                             <th class=" min-w-30px" style="text-align: center;">Infracción</th>
@@ -105,55 +114,49 @@
 
                             <th class=" min-w-30px" style="text-align: center;">Deuda</th>
                             <th class=" min-w-30px" style="text-align: center;">Deuda-Dscto</th>
-                           
-                            
+
+
                         </tr>
                     </thead>
                     <tbody class="fw-semibold text-gray-600">
-                        
-                        <tr style="text-align: center; font-size:12px">
-                            <td>12345678</td>
-                            <td>20242024</td>
-                            <td>2024</td>
-                            <td>M.02</td>
-                            <td>15/04/2025</td>
-                            <td>MÉNDEZ ORTEGA OSCAR ANTONIO</td>
-                            <td><div class="badge badge-light-danger" style="font-size:12px">Pendiente</div></td>
-                            <td>0.00</td>
-                            <td>0.00</td>
-                            
-                        </tr>
-                        <tr style="text-align: center; font-size:12px">
-                            <td>12345678</td>
-                            <td>20252025</td>
-                            <td>2024</td>
-                            <td>M.02</td>
-                            <td>15/04/2025</td>
-                            <td>MÉNDEZ ORTEGA OSCAR ANTONIO</td>
-                            <td><div class="badge badge-light-success" style="font-size:12px">Cancelado</div></td>
-                            <td>0.00</td>
-                            <td>0.00</td>
-                           
-                        </tr>
-                        <tr style="text-align: center; font-size:12px">
-                            <td style="background-color:#f1f1f2"></td>
-                            <td style="background-color:#f1f1f2"></td>
-                            <td style="background-color:#f1f1f2"></td>
-                            <td style="background-color:#f1f1f2"></td>
-                            <td style="background-color:#f1f1f2"></td>
-                            <td style="background-color:#f1f1f2"></td>
-                            <td style="background-color:#f1f1f2;"><b>TOTAL</b></td>
-                            <td style="font-size: 16px;"><b>450.00</b></td>
-                            <td style="font-size: 16px;"><b>450.00</b></td>
-                        </tr>
-                        <tr style="text-align: right; font-size:12px">
-                            
-                           
-                            <td colspan="7"><b>IMPORTE TOTAL:</b></td>
-                            <td style="text-align: center;font-size: 16px;" colspan="2"><b>450.00</b></td>
-                            
-                        </tr>
+                        @forelse($resumenData as $item)
+                            <tr style="text-align: center; font-size:12px">
+                                <td>{{ $item->nrodoc }}</td>
+                                <td>{{ $item->nro_papeleta }}</td>
+                                <td>{{ $item->placa }}</td>
+                                <td>{{ $item->infraccion }}</td>
+                                <td>{{ \Carbon\Carbon::parse($item->fecha_infraccion)->format('d/m/Y') }}</td>
+                                <td>{{ $item->nombre_propietario }}</td>
+                                <td>
+                                    @if($item->estado == 1)
+                                        <div class="badge badge-light-danger" style="font-size:12px">Pendiente</div>
+                                    @else
+                                        <div class="badge badge-light-success" style="font-size:12px">Cancelado</div>
+                                    @endif
+                                </td>
+                                <td>{{ number_format($item->deuda, 2) }}</td>
+                                <td>{{ number_format($item->deuda_dscto, 2) }}</td>
+                            </tr>
+                        @empty
+                            <tr style="text-align: center;">
+                                <td colspan="9" class="text-muted">No se encontraron registros de papeletas.</td>
+                            </tr>
+                        @endforelse
+
+                        @if(count($resumenData) > 0)
+                            <tr style="text-align: center; font-size:12px">
+                                <td colspan="6" style="background-color:#f1f1f2"></td>
+                                <td style="background-color:#f1f1f2;"><b>TOTAL</b></td>
+                                <td style="font-size: 16px;"><b>{{ number_format($totalDeuda, 2) }}</b></td>
+                                <td style="font-size: 16px;"><b>{{ number_format($totalDescuento, 2) }}</b></td>
+                            </tr>
+                            <tr style="text-align: right; font-size:12px">
+                                <td colspan="7"><b>IMPORTE TOTAL:</b></td>
+                                <td style="text-align: center; font-size: 16px;" colspan="2"><b>{{ number_format($total, 2) }}</b></td>
+                            </tr>
+                        @endif
                     </tbody>
+
                 </table>
                 <!--end::Table-->
             </div>

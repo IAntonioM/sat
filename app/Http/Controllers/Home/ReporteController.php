@@ -23,6 +23,11 @@ class ReporteController extends Controller
                 return $report->generarPDF();
                 break;
 
+            case 'reporteRecordPapeletas':
+                $report = new HRReport();
+                return $report->generarPDF();
+                break;
+
             default:
                 return redirect()->back()->with('error', 'Tipo de reporte no válido');
                 break;
