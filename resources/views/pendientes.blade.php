@@ -71,8 +71,9 @@
                     <!--end::Card title-->
                     <!--begin::Card toolbar-->
                     <div class="card-toolbar flex-row-fluid justify-content-end gap-5">
-                        <a href="#" class="btn btn-primary"><i
-                                class="fa-solid fa-print"></i> Imprimir</a>
+                        <a href="{{ route('reporte', ['tipo' => 'reportePendientes', 'estadoSeleccionado' => $estadoSeleccionado]) }}" class="btn btn-primary" target="_blank">
+                            <i class="fa-solid fa-print"></i> Imprimir
+                        </a>
                     </div>
                     <!--end::Card toolbar-->
                 </div>
