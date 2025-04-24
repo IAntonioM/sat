@@ -64,6 +64,8 @@ class DeudaConsolidadaController extends Controller
         $tiposTributo = DeudaConsolidada::obtenerTiposTributo($codigoContribuyente);
         $fechaActual = Carbon::now()->format('d/m/Y');
 
+        Debugbar::info($contribuyente);
+
         return view('consolidado', compact(
             'contribuyente',
             'totalDeuda',

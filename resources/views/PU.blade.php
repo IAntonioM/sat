@@ -64,7 +64,7 @@
                         style="border: 1px solid var(--bs-gray-300);margin-left: 0;margin-right:0;--bs-gutter-x: 0rem; margin-bottom:20px">
                         <div class="col-xl-8 row" style="margin-left: 0;margin-right:0;--bs-gutter-x: 0rem;">
                             <div class="col-xl-4"
-                                style="font-size:10px;border-right: 1px solid var(--bs-gray-300);border-bottom: 0px solid var(--bs-gray-300); padding:30px;background-color:#f8f8f9;text-align: center ">
+                                style="font-size:15px;border-right: 1px solid var(--bs-gray-300);border-bottom: 0px solid var(--bs-gray-300); padding:30px;background-color:#f8f8f9;text-align: center ">
                                 CONTRIBUYENTE:
                             </div>
                             <div class="col-xl-8"

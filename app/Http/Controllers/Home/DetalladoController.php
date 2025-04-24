@@ -64,6 +64,8 @@ class DetalladoController extends Controller
         $tiposTributo = Detallado::obtenerTiposTributo($codigoContribuyente);
         $fechaActual = Carbon::now()->format('d/m/Y');
 
+        Debugbar::info($contribuyente);
+
         return view('detallado', compact(
             'contribuyente',
             'totalDeuda',

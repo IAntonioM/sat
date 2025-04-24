@@ -54,7 +54,7 @@ class ConsolidadoReport extends FPDF
 
         if ($this->datosContribuyente) {
             $this->SetFont('Arial', 'B', 10);
-            $this->Cell(0, 6, utf8_decode("Contribuyente: " . $this->datosContribuyente->nombre_razon_social), 0, 1, 'C');
+            $this->Cell(0, 6, utf8_decode("Contribuyente: " . $this->datosContribuyente->nombre), 0, 1, 'C');
             $this->Cell(0, 6, utf8_decode("Código: " . $this->codigoContribuyente), 0, 0, 'C');
         }
         $this->Ln(8);

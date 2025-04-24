@@ -23,7 +23,7 @@
                         <!--end::Details-->
                         <!--begin::Actions-->
                         <div class="d-flex mb-4">
-                            <a href="{{ route('reporte', ['tipo' => 'PendientesReport']) }}"
+                            <a href="{{ route('reporte', ['tipo' => 'reportePR', 'vcodcontr' => $datos_predio[0]->codigo ?? '', 'idanexo' => $datos_predio[0]->id_anexo ?? '']) }}"
                                 class="btn btn-primary" id="btnImprimir" target="_blank">
                                 <i class="fa-solid fa-print"></i> Imprimir
                             </a>
@@ -64,11 +64,11 @@
                         style="border: 1px solid var(--bs-gray-300);margin-left: 0;margin-right:0;--bs-gutter-x: 0rem; margin-bottom:20px">
                         <div class="col-xl-8 row" style="margin-left: 0;margin-right:0;--bs-gutter-x: 0rem;">
                             <div class="col-xl-4"
-                                style="font-size:10px;border-right: 1px solid var(--bs-gray-300);border-bottom: 0px solid var(--bs-gray-300); padding:30px;background-color:#f8f8f9;text-align: center ">
+                                style="font-size:18px;border-right: 1px solid var(--bs-gray-300);border-bottom: 0px solid var(--bs-gray-300); padding:30px;background-color:#f8f8f9;text-align: center ">
                                 CONTRIBUYENTE:
                             </div>
                             <div class="col-xl-8"
-                                style="font-size:10px;border-right: 1px solid var(--bs-gray-300);border-bottom: 0px solid var(--bs-gray-300); padding:30px;">
+                                style="font-size:15px;border-right: 1px solid var(--bs-gray-300);border-bottom: 0px solid var(--bs-gray-300); padding:30px;">
                                 {{ $datos_predio[0]->nombre ?? 'N/A' }}
                             </div>
                         </div>
@@ -99,7 +99,7 @@
                         style="border: 1px solid var(--bs-gray-300);margin-left: 0;margin-right:0;--bs-gutter-x: 0rem;">
                         <div class="col-xl-7 row" style="margin-left: 0;margin-right:0;--bs-gutter-x: 0rem;">
                             <div class="col-xl-4"
-                                style="font-size:10px;border-right: 1px solid var(--bs-gray-300);border-bottom: 0px solid var(--bs-gray-300); padding:30px;background-color:#f8f8f9;text-align: center ">
+                                style="font-size:18px;border-right: 1px solid var(--bs-gray-300);border-bottom: 0px solid var(--bs-gray-300); padding:30px;background-color:#f8f8f9;text-align: center ">
                                 DATOS DEL PREDIO
                             </div>
                             <div class="col-xl-8 row"
@@ -109,7 +109,7 @@
                                     UBICACIÓN
                                 </div>
                                 <div class="col-xl-12"
-                                    style="font-size:10px;border-right: 1px solid var(--bs-gray-300);border-bottom: 0px solid var(--bs-gray-300); padding:10px;">
+                                    style="font-size:12px;border-right: 1px solid var(--bs-gray-300);border-bottom: 0px solid var(--bs-gray-300); padding:10px;">
                                     {{ $datos_predio[0]->direccion ?? ($vdirecc ?? 'N/A') }}
                                 </div>
                             </div>
@@ -123,7 +123,7 @@
                                 </div>
                                 <div class="col-xl-12"
                                     style="border-right: 1px solid var(--bs-gray-300); padding:10px;text-align: center">
-                                    {{ $datos_predio[0]->id_condi ?? 'N/A' }}
+                                    {{ $datos_predio[0]->condicion ?? 'N/A' }}
                                 </div>
                             </div>
                             <div class="col-xl-4 row">
@@ -133,7 +133,7 @@
                                 </div>
                                 <div class="col-xl-12"
                                     style="border-right: 1px solid var(--bs-gray-300); padding:10px;text-align: center">
-                                    {{ $datos_predio[0]->condi ?? 'N/A' }}
+                                    {{ $datos_predio[0]->condicion_prop ?? 'N/A' }}
                                 </div>
                             </div>
                             <div class="col-xl-3 row">
@@ -182,7 +182,7 @@
                                 </div>
                                 <div class="col-xl-12"
                                     style="border-right: 1px solid var(--bs-gray-300); padding:10px;text-align: center">
-                                    {{ $datos_predio[0]->tipo ?? 'N/A' }}
+                                    {{ $datos_predio[0]->tipo_terreno ?? 'N/A' }}
                                 </div>
                             </div>
                             <div class="row" style="width: 5%">
@@ -192,7 +192,7 @@
                                 </div>
                                 <div class="col-xl-12"
                                     style="border-right: 1px solid var(--bs-gray-300); padding:10px;text-align: center">
-                                    {{ $datos_predio[0]->anio ?? 'N/A' }}
+                                    {{ $datos_predio[0]->año ?? 'N/A' }}
                                 </div>
                             </div>
                             <div class="row" style="width: 5%">
@@ -202,7 +202,7 @@
                                 </div>
                                 <div class="col-xl-12"
                                     style="border-right: 1px solid var(--bs-gray-300); padding:10px;text-align: center">
-                                    {{ $datos_predio[0]->cl ?? 'N/A' }}
+                                    150
                                 </div>
                             </div>
                             <div class="row" style="width: 5%">
@@ -212,7 +212,7 @@
                                 </div>
                                 <div class="col-xl-12"
                                     style="border-right: 1px solid var(--bs-gray-300); padding:10px;text-align: center">
-                                    {{ $datos_predio[0]->mp ?? 'N/A' }}
+                                    150
                                 </div>
                             </div>
                             <div class="row" style="width: 8%">
@@ -348,7 +348,7 @@
                                 </div>
                                 <div class="col-xl-12"
                                     style="border-right: 1px solid var(--bs-gray-300); padding:10px;text-align: center">
-                                    {{ $datos_predio[0]->area_ha ?? 'N/A' }}
+                                    {{ $datos_predio[0]->area_hecta ?? 'N/A' }}
                                 </div>
                             </div>
                             <div class="row" style="width: 10%">

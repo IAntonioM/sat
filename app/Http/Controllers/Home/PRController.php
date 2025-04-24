@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Home;
 use App\Http\Controllers\Controller;
 use App\Models\PUModel;
 use App\Models\Contribuyente;
+use App\Models\PR;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Http\Request;
@@ -24,7 +25,7 @@ class PRController extends Controller
         $usuario = Contribuyente::obtenerDatosContri($codigo_contribuyente);
 
         // Get user data from model
-        $rw = PUModel::getUserData($codigo_contribuyente);
+        $rw = PR::getUserData($codigo_contribuyente);
 
         if (!$rw) {
             return redirect()->route('login')->with('error', 'No se encontraron datos de usuario');
@@ -43,7 +44,7 @@ class PRController extends Controller
         ];
 
         // Get property data regardless of whether xid_anexo is provided
-        $datos_predio = PUModel::getPredioDatos($codigo_contribuyente, $xid_anexo);
+        $datos_predio = PR::getPredioDatos($codigo_contribuyente, $xid_anexo);
         $viewData['datos_predio'] = $datos_predio;
 
         Debugbar::info($viewData);

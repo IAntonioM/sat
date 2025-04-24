@@ -64,6 +64,13 @@ class ReporteController extends Controller
                 return $report->generarPDF();
                 break;
 
+            case 'reportePR':
+                $vcodcontr = $request->input('vcodcontr');
+                $idanexo = $request->input('idanexo');
+                $report = new PRReport($vcodcontr, $idanexo);
+                return $report->generarPDF();
+                break;
+
             default:
                 return redirect()->back()->with('error', 'Tipo de reporte no válido');
                 break;
