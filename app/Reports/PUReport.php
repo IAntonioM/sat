@@ -178,7 +178,7 @@ class PUReport extends FPDF
 
         // Encabezado tabla de construcciones - con alineación mejorada
         $headers = [
-            'NIVEL' => 10,
+            'NIVEL' => 5,
             'TIPO CONST.' => 12,
             'AÑO' => 10,
             'CL' => 8,
@@ -338,12 +338,6 @@ class PUReport extends FPDF
         $this->Ln();
         $this->Cell(200, 4, utf8_decode('3). APROBADO MEDIANTE R.M. 369-2014 - VIVIENDA DEL MINISTERIO DE VIVIENDA, CONSTRUCCIÓN Y SANEAMIENTO'), 0, 0, 'L', 0);
         $this->Ln(15);
-
-        // Sección de firmas
-        $this->SetFont('Arial', 'B', 7);
-        $this->Cell(95, 6, 'FIRMA DEL CONTRIBUYENTE', 'T', 0, 'C', 0);
-        $this->Cell(10, 6, '', 0, 0, 'C', 0);
-        $this->Cell(95, 6, 'FIRMA Y SELLO DEL FUNCIONARIO', 'T', 0, 'C', 0);
 
         return $this->Output('PU-Report.pdf', 'I');
     }
