@@ -38,7 +38,7 @@
                     <!--begin::Card title-->
                     <div class="card-title">
                         <!--begin::Search-->
-                        <form id="filtroForm" action="{{ route('admin/UsuariosAdmin') }}" method="POST">
+                        <form id="filtroForm" action="{{ route('UsuariosAdmin') }}" method="POST">
                             @csrf
                             <div class="d-flex flex-row">
                                 <div class="w-200 mw-250px me-3">

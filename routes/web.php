@@ -99,9 +99,9 @@ Route::middleware(['check.login', 'force.password.change', 'moderator.access'])-
 Route::middleware(['check.login', 'force.password.change', 'admin.access'])->group(function () {
     // Área de administrador
     // En routes/web.php
-    Route::get('/admin/UsuariosAdmin', [UsuariosAdminController::class, 'index'])->name('admin/UsuariosAdmin');
-    Route::post('/admin/UsuariosAdmin', [UsuariosAdminController::class, 'index'])->name('admin/UsuariosAdmin');
+    Route::get('UsuariosAdmin', [UsuariosAdminController::class, 'index'])->name('UsuariosAdmin');
+    Route::post('UsuariosAdmin', [UsuariosAdminController::class, 'index'])->name('UsuariosAdmin');
     // Rutas para pendientes
-    Route::get('/admin/Pendiente', [PendientesController::class, 'index'])->name('admin/Pendiente');
-    Route::post('/admin/Pendiente', [PendientesController::class, 'index'])->name('admin/Pendiente');
+    Route::get('Pendiente', [PendientesController::class, 'index'])->name('Pendiente');
+    Route::post('Pendiente', [PendientesController::class, 'index'])->name('Pendiente');
 });

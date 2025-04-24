@@ -39,7 +39,7 @@
                     <!--begin::Card title-->
                     <div class="card-title">
                         <!--begin::Search-->
-                        <form id="filtroForm" action="{{ route('admin/Pendiente') }}" method="POST">
+                        <form id="filtroForm" action="{{ route('Pendiente') }}" method="POST">
                             @csrf
                             <div class="d-flex flex-row">
                                 <div class="w-200 mw-250px me-3">
@@ -173,7 +173,7 @@
                 <!--begin::Modal body-->
                 <div class="modal-body px-5 my-7">
                     <!--begin::Form-->
-                    <form id="kt_modal_add_user_form" class="form" action="{{ route('admin/Pendiente') }}" method="PUT">
+                    <form id="kt_modal_add_user_form" class="form" action="{{ route('Pendiente') }}" method="PUT">
                         @csrf
                         @method('PUT')
                         <input type="hidden" name="solicitud_id" id="solicitud_id">
@@ -278,7 +278,7 @@
                 var estado = $(this).data('estado');
 
                 // Actualizar la acción del formulario con el ID correcto
-                var actionUrl = "{{ route('admin/Pendiente') }}";
+                var actionUrl = "{{ route('Pendiente') }}";
                 $('#kt_modal_add_user_form').attr('action', actionUrl);
 
                 // Llenar los campos del formulario
