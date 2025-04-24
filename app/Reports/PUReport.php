@@ -69,7 +69,7 @@ class PUReport extends FPDF
     public function DatosContribuyente()
     {
         // Sección I - DATOS DEL CONTRIBUYENTE
-        $this->SetXY(5, 38);
+        $this->SetXY(5, 30);
         $this->SetFont('Arial', 'B', 7);
         $this->Cell(200, 4, 'I. DATOS DEL CONTRIBUYENTE', 0, 1, 'L');
 
