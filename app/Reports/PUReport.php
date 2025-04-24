@@ -178,26 +178,26 @@ class PUReport extends FPDF
 
         // Encabezado tabla de construcciones - con alineación mejorada
         $headers = [
-            'NIVEL' => 5,
-            'TIPO CONST.' => 12,
+            'NIVEL' => 7,
+            'T CONST.' => 20,
             'AÑO' => 10,
             'CL' => 8,
             'MP' => 8,
-            'ESTADO' => 12,
-            'CATEGORIA' => 25,
-            'V.UNITARIO' => 15,
+            'ESTADO' => 23,
+            'CATEGORIA' => 15,
+            'V.UNI' => 10   ,
             'INC.5%' => 12,
             'DEPREC.' => 15,
-            'V.U.DEPREC.' => 17,
-            'ÁREA CONST.' => 15,
-            'ÁREA COM.' => 15,
-            'VALOR CONST.' => 16
+            'V.U.DEPREC.' => 16,
+            'A CONST.' => 15,
+            'ÁREA COM.' => 14,
+            'V CONST.' => 12
         ];
 
         // Encabezados
         $this->SetFillColor(229, 229, 229);
         $this->SetFont('Arial', 'B', 6);
-        $startX = 5; // Posición inicial en X
+        $startX = 10; // Posición inicial en X
         $currentX = $startX;
 
         foreach ($headers as $title => $width) {
@@ -209,7 +209,7 @@ class PUReport extends FPDF
 
         // Datos de construcciones
         $this->SetFillColor(255, 255, 255);
-        $this->SetFont('Arial', '', 7);
+        $this->SetFont('Arial', '', 6);
         $currentX = $startX;
 
         // Datos de construcción (una sola fila)
@@ -220,8 +220,8 @@ class PUReport extends FPDF
 
         $tipo = isset($this->datosPredio[0]->tipo) ? utf8_decode($this->datosPredio[0]->tipo) : 'N/A';
         $this->SetXY($currentX, $this->GetY());
-        $this->Cell($headers['TIPO CONST.'], 6, $tipo, 1, 0, 'C', 1);
-        $currentX += $headers['TIPO CONST.'];
+        $this->Cell($headers['T CONST.'], 6, $tipo, 1, 0, 'C', 1);
+        $currentX += $headers['T CONST.'];
 
         $anio = isset($this->datosPredio[0]->anio) ? $this->datosPredio[0]->anio : 'N/A';
         $this->SetXY($currentX, $this->GetY());
@@ -250,8 +250,8 @@ class PUReport extends FPDF
 
         $val_unit = isset($this->datosPredio[0]->val_unit) ? number_format($this->datosPredio[0]->val_unit, 2) : '0.00';
         $this->SetXY($currentX, $this->GetY());
-        $this->Cell($headers['V.UNITARIO'], 6, $val_unit, 1, 0, 'C', 1);
-        $currentX += $headers['V.UNITARIO'];
+        $this->Cell($headers['V.UNI'], 6, $val_unit, 1, 0, 'C', 1);
+        $currentX += $headers['V.UNI'];
 
         $incremento = isset($this->datosPredio[0]->incremento) ? number_format($this->datosPredio[0]->incremento, 2) : '0.00';
         $this->SetXY($currentX, $this->GetY());
@@ -270,8 +270,8 @@ class PUReport extends FPDF
 
         $area_const = isset($this->datosPredio[0]->area_const) ? number_format($this->datosPredio[0]->area_const, 2) : '0.00';
         $this->SetXY($currentX, $this->GetY());
-        $this->Cell($headers['ÁREA CONST.'], 6, $area_const, 1, 0, 'C', 1);
-        $currentX += $headers['ÁREA CONST.'];
+        $this->Cell($headers['A CONST.'], 6, $area_const, 1, 0, 'C', 1);
+        $currentX += $headers['A CONST.'];
 
         $area_comun = isset($this->datosPredio[0]->area_comun) ? number_format($this->datosPredio[0]->area_comun, 2) : '0.00';
         $this->SetXY($currentX, $this->GetY());
@@ -280,14 +280,14 @@ class PUReport extends FPDF
 
         $val_const = isset($this->datosPredio[0]->val_const) ? number_format($this->datosPredio[0]->val_const, 2) : '0.00';
         $this->SetXY($currentX, $this->GetY());
-        $this->Cell($headers['VALOR CONST.'], 6, $val_const, 1, 0, 'C', 1);
+        $this->Cell($headers['V CONST.'], 6, $val_const, 1, 0, 'C', 1);
 
         $this->Ln(8);
 
         // Sección de resumen
         $this->SetFont('Arial', 'B', 7);
         $area_const_total = isset($this->datosPredio[0]->area_const) ? number_format($this->datosPredio[0]->area_const, 2) : '0.00';
-        $this->Cell(80, 6, utf8_decode('TOTAL ÁREA CONST.: ' . $area_const_total . ' M2'), 'LTB', 0, 'L', 0);
+        $this->Cell(80, 6, utf8_decode('TOTAL A CONST.: ' . $area_const_total . ' M2'), 'LTB', 0, 'L', 0);
 
         $fec_resol = isset($this->datosPredio[0]->fec_resol) ? $this->datosPredio[0]->fec_resol : '--/--/----';
         $this->Cell(70, 6, utf8_decode('FECHA DE ADQUISICIÓN: ' . $fec_resol), 'TB', 0, 'L', 0);
