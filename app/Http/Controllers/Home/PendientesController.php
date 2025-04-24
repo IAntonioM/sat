@@ -43,7 +43,7 @@ class PendientesController extends Controller
         $estadoSeleccionado  = $request->estadoSeleccionado ?? '%';
 
         // Obtener las usuarios detalladas
-        $usuarios = SolicitudAcceso::obtenerSolicitudes($estadoSeleccionado );
+        $usuarios = SolicitudAcceso::obtenerSolicitudes($estadoSeleccionado);
 
         // Preparar datos para la vista
         $estados = SolicitudAcceso::obtenerEstadosDisponibles();
