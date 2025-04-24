@@ -16,7 +16,8 @@ class PRReport extends FPDF
 
     public function __construct($vcodcontr = null, $idanexo = null)
     {
-        parent::__construct('P', 'mm', 'A4');
+        // Cambio de 'P' a 'L' para orientación horizontal (landscape)
+        parent::__construct('L', 'mm', 'A4');
 
         $this->vcodcontr = $vcodcontr;
         $this->idanexo = $idanexo;
@@ -36,22 +37,20 @@ class PRReport extends FPDF
     {
         $imagePath = public_path('assets/media/logos/custom-3-h25-2.png');
 
-        // Insertar la imagen en el encabezado
-        $this->Image($imagePath, 10, 16, 30);
+        // Insertar la imagen en el encabezado - ajustada para formato horizontal
+        $this->Image($imagePath, 10, 10, 30);
 
-        $this->SetY(15);
+        $this->SetY(10);
         $this->SetFont('Arial', 'B', 14);
         $this->Cell(0, 4, "REPORTE DE PREDIO RUSTICO (PR)", 0, 0, 'C');
         $this->Ln(8);
 
-        $this->SetY(22);
         $this->SetFont('Arial', 'B', 8);
         $this->Cell(0, 4, "IMPUESTO PREDIAL " . $this->year, 0, 0, 'C');
         $this->Ln(4);
         $this->SetFont('Arial', 'B', 7);
-        $this->Cell(0, 4, "DECLARACIÓN JURADA", 0, 0, 'C');
+        $this->Cell(0, 4, utf8_decode("DECLARACIÓN JURADA"), 0, 0, 'C');
         $this->Ln(8);
-
     }
 
     //Pie de página
@@ -59,7 +58,7 @@ class PRReport extends FPDF
     {
         $this->SetY(-15);
         $this->SetFont('Arial', 'I', 8);
-        $this->Cell(0, 10, 'Página ' . $this->PageNo() . '/{nb}', 0, 0, 'C');
+        $this->Cell(0, 10, utf8_decode('Página ' . $this->PageNo() . '/{nb}'), 0, 0, 'C');
     }
 
     public function generarPDF()
@@ -71,8 +70,8 @@ class PRReport extends FPDF
         $this->AliasNbPages();
         $this->AddPage();
 
-        // I. DATOS DEL CONTRIBUYENTE
-        $this->SetXY(5, 30);
+        // I. DATOS DEL CONTRIBUYENTE - ajustado para formato horizontal
+        $this->SetXY(10, 30);
         $this->SetFont('Arial', 'B', 10);
         $this->Cell(0, 8, 'I. DATOS DEL CONTRIBUYENTE', 0, 1, 'L');
         $this->Ln(2);
@@ -85,53 +84,53 @@ class PRReport extends FPDF
         $this->SetDrawColor(128, 128, 128);
         $this->SetLineWidth(0.3);
 
-        // Contribuyente
+        // Contribuyente - ajustado el ancho para formato horizontal
         $this->Cell(40, 10, 'CONTRIBUYENTE:', 1, 0, 'L', true);
-        $this->Cell(100, 10, utf8_decode($this->datos_predio[0]->nombre ?? 'N/A'), 1, 0, 'L');
+        $this->Cell(150, 10, utf8_decode($this->datos_predio[0]->nombre ?? 'N/A'), 1, 0, 'L');
 
         // Código de contribuyente
         $this->SetFont('Arial', '', 6);
-        $this->Cell(25, 5, 'CODIGO CONTRIB.', 1, 0, 'C', true);
+        $this->Cell(35, 5, 'CODIGO CONTRIB.', 1, 0, 'C', true);
         $this->SetFont('Arial', '', 9);
-        $this->Cell(25, 5, $this->datos_predio[0]->codigo ?? 'N/A', 1, 1, 'C');
+        $this->Cell(35, 5, $this->datos_predio[0]->codigo ?? 'N/A', 1, 1, 'C');
 
         // Segunda parte del código
-        $this->SetX(150);
+        $this->SetX(200);
         $this->SetFont('Arial', '', 6);
-        $this->Cell(25, 5, 'CODIGO PREDIO', 1, 0, 'C', true);
+        $this->Cell(35, 5, 'CODIGO PREDIO', 1, 0, 'C', true);
         $this->SetFont('Arial', '', 9);
-        $this->Cell(25, 5, $this->datos_predio[0]->id_anexo ?? 'N/A', 1, 1, 'C');
+        $this->Cell(35, 5, $this->datos_predio[0]->id_anexo ?? 'N/A', 1, 1, 'C');
 
         // Datos del predio - Segunda fila
         $this->Cell(40, 10, 'DATOS DEL PREDIO:', 1, 0, 'L', true);
         $this->SetFont('Arial', '', 5);
-        $this->Cell(60, 10, utf8_decode($this->datos_predio[0]->direccion ?? 'N/A'), 1, 0, 'L');
+        $this->Cell(70, 10, utf8_decode($this->datos_predio[0]->direccion ?? 'N/A'), 1, 0, 'L');
 
         // Condición
         $this->SetFont('Arial', '', 6);
-        $this->Cell(15, 10, utf8_decode('CONDICIÓN'), 1, 0, 'C', true);
+        $this->Cell(30, 10, utf8_decode('CONDICIÓN'), 1, 0, 'C', true);
         $this->SetFont('Arial', '', 6);
-        $this->Cell(25, 10, $this->datos_predio[0]->id_condi ?? 'N/A', 1, 0, 'C');
+        $this->Cell(50, 10, $this->datos_predio[0]->condicion ?? 'N/A', 1, 0, 'C');
 
         // Condición de propiedad
         $this->SetFont('Arial', '', 6);
-        $this->Cell(30, 5, 'COND. PROPIEDAD', 1, 0, 'C', true);
+        $this->Cell(35, 5, 'COND. PROPIEDAD', 1, 0, 'C', true);
         $this->SetFont('Arial', '', 6);
-        $this->Cell(20, 5, $this->datos_predio[0]->condi ?? 'N/A', 1, 1, 'C');
+        $this->Cell(35, 5, $this->datos_predio[0]->condicion_prop ?? 'N/A', 1, 1, 'C');
 
         // Segunda línea de campos
-        $this->SetX(150);
+        $this->SetX(200);
         $this->SetFont('Arial', '', 5);
-        $this->Cell(5, 5, 'USO', 1, 0, 'C', true);
+        $this->Cell(12, 5, 'USO', 1, 0, 'C', true);
         $this->SetFont('Arial', '', 6);
-        $this->Cell(23, 5, $this->datos_predio[0]->uso ?? 'N/A', 1, 0, 'C');
+        $this->Cell(33, 5, $this->datos_predio[0]->uso ?? 'N/A', 1, 0, 'C');
 
         // % Propiedad
         $this->SetFont('Arial', '', 6);
-        $this->Cell(10, 5, '% PRO.', 1, 0, 'C', true);
+        $this->Cell(15, 5, '% PRO.', 1, 0, 'C', true);
         $porcentaje = number_format($this->datos_predio[0]->porcen ?? 0, 2) . '%';
         $this->SetFont('Arial', '', 6);
-        $this->Cell(12, 5, $porcentaje, 1, 1, 'C');
+        $this->Cell(10, 5, $porcentaje, 1, 1, 'C');
 
         $this->Ln(5);
 
@@ -144,83 +143,86 @@ class PRReport extends FPDF
         $this->SetFont('Arial', 'B', 7);
         $this->SetFillColor(229, 229, 229);
 
-        // Primera fila - Datos de construcción
-        $this->Cell(10, 6, 'NIVEL', 1, 0, 'C', true);
-        $this->Cell(12, 6, 'TIPO', 1, 0, 'C', true);
-        $this->Cell(10, 6, utf8_decode('AÑO'), 1, 0, 'C', true);
-        $this->Cell(8, 6, 'CL', 1, 0, 'C', true);
-        $this->Cell(8, 6, 'MP', 1, 0, 'C', true);
-        $this->Cell(15, 6, 'ESTADO', 1, 0, 'C', true);
-        $this->Cell(30, 6, 'CATEGORIA', 1, 0, 'C', true);
-        $this->Cell(22, 6, 'V.UNITARIO', 1, 0, 'C', true);
-        $this->Cell(15, 6, 'INC.5%', 1, 0, 'C', true);
-        $this->Cell(20, 6, 'DEPREC.', 1, 0, 'C', true);
-        $this->Cell(20, 6, 'V.U.DEP', 1, 0, 'C', true);
-        $this->Cell(20, 6, 'VALOR CONST.', 1, 1, 'C', true);
+        // Primera fila - Datos de construcción - ajustada para formato horizontal
+        $this->Cell(15, 6, 'NIVEL', 1, 0, 'C', true);
+        $this->Cell(15, 6, 'TIPO', 1, 0, 'C', true);
+        $this->Cell(15, 6, utf8_decode('AÑO'), 1, 0, 'C', true);
+        $this->Cell(15, 6, 'CL', 1, 0, 'C', true);
+        $this->Cell(15, 6, 'MP', 1, 0, 'C', true);
+        $this->Cell(25, 6, 'ESTADO', 1, 0, 'C', true);
+        $this->Cell(35, 6, 'CATEGORIA', 1, 0, 'C', true);
+        $this->Cell(25, 6, 'V.UNITARIO', 1, 0, 'C', true);
+        $this->Cell(25, 6, 'INC.5%', 1, 0, 'C', true);
+        $this->Cell(25, 6, 'DEPREC.', 1, 0, 'C', true);
+        $this->Cell(25, 6, 'V.U.DEP', 1, 0, 'C', true);
+        $this->Cell(25, 6, 'VALOR CONST.', 1, 1, 'C', true);
 
         // Datos de construcción
         $this->SetFont('Arial', '', 7);
-        $this->Cell(10, 6, $this->datos_predio[0]->piso ?? 'N/A', 1, 0, 'C');
-        $this->Cell(12, 6, $this->datos_predio[0]->tipo ?? 'N/A', 1, 0, 'C');
-        $this->Cell(10, 6, $this->datos_predio[0]->anio ?? 'N/A', 1, 0, 'C');
-        $this->Cell(8, 6, $this->datos_predio[0]->cl ?? 'N/A', 1, 0, 'C');
-        $this->Cell(8, 6, $this->datos_predio[0]->mp ?? 'N/A', 1, 0, 'C');
-        $this->Cell(15, 6, $this->datos_predio[0]->estado ?? 'N/A', 1, 0, 'C');
-        $this->Cell(30, 6, $this->datos_predio[0]->categoria ?? 'N/A', 1, 0, 'C');
-        $this->Cell(22, 6, number_format($this->datos_predio[0]->val_unit ?? 0, 2), 1, 0, 'C');
-        $this->Cell(15, 6, number_format($this->datos_predio[0]->incremento ?? 0, 2), 1, 0, 'C');
-        $this->Cell(20, 6, number_format($this->datos_predio[0]->deprec ?? 0, 2), 1, 0, 'C');
-        $this->Cell(20, 6, number_format($this->datos_predio[0]->val_un_dep ?? 0, 2), 1, 0, 'C');
-        $this->Cell(20, 6, number_format($this->datos_predio[0]->val_const ?? 0, 2), 1, 1, 'C');
+        $this->Cell(15, 6, $this->datos_predio[0]->piso ?? 'N/A', 1, 0, 'C');
+        $this->Cell(15, 6, $this->datos_predio[0]->tipo ?? 'N/A', 1, 0, 'C');
+        $this->Cell(15, 6, $this->datos_predio[0]->anio ?? 'N/A', 1, 0, 'C');
+        $this->Cell(15, 6, $this->datos_predio[0]->cl ?? 'N/A', 1, 0, 'C');
+        $this->Cell(15, 6, $this->datos_predio[0]->mp ?? 'N/A', 1, 0, 'C');
+        $this->Cell(25, 6, $this->datos_predio[0]->estado ?? 'N/A', 1, 0, 'C');
+        $this->Cell(35, 6, $this->datos_predio[0]->categoria ?? 'N/A', 1, 0, 'C');
+        $this->Cell(25, 6, number_format($this->datos_predio[0]->val_unit ?? 0, 2), 1, 0, 'C');
+        $this->Cell(25, 6, number_format($this->datos_predio[0]->incremento ?? 0, 2), 1, 0, 'C');
+        $this->Cell(25, 6, number_format($this->datos_predio[0]->deprec ?? 0, 2), 1, 0, 'C');
+        $this->Cell(25, 6, number_format($this->datos_predio[0]->val_un_dep ?? 0, 2), 1, 0, 'C');
+        $this->Cell(25, 6, number_format($this->datos_predio[0]->val_const ?? 0, 2), 1, 1, 'C');
 
         $this->Ln(5);
 
-        // Clases de tierras
+        // Clases de tierras - ajustado para formato horizontal
         $this->SetFont('Arial', 'B', 7);
-        $this->Cell(120, 6, 'CLASES DE TIERRAS', 1, 0, 'C', true);
-        $this->Cell(20, 6, 'CATEGORIA', 1, 0, 'C', true);
-        $this->Cell(20, 6, 'ARANCEL', 1, 0, 'C', true);
-        $this->Cell(20, 6, 'CANT. HA', 1, 0, 'C', true);
-        $this->Cell(10, 6, 'AR X H', 1, 1, 'C', true);
+        $this->Cell(150, 6, 'CLASES DE TIERRAS', 1, 0, 'C', true);
+        $this->Cell(30, 6, 'CATEGORIA', 1, 0, 'C', true);
+        $this->Cell(30, 6, 'ARANCEL', 1, 0, 'C', true);
+        $this->Cell(30, 6, 'CANT. HA', 1, 0, 'C', true);
+        $this->Cell(20, 6, 'AR X H', 1, 1, 'C', true);
 
         // Datos de tierras
         $this->SetFont('Arial', '', 7);
-        $this->Cell(120, 6, 'Urbana o Residencial', 1, 0, 'C');
-        $this->Cell(20, 6, $this->datos_predio[0]->categoria ?? 'N/A', 1, 0, 'C');
-        $this->Cell(20, 6, $this->datos_predio[0]->arancel ?? 'N/A', 1, 0, 'C');
-        $this->Cell(20, 6, $this->datos_predio[0]->area_ha ?? 'N/A', 1, 0, 'C');
-        $this->Cell(10, 6, '10', 1, 1, 'C');
+        $this->Cell(150, 6, 'Urbana o Residencial', 1, 0, 'C');
+        $this->Cell(30, 6, $this->datos_predio[0]->categoria ?? 'N/A', 1, 0, 'C');
+        $this->Cell(30, 6, $this->datos_predio[0]->arancel ?? 'N/A', 1, 0, 'C');
+        $this->Cell(30, 6, $this->datos_predio[0]->area_ha ?? 'N/A', 1, 0, 'C');
+        $this->Cell(20, 6, '10', 1, 1, 'C');
 
         $this->Ln(5);
 
-        // Totales y resumen
+        // Totales y resumen - diseño de dos columnas para formato horizontal
         $this->SetFont('Arial', 'B', 8);
-        $this->Cell(60, 8, utf8_decode('TOTAL ÁREA CONST.: ') . number_format($this->datos_predio[0]->area_const ?? 0, 2) . ' M2', 0, 0, 'L');
-        $this->Cell(70, 8, utf8_decode('FECHA DE ADQUISICIÓN: ') . ($this->datos_predio[0]->fec_resol ?? '--/--/----'), 0, 1, 'L');
 
-        $this->Cell(60, 8, utf8_decode('ÁREA DE TERRENO: ') . number_format($this->datos_predio[0]->area_terr ?? 0, 2) . ' M2', 0, 0, 'L');
-        $this->Cell(70, 8, utf8_decode('ÁREA COMUN DE TERRENO: ') . number_format($this->datos_predio[0]->area_comun ?? 0, 2) . ' M2', 0, 1, 'L');
+        // Primera fila
+        $this->Cell(100, 8, utf8_decode('TOTAL ÁREA CONST.: ') . number_format($this->datos_predio[0]->area_const ?? 0, 2) . ' M2', 0, 0, 'L');
+        $this->Cell(100, 8, utf8_decode('FECHA DE ADQUISICIÓN: ') . ($this->datos_predio[0]->fec_resol ?? '--/--/----'), 0, 0, 'L');
 
-        $this->Cell(60, 8, 'ARANCEL: ' . number_format($this->datos_predio[0]->arancel ?? 0, 2), 0, 1, 'L');
-
-        $this->Ln(5);
-
-        // Resumen de valores
-        $this->SetX(100);
-        $this->Cell(60, 8, utf8_decode('VALOR TOTAL DE LA CONSTRUCCIÓN:'), 0, 0, 'R');
-        $this->Cell(30, 8, number_format($this->datos_predio[0]->tot_constr ?? 0, 2), 0, 1, 'R');
-
-        $this->SetX(100);
-        $this->Cell(60, 8, utf8_decode('VALOR DE OTRAS INSTALACIÓNES:'), 0, 0, 'R');
-        $this->Cell(30, 8, number_format($this->datos_predio[0]->ot_instal ?? 0, 2), 0, 1, 'R');
-
-        $this->SetX(100);
-        $this->Cell(60, 8, 'VALOR TOTAL DEL TERRENO:', 0, 0, 'R');
-        $this->Cell(30, 8, number_format($this->datos_predio[0]->tot_terr ?? 0, 2), 0, 1, 'R');
+        // Segunda fila
+        $this->Ln(8);
+        $this->Cell(100, 8, utf8_decode('ÁREA DE TERRENO: ') . number_format($this->datos_predio[0]->area_terr ?? 0, 2) . ' M2', 0, 0, 'L');
+        $this->Cell(100, 8, utf8_decode('ÁREA COMUN DE TERRENO: ') . number_format($this->datos_predio[0]->area_comun ?? 0, 2) . ' M2', 0, 0, 'L');
+        $this->Cell(60, 8, 'ARANCEL: ' . number_format($this->datos_predio[0]->arancel ?? 0, 2), 0, 1, 'R');
 
         $this->Ln(5);
 
-        // Notas legales
+        // Resumen de valores - ajustados para formato horizontal
+        $this->SetX(140);
+        $this->Cell(80, 8, utf8_decode('VALOR TOTAL DE LA CONSTRUCCIÓN:'), 0, 0, 'R');
+        $this->Cell(50, 8, number_format($this->datos_predio[0]->tot_constr ?? 0, 2), 0, 1, 'R');
+
+        $this->SetX(140);
+        $this->Cell(80, 8, utf8_decode('VALOR DE OTRAS INSTALACIÓNES:'), 0, 0, 'R');
+        $this->Cell(50, 8, number_format($this->datos_predio[0]->ot_instal ?? 0, 2), 0, 1, 'R');
+
+        $this->SetX(140);
+        $this->Cell(80, 8, 'VALOR TOTAL DEL TERRENO:', 0, 0, 'R');
+        $this->Cell(50, 8, number_format($this->datos_predio[0]->tot_terr ?? 0, 2), 0, 1, 'R');
+
+        $this->Ln(5);
+
+        // Notas legales - más ancho para formato horizontal
         $this->SetFont('Arial', '', 6);
         $this->MultiCell(0, 4, "1). APROBADO MEDIANTE R.M. 367-2014 - VIVIENDA DEL MINISTERIO DE VIVIENDA, CONSTRUCCION Y SANEAMIENTO\n".
                                "2). APROBADO MEDIANTE R.M. 126-2007 - VIVIENDA DEL MINISTERIO DE VIVIENDA, CONSTRUCCION Y SANEAMIENTO\n".
@@ -234,11 +236,9 @@ class PRReport extends FPDF
                       ($this->datos_predio[0]->tot_terr ?? 0);
 
         $this->SetFont('Arial', 'B', 10);
-        $this->SetX(100);
-        $this->Cell(60, 8, 'VALOR TOTAL DEL PREDIO:', 0, 0, 'R');
-        $this->Cell(30, 8, number_format($valor_total, 2), 0, 1, 'R');
-
-        $this->Ln(20);
+        $this->SetX(140);
+        $this->Cell(80, 8, 'VALOR TOTAL DEL PREDIO:', 0, 0, 'R');
+        $this->Cell(50, 8, number_format($valor_total, 2), 0, 1, 'R');
 
         return $this->Output('PR-Report.pdf', 'I');
     }
