@@ -105,8 +105,7 @@
                     <!--begin::Card toolbar-->
                     <div class="card-toolbar flex-row-fluid justify-content-end gap-5">
                         <!--begin::Add product-->
-                        <a href="{{ route('detallado.imprimir') }}" class="btn btn-primary"><i
-                                class="fa-solid fa-print"></i> Imprimir</a>
+                        <a href="{{ route('reporte', ['tipo' => 'reporteDetallado', 'codigo_contribuyente' => session('codigo_contribuyente'), 'anio' => $anioSeleccionado, 'tipo_tributo' => $tipoTributo]) }}" class="btn btn-primary" target="_blank"><i class="fa-solid fa-print"></i> Imprimir</a>
                         <button id="btnPagar" class="btn btn-success"><i class="fa-solid fa-money-bill-1-wave"></i>
                             Pagar</button>
                         <!--end::Add product-->

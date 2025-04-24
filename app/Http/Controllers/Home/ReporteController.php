@@ -8,8 +8,8 @@ use App\Reports\PUReport;
 use App\Reports\RecordReport;
 use App\Reports\PendientesReport;
 use App\Reports\UsuariosAdminReport;
-use App\Reports\ConsolidadoAdminReport;
-use App\Reports\DetalladoAdminReport;
+use App\Reports\ConsolidadoReport;
+use App\Reports\DetalladoReport;
 use App\Reports\PRReport;
 use Illuminate\Http\Request;
 
@@ -45,6 +45,22 @@ class ReporteController extends Controller
                 $tipoAdministrador = $request->input('tipoAdministrador', '%');
                 $estado = $request->input('estadoSeleccionado', '%');
                 $report = new UsuariosAdminReport($tipoAdministrador, $estado);
+                return $report->generarPDF();
+                break;
+
+                case 'reporteConsolidado':
+                $codigoContribuyente = $request->input('codigo_contribuyente');
+                $anioSeleccionado = $request->input('anio', '%');
+                $tipoTributo = $request->input('tipo_tributo', '%');
+                $report = new ConsolidadoReport($codigoContribuyente, $anioSeleccionado, $tipoTributo);
+                return $report->generarPDF();
+                break;
+
+            case 'reporteDetallado':
+                $codigoContribuyente = $request->input('codigo_contribuyente');
+                $anioSeleccionado = $request->input('anio', '%');
+                $tipoTributo = $request->input('tipo_tributo', '%');
+                $report = new DetalladoReport($codigoContribuyente, $anioSeleccionado, $tipoTributo);
                 return $report->generarPDF();
                 break;
 

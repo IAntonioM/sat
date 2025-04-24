@@ -114,7 +114,7 @@
                     <!--begin::Card toolbar-->
                     <div class="card-toolbar flex-row-fluid justify-content-end gap-5">
                         <!--begin::Add product-->
-                        <a href="" class="btn btn-primary"><i class="fa-solid fa-print"></i>Imprimir</a>
+                        <a href="{{ route('reporte', ['tipo' => 'reporteConsolidado', 'codigo_contribuyente' => session('codigo_contribuyente'), 'anio' => $anioSeleccionado, 'tipo_tributo' => $tipoTributo]) }}" class="btn btn-primary"><i class="fa-solid fa-print" target="_blank"></i> Imprimir</a>
                         <a href="" class="btn btn-success"><i class="fa-solid fa-money-bill-1-wave"></i>Pagar</a>
                         <!--end::Add product-->
                     </div>
