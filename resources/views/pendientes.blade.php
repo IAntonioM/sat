@@ -48,7 +48,7 @@
                                         data-control="select2" data-hide-search="true"
                                         data-placeholder="Seleccione el Estado">
                                         <option></option>
-                                        <option value="%" {{ $estadoSeleccionado == '%' ? 'selected' : '' }}>Todos
+                                        <option value="%" {{ $estadoSeleccionado == '%' ? 'selected' : '' }}>Todos Estados
                                         </option>
                                         @foreach ($estadosDisponibles as $estado)
                                             <option value="{{ $estado->nFlgEstado }}"

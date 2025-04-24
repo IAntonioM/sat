@@ -47,7 +47,7 @@
                                         data-control="select2" data-hide-search="true"
                                         data-placeholder="Seleccione el Estado">
                                         <option></option>
-                                        <option value="%" {{ $estadoSeleccionado == '%' ? 'selected' : '' }}>Todos
+                                        <option value="%" {{ $estadoSeleccionado == '%' ? 'selected' : '' }}>Todos Estados
                                         </option>
                                         @foreach ($estadosDisponibles as $estado)
                                             <option value="{{ $estado->vestado_cuenta }}"
@@ -65,7 +65,7 @@
                                         id="tipo_admin_select" data-control="select2" data-hide-search="true"
                                         data-placeholder="Seleccione el Tributo">
                                         <option></option>
-                                        <option value="%" {{ $tipoAdministrador == '%' ? 'selected' : '' }}>Todos
+                                        <option value="%" {{ $tipoAdministrador == '%' ? 'selected' : '' }}>Todos Tipos
                                         </option>
                                         @foreach ($tiposAdmins as $tipoAdmin)
                                             <option value="{{ $tipoAdmin->vestado }}"
