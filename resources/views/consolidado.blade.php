@@ -74,7 +74,7 @@
                                     <select class="form-select form-select-solid" name="anio" id="anio_select"
                                         data-control="select2" data-hide-search="true" data-placeholder="Seleccione el Año">
                                         <option></option>
-                                        <option value="%" {{ $anioSeleccionado == '%' ? 'selected' : '' }}>Todos
+                                        <option value="%" {{ $anioSeleccionado == '%' ? 'selected' : '' }}>Todos los años
                                         </option>
                                         @foreach ($aniosDisponibles as $anio)
                                             <option value="{{ $anio }}"
@@ -91,7 +91,7 @@
                                         id="tipo_tributo_select" data-control="select2" data-hide-search="true"
                                         data-placeholder="Seleccione el Tributo">
                                         <option></option>
-                                        <option value="%" {{ $tipoTributo == '%' ? 'selected' : '' }}>Todos
+                                        <option value="%" {{ $tipoTributo == '%' ? 'selected' : '' }}>Todos los tributos
                                         </option>
                                         @foreach ($tiposTributo as $tributo)
                                             <option value="{{ $tributo->tipo }}"

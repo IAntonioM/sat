@@ -31,7 +31,18 @@
 	<!--begin::Body-->
 	<body id="kt_body" class="header-fixed header-tablet-and-mobile-fixed toolbar-enabled">
 		<!--begin::Theme mode setup on page load-->
+       <script>
+          // Set theme to light
+          document.documentElement.setAttribute("data-bs-theme", "light");
 
+          // Store the preference in localStorage
+          localStorage.setItem("data-bs-theme", "light");
+
+          // This will ensure the theme stays light even if system preferences change
+          window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change", () => {
+            document.documentElement.setAttribute("data-bs-theme", "light");
+          });
+        </script>
 		<!--end::Theme mode setup on page load-->
 		<!--begin::Main-->
 		<!--begin::Root-->
@@ -415,6 +426,5 @@
         </script>
 
     @endif
-
     <!--end::Modal Custom-->
 </html>
