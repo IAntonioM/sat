@@ -52,10 +52,6 @@ class PRReport extends FPDF
         $this->Cell(0, 4, "DECLARACIÓN JURADA", 0, 0, 'C');
         $this->Ln(8);
 
-        $this->SetXY(10, 32);
-        $this->SetFont('Arial', 'B', 8);
-        $this->Cell(0, 4, utf8_decode("Fecha de generación: ") . $this->fechaActual, 0, 0, 'L');
-        $this->Ln(10);
     }
 
     //Pie de página
@@ -76,6 +72,7 @@ class PRReport extends FPDF
         $this->AddPage();
 
         // I. DATOS DEL CONTRIBUYENTE
+        $this->SetXY(5, 30);
         $this->SetFont('Arial', 'B', 10);
         $this->Cell(0, 8, 'I. DATOS DEL CONTRIBUYENTE', 0, 1, 'L');
         $this->Ln(2);
@@ -242,12 +239,6 @@ class PRReport extends FPDF
         $this->Cell(30, 8, number_format($valor_total, 2), 0, 1, 'R');
 
         $this->Ln(20);
-
-        // Firmas
-        $this->SetFont('Arial', '', 8);
-        $this->Cell(85, 5, 'FIRMA DEL CONTRIBUYENTE', 'T', 0, 'C');
-        $this->Cell(20, 5, '', 0, 0, 'C');
-        $this->Cell(85, 5, 'FIRMA Y SELLO DEL FUNCIONARIO', 'T', 1, 'C');
 
         return $this->Output('PR-Report.pdf', 'I');
     }
