@@ -6,6 +6,11 @@ use App\Http\Controllers\Controller;
 use App\Reports\HRReport;
 use App\Reports\PUReport;
 use App\Reports\RecordReport;
+use App\Reports\PendientesReport;
+use App\Reports\UsuariosAdminReport;
+use App\Reports\ConsolidadoAdminReport;
+use App\Reports\DetalladoAdminReport;
+use App\Reports\PRReport;
 use Illuminate\Http\Request;
 
 class ReporteController extends Controller
@@ -27,6 +32,19 @@ class ReporteController extends Controller
             case 'reporteRecordPapeletas':
                 $termBusq = $request->input('termBusq');
                 $report = new RecordReport($termBusq);
+                return $report->generarPDF();
+                break;
+
+            case 'reportePendientes':
+                $estadoSeleccionado = $request->input('estadoSeleccionado', '%');
+                $report = new PendientesReport($estadoSeleccionado);
+                return $report->generarPDF();
+                break;
+
+            case 'reporteUsuariosAdmin':
+                $tipoAdministrador = $request->input('tipoAdministrador', '%');
+                $estado = $request->input('estadoSeleccionado', '%');
+                $report = new UsuariosAdminReport($tipoAdministrador, $estado);
                 return $report->generarPDF();
                 break;
 

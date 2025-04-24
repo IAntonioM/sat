@@ -23,8 +23,8 @@
                         <!--end::Details-->
                         <!--begin::Actions-->
                         <div class="d-flex mb-4">
-                            <a href="{{ route('reporte', ['tipo' => 'reportePU', 'xid_anexo' => $datos_predio[0]->id_anexo ?? '']) }}"
-                                class="btn btn-primary" id="btnImprimir">
+                            <a href="{{ route('reporte', ['tipo' => 'PendientesReport']) }}"
+                                class="btn btn-primary" id="btnImprimir" target="_blank">
                                 <i class="fa-solid fa-print"></i> Imprimir
                             </a>
                         </div>

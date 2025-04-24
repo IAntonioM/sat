@@ -1,4 +1,3 @@
-```blade
 @extends('layouts.cabeceraAdmin')
 @section('content')
     <div class="card " style="background-image: url(assets/media/logos/fondo1.jpg);background-position: center center;">
@@ -90,11 +89,17 @@
                     <!--begin::Card toolbar-->
                     <div class="card-toolbar flex-row-fluid justify-content-end gap-5">
                         <!--begin::Add product-->
-                        <a href="#" class="btn btn-primary"><i class="fa-solid fa-print"></i> Imprimir</a>
+                        <a href="{{ route('reporte', [
+                            'tipo' => 'reporteUsuariosAdmin',
+                            'tipoAdministrador' => $tipoAdministrador,
+                            'estadoSeleccionado' => $estadoSeleccionado
+                        ]) }}" class="btn btn-primary" target="_blank">
+                            <i class="fa-solid fa-print"></i> Imprimir
+                        </a>
 
-                        <button type="button" class="btn btn-success" data-bs-toggle="modal"
-                            data-bs-target="#kt_modal_add_user">
-                            <i class="fa-solid fa-user-plus"></i> Nuevo Usuario</button>
+                        <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#kt_modal_add_user">
+                            <i class="fa-solid fa-user-plus"></i> Nuevo Usuario
+                        </button>
                         <!--end::Add product-->
                     </div>
                     <!--end::Card toolbar-->
@@ -337,4 +342,3 @@
         <script src="{{ asset('js/usuariosJS.js') }}?v={{ time() }}"></script>
     @endpush
 @endsection
-```
