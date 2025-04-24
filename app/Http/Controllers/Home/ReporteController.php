@@ -8,6 +8,9 @@ use App\Reports\PUReport;
 use App\Reports\RecordReport;
 use App\Reports\PendientesReport;
 use App\Reports\UsuariosAdminReport;
+use App\Reports\ConsolidadoAdminReport;
+use App\Reports\DetalladoAdminReport;
+use App\Reports\PRReport;
 use Illuminate\Http\Request;
 
 class ReporteController extends Controller
