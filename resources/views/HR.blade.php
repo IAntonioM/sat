@@ -134,11 +134,15 @@
 <div class="col-xl-12 row" style="border: 1px solid var(--bs-gray-300);margin-left: 0;margin-right:0;--bs-gutter-x: 0rem;">
     <!-- CODIGO HEADER -->
     <div class="col-xl-1" style="font-size:9px; border-right: 1px solid #ccc; padding:10px; background:#f8f8f9; text-align:center;">
+        TIPO
+    </div>
+
+    <div class="col-xl-1" style="font-size:9px; border-right: 1px solid #ccc; padding:10px; background:#f8f8f9; text-align:center;">
         CÓDIGO
     </div>
 
     <!-- DIRECCIÓN HEADER -->
-    <div class="col-xl-7" style="font-size:9px; border-right: 1px solid #ccc; padding:10px; background:#f8f8f9; text-align:center;">
+    <div class="col-xl-6" style="font-size:9px; border-right: 1px solid #ccc; padding:10px; background:#f8f8f9; text-align:center;">
         DIRECCIÓN DE PREDIO
     </div>
 
@@ -168,6 +172,9 @@
     <div class="col-xl-12 row" style="border: 1px solid var(--bs-gray-300);margin-left: 0;margin-right:0;--bs-gutter-x: 0rem; border-top: none;">
         <!-- CODIGO DATA -->
         <div class="col-xl-1" style="border-right: 1px solid #ccc; padding:10px; text-align:center;">
+            {{ trim($predio->tipo_predio) }}
+        </div>
+        <div class="col-xl-1" style="border-right: 1px solid #ccc; padding:10px; text-align:center;">
             <a href="{{ $predio->tipo_predio == 'PR' ? url('PR?xid_anexo=' . trim($predio->cod_pred)) : url('PU?xid_anexo=' . trim($predio->cod_pred)) }}"
                style="color: rgb(0, 54, 233); text-decoration: underline; font-size: 12px;">
                 {{ trim($predio->cod_pred) }}
@@ -175,7 +182,7 @@
         </div>
 
         <!-- DIRECCIÓN DATA -->
-        <div class="col-xl-7" style="border-right: 1px solid #ccc; padding:10px; text-align:center;">
+        <div class="col-xl-6" style="border-right: 1px solid #ccc; padding:10px; text-align:center;">
             {{ str_replace('Âº', 'º', $predio->direccion) }}
         </div>
 

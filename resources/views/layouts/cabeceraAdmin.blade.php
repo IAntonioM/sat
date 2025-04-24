@@ -325,6 +325,7 @@
     <script src="assets/js/custom/utilities/modals/users-search.js"></script>
 
     <script src="assets/js/custom/apps/user-management/users/list/add.js"></script>
+    <script src="{{ asset('assets/js/usuariosJS.js') }}?v={{ time() }}"></script>
     <!--end::Custom Javascript-->
     <!--end::Javascript-->
 </body>

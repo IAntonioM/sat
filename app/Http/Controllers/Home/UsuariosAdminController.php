@@ -50,7 +50,7 @@ class UsuariosAdminController extends Controller
         $estados = UsuariosAdmins::obtenerEstadosDisponibles();
         $tiposAdmins = UsuariosAdmins::obtenerTipoAdminDisponibles();
         $fechaActual = Carbon::now()->format('d/m/Y');
-
+        Debugbar::info('usuarios',$usuarios);
         $viewData = [
             'contribuyente' => $contribuyente,
             'Usuarios'=> $usuarios,

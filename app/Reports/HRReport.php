@@ -154,8 +154,9 @@ class HRReport extends FPDF
         $this->Ln();
 
         $this->SetXY(170, 47);
-        $header = array('');
-        $this->SetFont('Arial', 'B', 6);
+        $header = array(trim($this->datosContribuyente->num_doc));
+
+        $this->SetFont('Arial', 'B', 7);
         $this->SetFillColor(255, 255, 255);
         $this->SetTextColor(0);
         $this->SetDrawColor(0);
@@ -207,14 +208,14 @@ class HRReport extends FPDF
         $this->Ln();
 
         $this->SetXY(5, 60);
-        $header = array('CODIGO', 'DIRECCION DEL PREDIO', 'VALOR DEL PREDIO', '% PROPIEDAD.', 'MONTO INAFECTO', 'VALOR AFECTO');
+        $header = array('TIPO','CODIGO', 'DIRECCION DEL PREDIO', 'VALOR DEL PREDIO', '% PROPIEDAD.', 'MONTO INAFECTO', 'VALOR AFECTO');
         $this->SetFillColor(229, 229, 229);
         $this->SetTextColor(0);
         $this->SetDrawColor(0);
         $this->SetLineWidth(.2);
         $this->SetFont('Arial', 'B', 5);
 
-        $w = array(14, 120, 18, 16, 17, 17);
+        $w = array(14,14, 106, 18, 16, 17, 17);
         for($i = 0; $i < count($header); $i++)
             $this->Cell($w[$i], 8, $header[$i], 1, 0, 'C', 1);
         $this->Ln();
@@ -255,10 +256,12 @@ class HRReport extends FPDF
             $this->SetFillColor(255, 255, 255);
             $this->SetTextColor(0, 0, 0);
 
+            $this->Cell(14, 6, $predio->tipo_predio, 1, 0, 'C');
+
             $this->Cell(14, 6, $predio->cod_pred, 1, 0, 'C');
 
             $this->SetFont('Arial', 'B', 5);
-            $this->Cell(120, 6, utf8_decode($predio->direccion), 1, 0, 'L'); // era {'8'}
+            $this->Cell(106, 6, utf8_decode($predio->direccion), 1, 0, 'L'); // era {'8'}
             $this->Cell(18, 6, $predio->val_autoavaluo, 1, 0, 'C');      // era {'11'}
             $this->Cell(16, 6, $predio->porcen_propiedad, 1, 0, 'C');    // era {'9'}
             $this->Cell(17, 6, $predio->total, 1, 0, 'C');               // era {'19'}
