@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use DebugBar\DebugBar;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
 
@@ -31,8 +32,10 @@ class UsuariosAdmins extends Model
      */
     public static function obtenerUsuarios($tipoAdministrador, $estado)
     {
-        return DB::select('EXEC sp_ListarUsuariosFiltrados @accion = 1, @tipoAdministrador = ?, @estado = ?; ',
-            [$tipoAdministrador, $estado]);
+        return DB::select(
+            'EXEC sp_ListarUsuariosFiltrados @accion = 1, @tipoAdministrador = ?, @estado = ?; ',
+            [$tipoAdministrador, $estado]
+        );
     }
 
     /**
@@ -58,10 +61,74 @@ class UsuariosAdmins extends Model
     public static function obtenerTipoAdminDisponibles()
     {
         $result = DB::select('SELECT DISTINCT vestado, CASE
-                           WHEN vestado = 002 THEN \'Moderador\'
-                           WHEN vestado = 003 THEN \'Administrador\'
+                           WHEN vestado = 002 THEN \'Administrador\'
+                           WHEN vestado = 003 THEN \'Moderador\'
                            ELSE \'Desconocido\' END AS nombre_tipo_admin
                           FROM MUSUARIO WHERE vestado <> \'001\'');
         return $result;
+    }
+    public static function crearUsuario($vnombre, $vpater, $vmater, $vusuario, $vestado, $dfecregist, $vestado_cuenta, $vpass)
+    {
+        try {
+            $result = DB::select('EXEC sp_UsuarioAdmin @accion = ?, @vnombre = ?, @vpater = ?, @vmater = ?, @vusuario = ?, @vestado = ?, @vestado_cuenta = ?, @dfecregist = ?, @vpass = ?, @vlogin = ?', [
+                1, // @accion = 1
+                $vnombre,
+                $vpater,
+                $vmater,
+                $vusuario,
+                $vestado,
+                $vestado_cuenta,
+                $dfecregist,
+                $vpass,
+                null // @vlogin
+            ]);
+
+            // Since the stored procedure now returns data, check if result contains data
+            return !empty($result) ? $result : false;
+        } catch (\Exception $e) {
+            return false;
+        }
+    }
+    public static function actualizarUsuario($vlogin, $vnombre, $vpater, $vmater, $vusuario, $vestado, $vestado_cuenta, $vpass, $dfecregist)
+    {
+        $query = 'EXEC sp_UsuarioAdmin
+                @accion = ?,
+                @vnombre = ?,
+                @vpater = ?,
+                @vmater = ?,
+                @vusuario = ?,
+                @dfecregist = ?,
+                @vestado = ?,
+                @vestado_cuenta = ?,
+                @vpass = ?,
+                @vlogin = ?';
+
+        $params = [
+            2,             // @accion = 2 (Actualizar)
+            $vnombre,
+            $vpater,
+            $vmater,
+            $vusuario,
+            $dfecregist,   // ¡No lo olvides!
+            $vestado,
+            $vestado_cuenta,
+            $vpass,
+            $vlogin        // Debe ir al final según el SP
+        ];
+
+        try {
+            $result = DB::select($query, $params);
+            return !empty($result) ? $result[0] : false;
+        } catch (\Exception $e) {
+            return false;
+        }
+    }
+
+    public static function eliminarUsuario($vlogin)
+    {
+        // Ejecutar el procedimiento almacenado para la acción 3 (Eliminar usuario)
+        $result = DB::select('EXEC sp_UsuarioAdmin @accion = 3, @vlogin = ?', [$vlogin]);
+
+        return $result ? true : false;
     }
 }

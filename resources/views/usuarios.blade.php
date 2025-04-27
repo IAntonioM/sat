@@ -47,7 +47,8 @@
                                         data-control="select2" data-hide-search="true"
                                         data-placeholder="Seleccione el Estado">
                                         <option></option>
-                                        <option value="%" {{ $estadoSeleccionado == '%' ? 'selected' : '' }}>Todos Estados
+                                        <option value="%" {{ $estadoSeleccionado == '%' ? 'selected' : '' }}>Todos Los
+                                            Estados
                                         </option>
                                         @foreach ($estadosDisponibles as $estado)
                                             <option value="{{ $estado->vestado_cuenta }}"
@@ -65,7 +66,8 @@
                                         id="tipo_admin_select" data-control="select2" data-hide-search="true"
                                         data-placeholder="Seleccione el Tributo">
                                         <option></option>
-                                        <option value="%" {{ $tipoAdministrador == '%' ? 'selected' : '' }}>Todos Tipos
+                                        <option value="%" {{ $tipoAdministrador == '%' ? 'selected' : '' }}>Todos los
+                                            Roles
                                         </option>
                                         @foreach ($tiposAdmins as $tipoAdmin)
                                             <option value="{{ $tipoAdmin->vestado }}"
@@ -92,12 +94,14 @@
                         <a href="{{ route('reporte', [
                             'tipo' => 'reporteUsuariosAdmin',
                             'tipoAdministrador' => $tipoAdministrador,
-                            'estadoSeleccionado' => $estadoSeleccionado
-                        ]) }}" class="btn btn-primary" target="_blank">
+                            'estadoSeleccionado' => $estadoSeleccionado,
+                        ]) }}"
+                            class="btn btn-primary" target="_blank">
                             <i class="fa-solid fa-print"></i> Imprimir
                         </a>
 
-                        <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#kt_modal_add_user">
+                        <button type="button" class="btn btn-success" data-bs-toggle="modal"
+                            data-bs-target="#kt_modal_add_user">
                             <i class="fa-solid fa-user-plus"></i> Nuevo Usuario
                         </button>
                         <!--end::Add product-->
@@ -124,29 +128,27 @@
                         <tbody class="fw-semibold text-gray-600" id="tabla_usuarios">
                             @forelse($Usuarios as $usuario)
                                 <tr style="text-align: center; font-size:12px">
-                                    <td>{{ $usuario->cidusu }}</td>
+                                    <td>{{ $usuario->vusuario }}</td>
                                     <td>{{ trim($usuario->vpater . ' ' . $usuario->vmater . ' ' . $usuario->vnombre) }}
                                     </td>
                                     <td>{{ $usuario->dfecregist ? date('d/m/Y', strtotime($usuario->dfecregist)) : '' }}
                                     <td>{{ $usuario->tipo_admin ?? 'N/A' }}</td>
                                     <td>{{ $usuario->estado_nombre ?? 'N/A' }}</td>
                                     <td>
-                                        <a href="#"
-                                            class="btn btn-active-color-primary btn-sm me-1 editar-usuario"
-                                            style="padding: 0rem;"
-                                            data-bs-toggle="modal"
+                                        <a href="#" class="btn btn-active-color-primary btn-sm me-1 editar-usuario"
+                                            style="padding: 0rem;" data-bs-toggle="modal"
                                             data-bs-target="#kt_modal_edit_user"
-                                            data-id="{{ $usuario->cidusu }}"
-                                            data-nombres="{{ $usuario->vnombre }}"
+                                            data-id="{{ $usuario->vlogin }}"
+                                            data-nombres="{{ $usuario->vnombre }}" data-usuario="{{ $usuario->vusuario }}"
                                             data-apellidos="{{ trim($usuario->vpater . ' ' . $usuario->vmater) }}"
-                                            data-fecha="{{ $usuario->dfecregist }}"
-                                            data-tipo="{{ $usuario->vestado_cuenta }}"
+                                            data-fecha="{{ $usuario->dfecregist }}" data-tipo="{{ $usuario->vestado }}"
                                             data-estado="{{ $usuario->vestado_cuenta }}">
-                                                <i class="fa-solid fa-pen-to-square fs-2"></i>
-                                            </a>
+                                            <i class="fa-solid fa-pen-to-square fs-2"></i>
+                                        </a>
 
                                         <a href="#" class="btn btn-active-color-danger btn-sm me-1"
-                                            style="padding: 0rem;" data-bs-toggle="modal" data-bs-target="#kt_modal_delete_user">
+                                            style="padding: 0rem;" data-bs-toggle="modal"
+                                            data-bs-target="#kt_modal_delete_user">
                                             <i class="fa-solid fa-trash fs-2"></i>
                                         </a>
                                     </td>
@@ -168,169 +170,187 @@
         <!--end::Post-->
     </div>
 
-@forelse($Usuarios as $usuario)
-<!-- Modal Editar Usuario -->
-<div class="modal fade" id="kt_modal_edit_user" tabindex="-1" aria-hidden="true">
-    <!--begin::Modal dialog-->
-    <div class="modal-dialog modal-dialog-centered mw-650px">
-        <!--begin::Modal content-->
-        <div class="modal-content">
-            <!--begin::Modal header-->
-            <div class="modal-header" id="kt_modal_edit_user_header">
-                <!--begin::Modal title-->
-                <h2 class="fw-bold">Editar Usuario</h2>
-                <!--end::Modal title-->
-                <!--begin::Close-->
-                <div class="btn btn-icon btn-sm btn-active-icon-primary" data-bs-dismiss="modal">
-                    <i class="ki-duotone ki-cross fs-1">
-                        <span class="path1"></span>
-                        <span class="path2"></span>
-                    </i>
+    <div class="modal fade" id="kt_modal_edit_user" tabindex="-1" aria-hidden="true">
+        <!--begin::Modal dialog-->
+        <div class="modal-dialog modal-dialog-centered mw-650px">
+            <!--begin::Modal content-->
+            <div class="modal-content">
+                <!--begin::Modal header-->
+                <div class="modal-header" id="kt_modal_edit_user_header">
+                    <!--begin::Modal title-->
+                    <h2 class="fw-bold">Editar Usuario</h2>
+                    <!--end::Modal title-->
+                    <!--begin::Close-->
+                    <div class="btn btn-icon btn-sm btn-active-icon-primary" data-bs-dismiss="modal">
+                        <i class="ki-duotone ki-cross fs-1">
+                            <span class="path1"></span>
+                            <span class="path2"></span>
+                        </i>
+                    </div>
+                    <!--end::Close-->
                 </div>
-                <!--end::Close-->
+                <!--end::Modal header-->
+                <!--begin::Modal body-->
+                <div class="modal-body px-5 my-7">
+                    <!--begin::Form-->
+                    <form id="kt_modal_edit_user_form" class="form" action="{{ route('actualizarUsuario') }}" method="POST">
+                        @csrf
+                        <input type="hidden" name="user_id" id="edit_user_id">
+                        <!--begin::Scroll-->
+                        <div class="d-flex flex-column scroll-y px-5 px-lg-10" id="kt_modal_edit_user_scroll"
+                            data-kt-scroll="true" data-kt-scroll-activate="true" data-kt-scroll-max-height="auto"
+                            data-kt-scroll-dependencies="#kt_modal_edit_user_header"
+                            data-kt-scroll-wrappers="#kt_modal_edit_user_scroll" data-kt-scroll-offset="300px">
+
+                            <!--begin::Input group-->
+                            <div class="col-xl-12 row pb-5 ">
+                                <div class="col-xl-6 " style="padding: 0px 5px 0px 0px">
+                                    <label class="required fw-semibold fs-6 mb-2">Apellidos</label>
+
+                                    <input type="text" name="apellidos" id="edit_apellidos"
+                                        class="form-control form-control-solid mb-3 mb-lg-0" required />
+                                        @error('apellidos')
+                                            <div style="color: #d12d2d">{{ $message }}</div>
+                                        @enderror
+                                </div>
+                                <div class="col-xl-6 " style="padding: 0px 0px 0px 5px">
+                                    <label class="required fw-semibold fs-6 mb-2">Nombres</label>
+
+                                    <input type="text" name="nombres" id="edit_nombres"
+                                        class="form-control form-control-solid mb-3 mb-lg-0" required />
+                                        @error('nombres')
+                                            <div style="color: #d12d2d">{{ $message }}</div>
+                                        @enderror
+                                </div>
+                                <!--end::Input-->
+                            </div>
+
+                            <div class="col-xl-12 row pb-5 ">
+                                <div class="col-xl-6 " style="padding: 0px 5px 0px 0px">
+                                    <label class="required fw-semibold fs-6 mb-2">Usuario</label>
+
+                                    <input type="text" name="usuario" id="edit_usuario"
+                                        class="form-control form-control-solid mb-3 mb-lg-0" required />
+                                        @error('usuario')
+                                            <div style="color: #d12d2d">{{ $message }}</div>
+                                        @enderror
+                                </div>
+                                <div class="col-xl-6 " style="padding: 0px 0px 0px 5px">
+                                    <label class="fw-semibold fs-6 mb-2">Password</label>
+                                    <div class="input-group">
+                                        <input type="password" name="password" id="edit_password"
+                                            class="form-control form-control-solid"
+                                            placeholder="Dejar vacío para mantener la contraseña actual" />
+                                        <span class="input-group-text">
+                                            <i class="ki-duotone ki-eye-slash toggle-password fs-2"
+                                                data-target="edit_password">
+                                                <span class="path1"></span>
+                                                <span class="path2"></span>
+                                                <span class="path3"></span>
+                                                <span class="path4"></span>
+                                            </i>
+                                        </span>
+                                        @error('password')
+                                            <div style="color: #d12d2d">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+                                </div>
+                                <!--end::Input-->
+                            </div>
+                            <div class="col-xl-12 row pb-5 ">
+                                <div class="col-xl-6 " style="padding: 0px 5px 0px 0px">
+                                    <label class="required fw-semibold fs-6 mb-2">Fecha de Registro</label>
+
+                                    <input type="date" name="fechaRegistro" id="edit_fechaRegistro"
+                                        class="form-control form-control-solid mb-3 mb-lg-0" required />
+                                        @error('fechaRegistro')
+                                            <div style="color: #d12d2d">{{ $message }}</div>
+                                        @enderror
+                                </div>
+                                <div class="col-xl-6 " style="padding: 0px 0px 0px 5px">
+                                    <label class="required fw-semibold fs-6 mb-2">Estado</label>
+
+                                    <select name="estado" id="edit_estado" class="form-select form-select-solid"
+                                        data-control="select2" data-hide-search="true"
+                                        data-placeholder="Seleccione el Estado" required>
+                                        <option value="1">Activo</option>
+                                        <option value="0">Desactivado</option>
+                                    </select>
+                                    @error('estado')
+                                        <div style="color: #d12d2d">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                                <!--end::Input-->
+                            </div>
+
+                            <div class="mb-5">
+                                <!--begin::Label-->
+                                <label class="required fw-semibold fs-6 mb-5">Tipo de Usuario</label>
+                                <!--end::Label-->
+                                <!--begin::Roles-->
+                                <!--begin::Input row-->
+                                <div class="d-flex fv-row">
+                                    <!--begin::Radio-->
+                                    <div class="form-check form-check-custom form-check-solid">
+                                        <!--begin::Input-->
+                                        <input class="form-check-input me-3" name="tipoAdministrador" type="radio"
+                                            value="1" id="edit_tipoAdministrador_0" />
+                                        <!--end::Input-->
+                                        <!--begin::Label-->
+                                        <label class="form-check-label" for="edit_tipoAdministrador_0">
+                                            <div class="fw-bold text-gray-800">Moderador</div>
+
+                                        </label>
+                                        <!--end::Label-->
+                                    </div>
+                                    <!--end::Radio-->
+                                </div>
+                                <div class='separator separator-dashed my-5'></div>
+                                <div class="d-flex fv-row">
+                                    <!--begin::Radio-->
+                                    <div class="form-check form-check-custom form-check-solid">
+                                        <!--begin::Input-->
+                                        <input class="form-check-input me-3" name="tipoAdministrador" type="radio"
+                                            value="0" id="edit_tipoAdministrador_1" />
+                                        <!--end::Input-->
+                                        <!--begin::Label-->
+                                        <label class="form-check-label" for="edit_tipoAdministrador_1">
+                                            <div class="fw-bold text-gray-800">Administrador</div>
+
+                                        </label>
+                                        <!--end::Label-->
+                                    </div>
+                                    <!--end::Radio-->
+                                </div>
+                                @error('tipoAdministrador')
+                                    <div style="color: #d12d2d">{{ $message }}</div>
+                                @enderror
+
+                                <div class='separator separator-dashed my-5'></div>
+
+                            </div>
+                            <!--end::Input group-->
+                        </div>
+                        <!--end::Scroll-->
+                        <!--begin::Actions-->
+                        <div class="text-center pt-10">
+                            <button type="reset" class="btn btn-light me-3" data-bs-dismiss="modal">Cancelar</button>
+                            <button type="submit" class="btn btn-primary">
+                                <span class="indicator-label">Actualizar</span>
+                                <span class="indicator-progress">Por favor espere...
+                                    <span class="spinner-border spinner-border-sm align-middle ms-2"></span></span>
+                            </button>
+                        </div>
+                        <!--end::Actions-->
+                    </form>
+                    <!--end::Form-->
+                </div>
+                <!--end::Modal body-->
             </div>
-            <!--end::Modal header-->
-            <!--begin::Modal body-->
-            <div class="modal-body px-5 my-7">
-                <!--begin::Form-->
-                <form id="kt_modal_edit_user_form" class="form" action="#" method="POST">
-                    @csrf
-                    @method('PUT')
-                    <input type="hidden" name="user_id" id="edit_user_id">
-                    <!--begin::Scroll-->
-                    <div class="d-flex flex-column scroll-y px-5 px-lg-10" id="kt_modal_edit_user_scroll"
-                        data-kt-scroll="true" data-kt-scroll-activate="true" data-kt-scroll-max-height="auto"
-                        data-kt-scroll-dependencies="#kt_modal_edit_user_header"
-                        data-kt-scroll-wrappers="#kt_modal_edit_user_scroll" data-kt-scroll-offset="300px">
-
-                        <!--begin::Input group-->
-                        <div class="col-xl-12 row pb-5 ">
-                            <div class="col-xl-6 " style="padding: 0px 5px 0px 0px">
-                                <label class="required fw-semibold fs-6 mb-2">Apellidos</label>
-
-                                <input type="text" name="apellidos" id="edit_apellidos"
-                                    class="form-control form-control-solid mb-3 mb-lg-0" required />
-                            </div>
-                            <div class="col-xl-6 " style="padding: 0px 0px 0px 5px">
-                                <label class="required fw-semibold fs-6 mb-2">Nombres</label>
-
-                                <input type="text" name="nombres" id="edit_nombres"
-                                    class="form-control form-control-solid mb-3 mb-lg-0" required />
-                            </div>
-                            <!--end::Input-->
-                        </div>
-
-                        <div class="col-xl-12 row pb-5 ">
-                            <div class="col-xl-6 " style="padding: 0px 5px 0px 0px">
-                                <label class="required fw-semibold fs-6 mb-2">Usuario</label>
-
-                                <input type="text" name="cidusu" id="edit_cidusu"
-                                    class="form-control form-control-solid mb-3 mb-lg-0" required />
-                            </div>
-                            <div class="col-xl-6 " style="padding: 0px 0px 0px 5px">
-                                <label class="fw-semibold fs-6 mb-2">Password</label>
-                                <div class="input-group">
-                                    <input type="password" name="password" id="edit_password"
-                                        class="form-control form-control-solid" placeholder="Dejar vacío para mantener la contraseña actual" />
-                                    <span class="input-group-text">
-                                        <i class="ki-duotone ki-eye-slash toggle-password fs-2" data-target="edit_password">
-                                            <span class="path1"></span>
-                                            <span class="path2"></span>
-                                            <span class="path3"></span>
-                                            <span class="path4"></span>
-                                        </i>
-                                    </span>
-                                </div>
-                            </div>
-                            <!--end::Input-->
-                        </div>
-                        <div class="col-xl-12 row pb-5 ">
-                            <div class="col-xl-6 " style="padding: 0px 5px 0px 0px">
-                                <label class="required fw-semibold fs-6 mb-2">Fecha de Registro</label>
-
-                                <input type="date" name="fechaRegistro" id="edit_fechaRegistro"
-                                    class="form-control form-control-solid mb-3 mb-lg-0" required />
-                            </div>
-                            <div class="col-xl-6 " style="padding: 0px 0px 0px 5px">
-                                <label class="required fw-semibold fs-6 mb-2">Estado</label>
-
-                                <select name="estado" id="edit_estado" class="form-select form-select-solid" data-control="select2"
-                                    data-hide-search="true" data-placeholder="Seleccione el Estado" required>
-                                    <option value="1">Activo</option>
-                                    <option value="0">Desactivado</option>
-                                </select>
-                            </div>
-                            <!--end::Input-->
-                        </div>
-
-                        <div class="mb-5">
-                            <!--begin::Label-->
-                            <label class="required fw-semibold fs-6 mb-5">Tipo de Usuario</label>
-                            <!--end::Label-->
-                            <!--begin::Roles-->
-                            <!--begin::Input row-->
-                            <div class="d-flex fv-row">
-                                <!--begin::Radio-->
-                                <div class="form-check form-check-custom form-check-solid">
-                                    <!--begin::Input-->
-                                    <input class="form-check-input me-3" name="tipoAdministrador" type="radio"
-                                        value="0" id="edit_tipoAdministrador_0" />
-                                    <!--end::Input-->
-                                    <!--begin::Label-->
-                                    <label class="form-check-label" for="edit_tipoAdministrador_0">
-                                        <div class="fw-bold text-gray-800">Moderador</div>
-
-                                    </label>
-                                    <!--end::Label-->
-                                </div>
-                                <!--end::Radio-->
-                            </div>
-                            <div class='separator separator-dashed my-5'></div>
-                            <div class="d-flex fv-row">
-                                <!--begin::Radio-->
-                                <div class="form-check form-check-custom form-check-solid">
-                                    <!--begin::Input-->
-                                    <input class="form-check-input me-3" name="tipoAdministrador" type="radio"
-                                        value="1" id="edit_tipoAdministrador_1" />
-                                    <!--end::Input-->
-                                    <!--begin::Label-->
-                                    <label class="form-check-label" for="edit_tipoAdministrador_1">
-                                        <div class="fw-bold text-gray-800">Administrador</div>
-
-                                    </label>
-                                    <!--end::Label-->
-                                </div>
-                                <!--end::Radio-->
-                            </div>
-
-                            <div class='separator separator-dashed my-5'></div>
-
-                        </div>
-                        <!--end::Input group-->
-                    </div>
-                    <!--end::Scroll-->
-                    <!--begin::Actions-->
-                    <div class="text-center pt-10">
-                        <button type="reset" class="btn btn-light me-3" data-bs-dismiss="modal">Cancelar</button>
-                        <button type="submit" class="btn btn-primary">
-                            <span class="indicator-label">Actualizar</span>
-                            <span class="indicator-progress">Por favor espere...
-                                <span class="spinner-border spinner-border-sm align-middle ms-2"></span></span>
-                        </button>
-                    </div>
-                    <!--end::Actions-->
-                </form>
-                <!--end::Form-->
-            </div>
-            <!--end::Modal body-->
+            <!--end::Modal content-->
         </div>
-        <!--end::Modal content-->
+        <!--end::Modal dialog-->
     </div>
-    <!--end::Modal dialog-->
-</div>@empty
-    <tr>
-    </tr>
-@endforelse
 
     <!-- Modal Nuevo Usuario -->
     <div class="modal fade" id="kt_modal_add_user" tabindex="-1" aria-hidden="true">
@@ -356,7 +376,8 @@
                 <!--begin::Modal body-->
                 <div class="modal-body px-5 my-7">
                     <!--begin::Form-->
-                    <form id="kt_modal_add_user_form" class="form" action="#" method="POST">
+                    <form id="kt_modal_add_user_form" class="form" action="{{ route('crearUsuario') }}"
+                        method="POST">
                         @csrf
                         <!--begin::Scroll-->
                         <div class="d-flex flex-column scroll-y px-5 px-lg-10" id="kt_modal_add_user_scroll"
@@ -371,13 +392,20 @@
 
                                     <input type="text" name="apellidos"
                                         class="form-control form-control-solid mb-3 mb-lg-0" required />
+                                    @error('apellidos')
+                                        <div style="color: #d12d2d">{{ $message }}</div>
+                                    @enderror
                                 </div>
                                 <div class="col-xl-6 " style="padding: 0px 0px 0px 5px">
                                     <label class="required fw-semibold fs-6 mb-2">Nombres</label>
 
                                     <input type="text" name="nombres"
                                         class="form-control form-control-solid mb-3 mb-lg-0" required />
+                                    @error('nombres')
+                                        <div style="color: #d12d2d">{{ $message }}</div>
+                                    @enderror
                                 </div>
+
                                 <!--end::Input-->
                             </div>
 
@@ -385,14 +413,20 @@
                                 <div class="col-xl-6 " style="padding: 0px 5px 0px 0px">
                                     <label class="required fw-semibold fs-6 mb-2">Usuario</label>
 
-                                    <input type="text" name="cidusu"
+                                    <input type="text" name="usuario"
                                         class="form-control form-control-solid mb-3 mb-lg-0" required />
+                                    @error('usuario')
+                                        <div style="color: #d12d2d">{{ $message }}</div>
+                                    @enderror
                                 </div>
                                 <div class="col-xl-6 " style="padding: 0px 0px 0px 5px">
                                     <label class="required fw-semibold fs-6 mb-2">Password</label>
 
                                     <input type="password" name="password"
                                         class="form-control form-control-solid mb-3 mb-lg-0" required />
+                                        @error('password')
+                                            <div style="color: #d12d2d">{{ $message }}</div>
+                                        @enderror
                                 </div>
                                 <!--end::Input-->
                             </div>
@@ -403,6 +437,9 @@
                                     <input type="date" name="fechaRegistro"
                                         class="form-control form-control-solid mb-3 mb-lg-0" value="{{ date('Y-m-d') }}"
                                         required />
+                                        @error('fechaRegistro')
+                                            <div style="color: #d12d2d">{{ $message }}</div>
+                                        @enderror
                                 </div>
                                 <div class="col-xl-6 " style="padding: 0px 0px 0px 5px">
                                     <label class="required fw-semibold fs-6 mb-2">Estado</label>
@@ -412,6 +449,9 @@
                                         <option value="1" selected>Activo</option>
                                         <option value="0">Desactivado</option>
                                     </select>
+                                    @error('estado')
+                                        <div style="color: #d12d2d">{{ $message }}</div>
+                                    @enderror
                                 </div>
                                 <!--end::Input-->
                             </div>
@@ -455,6 +495,9 @@
                                     </div>
                                     <!--end::Radio-->
                                 </div>
+                                @error('tipoAdministrador')
+                                    <div style="color: #d12d2d">{{ $message }}</div>
+                                @enderror
 
                                 <div class='separator separator-dashed my-5'></div>
 

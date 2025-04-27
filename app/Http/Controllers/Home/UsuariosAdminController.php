@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Home;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Opciones\UsuarioRequest;
 use App\Models\UsuariosAdmins;
 use Carbon\Carbon;
 use App\Models\Contribuyente;
@@ -17,7 +18,7 @@ class UsuariosAdminController extends Controller
     {
         // Obtener el código del contribuyente de la sesión o del parámetro
         $codigoContribuyente = session('codigo_contribuyente') ??
-        session('cod_usuario') ?? null; // Valor por defecto para pruebas
+            session('cod_usuario') ?? null; // Valor por defecto para pruebas
 
         $usuario = Contribuyente::obtenerDatosContri($codigoContribuyente);
 
@@ -44,24 +45,130 @@ class UsuariosAdminController extends Controller
         $estadoSeleccionado  = $request->estadoSeleccionado ?? '%';
 
         // Obtener las usuarios detalladas
-        $usuarios = UsuariosAdmins::obtenerUsuarios($tipoAdministrador, $estadoSeleccionado );
+        $usuarios = UsuariosAdmins::obtenerUsuarios($tipoAdministrador, $estadoSeleccionado);
 
         // Preparar datos para la vista
         $estados = UsuariosAdmins::obtenerEstadosDisponibles();
         $tiposAdmins = UsuariosAdmins::obtenerTipoAdminDisponibles();
         $fechaActual = Carbon::now()->format('d/m/Y');
-        Debugbar::info('usuarios',$usuarios);
+        Debugbar::info('usuarios', $usuarios);
         $viewData = [
             'contribuyente' => $contribuyente,
-            'Usuarios'=> $usuarios,
-            'estadosDisponibles'=> $estados,
-            'tipoAdministrador'=> $tipoAdministrador,
-            'estadoSeleccionado'=> $estadoSeleccionado ,
-            'tiposAdmins'=> $tiposAdmins,
-            'fechaActual'=> $fechaActual,
+            'Usuarios' => $usuarios,
+            'estadosDisponibles' => $estados,
+            'tipoAdministrador' => $tipoAdministrador,
+            'estadoSeleccionado' => $estadoSeleccionado,
+            'tiposAdmins' => $tiposAdmins,
+            'fechaActual' => $fechaActual,
             'usuario' => $usuario
         ];
 
         return view('usuarios', $viewData);
+    }
+
+    public function store(UsuarioRequest $request)
+    {
+
+        // Asignar los valores del formulario a variables
+        $nombres = $request->input('nombres');
+        $apellidos = $request->input('apellidos');
+        $usuario = $request->input('usuario');
+        $password = $request->input('password'); // Encriptar la contraseña
+        $fechaRegistro = $request->input('fechaRegistro');
+        $estado_cuenta = $request->input('estado');
+        $tipoAdministrador = $request->input('tipoAdministrador');
+
+        // Separar apellidos en paterno y materno
+        $apellidosArray = explode(" ", $apellidos);
+        $vpater = $apellidosArray[0] ?? ''; // El primer apellido es el paterno
+        $vmater = $apellidosArray[1] ?? ''; // El segundo apellido es el materno, si existe
+
+        // Determinar el estado del usuario según el tipo de administrador
+        if ($tipoAdministrador == 1) {
+            $vestado = '002'; // Administrador
+        } else {
+            $vestado = '003'; // Moderador
+        }
+
+        // Llamar al modelo UsuariosAdmins para crear el usuario utilizando el procedimiento almacenado
+        $result = UsuariosAdmins::crearUsuario($nombres, $vpater, $vmater, $usuario, $vestado, $fechaRegistro, $estado_cuenta, $password);
+
+        if ($result) {
+            return redirect()->route('UsuariosAdmin')->with([
+                'alert' => [
+                    'type' => 'success',
+                    'title' => '¡Éxito!',
+                    'message' => 'Usuario creado con éxito.'
+                ]
+            ]);
+        } else {
+            return redirect()->back()->with([
+                'alert' => [
+                    'type' => 'error',
+                    'title' => 'Error',
+                    'message' => 'Hubo un problema al crear el usuario.'
+                ]
+            ]);
+        }
+    }
+
+    public function update(UsuarioRequest $request)
+    {
+
+
+        // Asignar los valores del formulario a variables
+        $vlogin = $request->input('user_id');
+        $nombres = $request->input('nombres');
+        $apellidos = $request->input('apellidos');
+        $usuario = $request->input('usuario');
+        $fechaRegistro = $request->input('fechaRegistro');
+        $estado_cuenta = $request->input('estado');
+        $tipoAdministrador = $request->input('tipoAdministrador');
+
+        // Password is optional in update
+        $password = $request->input('password');
+
+        // Separar apellidos en paterno y materno
+        $apellidosArray = explode(" ", $apellidos);
+        $vpater = $apellidosArray[0] ?? ''; // El primer apellido es el paterno
+        $vmater = $apellidosArray[1] ?? ''; // El segundo apellido es el materno, si existe
+
+        // Determinar el estado del usuario según el tipo de administrador
+        if ($tipoAdministrador == 1) {
+            $vestado = '002'; // Administrador
+        } else {
+            $vestado = '003'; // Moderador
+        }
+
+        // Llamar al modelo UsuariosAdmins para actualizar el usuario
+        $result = UsuariosAdmins::actualizarUsuario(
+            $vlogin,
+            $nombres,
+            $vpater,
+            $vmater,
+            $usuario,
+            $vestado,
+            $estado_cuenta,
+            $password,
+            $fechaRegistro
+        );
+
+        if ($result) {
+            return redirect()->route('UsuariosAdmin')->with([
+                'alert' => [
+                    'type' => 'success',
+                    'title' => '¡Éxito!',
+                    'message' => 'Usuario actualizado con éxito.'
+                ]
+            ]);
+        } else {
+            return redirect()->back()->with([
+                'alert' => [
+                    'type' => 'error',
+                    'title' => 'Error',
+                    'message' => 'Hubo un problema al actualizar el usuario.'
+                ]
+            ]);
+        }
     }
 }

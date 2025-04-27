@@ -98,47 +98,52 @@
                             <div class="d-flex align-items-stretch" id="kt_header_nav">
                                 <!--begin::Menu wrapper-->
                                 <div class="header-menu align-items-stretch" data-kt-drawer="true"
-                                    data-kt-drawer-name="header-menu"
-                                    data-kt-drawer-activate="{default: true, lg: false}" data-kt-drawer-overlay="true"
-                                    data-kt-drawer-width="{default:'200px', '300px': '250px'}"
-                                    data-kt-drawer-direction="start"
-                                    data-kt-drawer-toggle="#kt_header_menu_mobile_toggle" data-kt-swapper="true"
-                                    data-kt-swapper-mode="prepend"
-                                    data-kt-swapper-parent="{default: '#kt_body', lg: '#kt_header_nav'}">
+                                     data-kt-drawer-name="header-menu"
+                                     data-kt-drawer-activate="{default: true, lg: false}" data-kt-drawer-overlay="true"
+                                     data-kt-drawer-width="{default:'200px', '300px': '250px'}"
+                                     data-kt-drawer-direction="start"
+                                     data-kt-drawer-toggle="#kt_header_menu_mobile_toggle" data-kt-swapper="true"
+                                     data-kt-swapper-mode="prepend"
+                                     data-kt-swapper-parent="{default: '#kt_body', lg: '#kt_header_nav'}">
                                     <!--begin::Menu-->
                                     <div class="menu menu-rounded menu-column menu-lg-row menu-active-bg menu-title-gray-700 menu-state-primary menu-arrow-gray-400 fw-semibold my-5 my-lg-0 align-items-stretch px-2 px-lg-0"
-                                        id="#kt_header_menu" data-kt-menu="true">
+                                         id="#kt_header_menu" data-kt-menu="true">
                                         <!--begin:Menu item-->
-                                        <div data-kt-menu-trigger="{default: 'click', lg: 'hover'}"
-                                            data-kt-menu-placement="bottom-start"
-                                            class="menu-item here show menu-here-bg menu-lg-down-accordion me-0 me-lg-2">
-                                            <!--begin:Menu link-->
-                                            <a href="{{ route('UsuariosAdmin') }}">
-                                                Mantenimiento de Usuarios
-                                            </a>
-                                            <!--end:Menu link-->
-                                            <!--begin:Menu sub-->
+                                        @if($usuario->vestado == '002')
+                                            <div data-kt-menu-trigger="{default: 'click', lg: 'hover'}"
+                                                 data-kt-menu-placement="bottom-start"
+                                                 class="menu-item here show menu-here-bg menu-lg-down-accordion me-0 me-lg-2">
+                                                <!--begin:Menu link-->
+                                                <a href="{{ route('UsuariosAdmin') }}">
+                                                    Mantenimiento de Usuarios
+                                                </a>
+                                                <!--end:Menu link-->
+                                                <!--begin:Menu sub-->
 
-                                            <!--end:Menu sub-->
-                                        </div>
-                                        <!--end:Menu item-->
+                                                <!--end:Menu sub-->
+                                            </div>
+                                            <!--end:Menu item-->
+                                        @endif
 
                                         <!--begin:Menu item-->
-                                        <div data-kt-menu-trigger="{default: 'click', lg: 'hover'}"
-                                            data-kt-menu-placement="bottom-start"
-                                            class="menu-item menu-lg-down-accordion menu-sub-lg-down-indention me-0 me-lg-2">
-                                            <!--begin:Menu link-->
-                                            <a href="{{ route('Pendiente') }}">Pendientes por Aprobar</a>
-                                            <!--end:Menu link-->
+                                        @if($usuario->vestado == '002' || $usuario->vestado == '003')
+                                            <div data-kt-menu-trigger="{default: 'click', lg: 'hover'}"
+                                                 data-kt-menu-placement="bottom-start"
+                                                 class="menu-item menu-lg-down-accordion menu-sub-lg-down-indention me-0 me-lg-2">
+                                                <!--begin:Menu link-->
+                                                <a href="{{ route('Pendiente') }}">Pendientes por Aprobar</a>
+                                                <!--end:Menu link-->
 
-                                        </div>
-                                        <!--end:Menu item-->
-
+                                            </div>
+                                            <!--end:Menu item-->
+                                        @endif
                                     </div>
                                     <!--end::Menu-->
                                 </div>
                                 <!--end::Menu wrapper-->
                             </div>
+                            <!--end::Navbar-->
+
                             <!--end::Navbar-->
                             <!--begin::Toolbar wrapper-->
                             <div class="topbar d-flex align-items-stretch flex-shrink-0">
@@ -330,22 +335,25 @@
     <!--end::Javascript-->
 </body>
 @if (session('alert'))
-<script>
-    Swal.fire({
-        icon: '{{ session('alert.type') }}',
-        title: '{{ session('alert.title') }}',
-        html: `{!! session('alert.message') !!}`,
-        confirmButtonText: 'Aceptar',
-        customClass: {
-            confirmButton: 'btn btn-light-{{
-                session("alert.type") === "success" ? "success" :
-                (session("alert.type") === "warning" ? "warning" :
-                (session("alert.type") === "info" ? "info" :
-                (session("alert.type") === "error" ? "danger" : "primary")))
-            }}'
-        }
-    });
-</script>
+    <script>
+        Swal.fire({
+            icon: '{{ session('alert.type') }}',
+            title: '{{ session('alert.title') }}',
+            html: `{!! session('alert.message') !!}`,
+            confirmButtonText: 'Aceptar',
+            customClass: {
+                confirmButton: 'btn btn-light-{{ session('alert.type') === 'success'
+                    ? 'success'
+                    : (session('alert.type') === 'warning'
+                        ? 'warning'
+                        : (session('alert.type') === 'info'
+                            ? 'info'
+                            : (session('alert.type') === 'error'
+                                ? 'danger'
+                                : 'primary'))) }}'
+            }
+        });
+    </script>
 @endif
 <!--end::Body-->
 

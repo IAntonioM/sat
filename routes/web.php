@@ -101,6 +101,8 @@ Route::middleware(['check.login', 'force.password.change', 'admin.access'])->gro
     // En routes/web.php
     Route::get('UsuariosAdmin', [UsuariosAdminController::class, 'index'])->name('UsuariosAdmin');
     Route::post('UsuariosAdmin', [UsuariosAdminController::class, 'index'])->name('UsuariosAdmin');
+    Route::post('crearUsuario', [UsuariosAdminController::class, 'store'])->name('crearUsuario');
+    Route::post('actualizarUsuario', [UsuariosAdminController::class, 'update'])->name('actualizarUsuario');
     // Rutas para pendientes
     Route::get('Pendiente', [PendientesController::class, 'index'])->name('Pendiente');
     Route::post('Pendiente', [PendientesController::class, 'index'])->name('Pendiente');

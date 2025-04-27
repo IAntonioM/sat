@@ -32,8 +32,8 @@ class AdminAccess
             ]);
         }
 
-          // Verificar que el usuario tenga permiso de administrador (003)
-            if ($usuario->vestado !== '003') {
+          // Verificar que el usuario tenga permiso de administrador (002)
+            if ($usuario->vestado !== '002') {
                 return redirect()->route('principal')->with([
                     'alert' => [
                         'type' => 'error',
