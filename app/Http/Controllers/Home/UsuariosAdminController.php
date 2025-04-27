@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Home;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Opciones\UpdateUsuarioRequest;
 use App\Http\Requests\Opciones\UsuarioRequest;
 use App\Models\UsuariosAdmins;
 use Carbon\Carbon;
@@ -114,7 +115,7 @@ class UsuariosAdminController extends Controller
         }
     }
 
-    public function update(UsuarioRequest $request)
+    public function update(UpdateUsuarioRequest $request)
     {
 
 

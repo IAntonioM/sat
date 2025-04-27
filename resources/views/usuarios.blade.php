@@ -375,6 +375,7 @@
                             <span class="path2"></span>
                         </i>
                     </div>
+
                     <!--end::Close-->
                 </div>
                 <!--end::Modal header-->

@@ -350,16 +350,50 @@
     </script>
 @endif
 <script>
-    // Verifica si la variable 'modal_open_add' está presente en la sesión
-    @if(session('modal_open_add'))
-        document.addEventListener('DOMContentLoaded', function() {
-            var modal = new bootstrap.Modal(document.getElementById('kt_modal_add_user'), {
-                backdrop: 'static',  // No se puede cerrar al hacer clic fuera del modal
-                keyboard: false      // No se puede cerrar con la tecla ESC
+    document.addEventListener('DOMContentLoaded', function() {
+        // Modal de añadir usuario
+        @if(session('modal_open_add'))
+            var addModal = new bootstrap.Modal(document.getElementById('kt_modal_add_user'), {
+                backdrop: 'static',
+                keyboard: false
             });
-            modal.show(); // Abre el modal
-        });
-    @endif
+            addModal.show();
+
+            // Agregar evento para limpiar después de cerrar
+            document.getElementById('kt_modal_add_user').addEventListener('hidden.bs.modal', function () {
+                document.body.classList.remove('modal-open');
+                let backdrop = document.querySelector('.modal-backdrop');
+                if (backdrop) {
+                    backdrop.remove();
+                }
+            });
+        @endif
+
+        // Modal de editar usuario
+        @if(session('modal_open_edit'))
+            const userId = "{{ session('user_id') }}";
+            const userButton = document.querySelector(`.editar-usuario[data-id="${userId}"]`);
+
+            if (userButton) {
+                userButton.click();
+            }
+
+            var editModal = new bootstrap.Modal(document.getElementById('kt_modal_edit_user'), {
+                backdrop: 'static',
+                keyboard: false
+            });
+            editModal.show();
+
+            // Agregar evento para limpiar después de cerrar
+            document.getElementById('kt_modal_edit_user').addEventListener('hidden.bs.modal', function () {
+                document.body.classList.remove('modal-open');
+                let backdrop = document.querySelector('.modal-backdrop');
+                if (backdrop) {
+                    backdrop.remove();
+                }
+            });
+        @endif
+    });
 </script>
 
 <!--end::Body-->

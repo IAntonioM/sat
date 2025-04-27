@@ -5,7 +5,7 @@ namespace App\Http\Requests\Opciones;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Session;
 
-class UsuarioRequest extends FormRequest
+class UpdateUsuarioRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -67,9 +67,13 @@ class UsuarioRequest extends FormRequest
     /**
      * Handle a failed validation attempt.
      */
+
+    // En tu UpdateUsuarioRequest
     protected function failedValidation(\Illuminate\Contracts\Validation\Validator $validator)
     {
-        Session::flash('modal_open_add', true);
+        // Guardar el ID del usuario para identificar qué modal abrir
+        Session::flash('modal_open_edit', true);
+        Session::flash('user_id', $this->input('user_id'));
 
         parent::failedValidation($validator);
     }
