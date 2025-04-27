@@ -17,7 +17,7 @@ class PendientesController extends Controller
     {
         // Obtener el código del contribuyente de la sesión o del parámetro
         $codigoContribuyente = session('codigo_contribuyente') ??
-        session('cod_usuario') ?? null; // Valor por defecto para pruebas
+            session('cod_usuario') ?? null; // Valor por defecto para pruebas
 
         $usuario = Contribuyente::obtenerDatosContri($codigoContribuyente);
 
@@ -51,10 +51,10 @@ class PendientesController extends Controller
 
         $viewData = [
             'contribuyente' => $contribuyente,
-            'Pendientes'=> $usuarios,
-            'estadosDisponibles'=> $estados,
-            'estadoSeleccionado'=> $estadoSeleccionado ,
-            'fechaActual'=> $fechaActual,
+            'Pendientes' => $usuarios,
+            'estadosDisponibles' => $estados,
+            'estadoSeleccionado' => $estadoSeleccionado,
+            'fechaActual' => $fechaActual,
             'usuario' => $usuario
         ];
 
@@ -63,4 +63,41 @@ class PendientesController extends Controller
         return view('pendientes', $viewData);
     }
 
+    public function AceptarSolicitud(Request $request)
+    {
+        $codigoContribuyente = session('codigo_contribuyente') ??
+            session('cod_usuario') ?? null;
+        $usuario = Contribuyente::obtenerDatosContri($codigoContribuyente);
+        $vusuario = $usuario->vusuario;
+
+        //Datos que se trae desde el view
+        $iCodPreTramite = $request->iCodPreTramite;
+        $nFlgEstado = $request->nFlgEstado;
+
+        //Dato para la estacion
+        $estacionActualizacion = gethostname();
+
+        SolicitudAcceso::aceptarDenegarSolicitud($iCodPreTramite, $nFlgEstado, $vusuario, $estacionActualizacion);
+
+        return view('pendientes');
+    }
+
+    public function DenegarSolicitud(Request $request)
+    {
+        $codigoContribuyente = session('codigo_contribuyente') ??
+            session('cod_usuario') ?? null;
+        $usuario = Contribuyente::obtenerDatosContri($codigoContribuyente);
+        $vusuario = $usuario->vusuario;
+
+        //Datos que se trae desde el view
+        $iCodPreTramite = $request->iCodPreTramite;
+        $nFlgEstado = $request->nFlgEstado;
+
+        //Dato para la estacion
+        $estacionActualizacion = gethostname();
+
+        SolicitudAcceso::aceptarDenegarSolicitud($iCodPreTramite, $nFlgEstado, $vusuario, $estacionActualizacion);
+
+        return view('pendientes');
+    }
 }

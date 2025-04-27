@@ -44,11 +44,12 @@
                             <div class="d-flex flex-row">
                                 <div class="w-200 mw-250px me-3">
                                     <!--begin::Select2-->
-                                    <select class="form-select form-select-solid" name="estadoSeleccionado" id="estado_select"
-                                        data-control="select2" data-hide-search="true"
+                                    <select class="form-select form-select-solid" name="estadoSeleccionado"
+                                        id="estado_select" data-control="select2" data-hide-search="true"
                                         data-placeholder="Seleccione el Estado">
                                         <option></option>
-                                        <option value="%" {{ $estadoSeleccionado == '%' ? 'selected' : '' }}>Todos Estados
+                                        <option value="%" {{ $estadoSeleccionado == '%' ? 'selected' : '' }}>Todos
+                                            Estados
                                         </option>
                                         @foreach ($estadosDisponibles as $estado)
                                             <option value="{{ $estado->nFlgEstado }}"
@@ -71,7 +72,8 @@
                     <!--end::Card title-->
                     <!--begin::Card toolbar-->
                     <div class="card-toolbar flex-row-fluid justify-content-end gap-5">
-                        <a href="{{ route('reporte', ['tipo' => 'reportePendientes', 'estadoSeleccionado' => $estadoSeleccionado]) }}" class="btn btn-primary" target="_blank">
+                        <a href="{{ route('reporte', ['tipo' => 'reportePendientes', 'estadoSeleccionado' => $estadoSeleccionado]) }}"
+                            class="btn btn-primary" target="_blank">
                             <i class="fa-solid fa-print"></i> Imprimir
                         </a>
                     </div>
@@ -112,23 +114,19 @@
                                             @elseif ($solicitud->nFlgEstado == 0)
                                                 <div class="badge badge-light-danger" style="font-size:12px">Denegado</div>
                                             @elseif ($solicitud->nFlgEstado == 2)
-                                                <div class="badge badge-light-warning" style="font-size:12px">En espera</div>
+                                                <div class="badge badge-light-warning" style="font-size:12px">En espera
+                                                </div>
                                             @else
-                                                <div class="badge badge-light-secondary" style="font-size:12px">No especificado</div>
+                                                <div class="badge badge-light-secondary" style="font-size:12px">No
+                                                    especificado</div>
                                             @endif
                                         </td>
                                         <td>
-                                            <a href="#"
-                                                class="btn btn-active-color-primary btn-sm me-1 editar-solicitud"
-                                                data-bs-toggle="modal" data-bs-target="#kt_modal_add_user"
-                                                data-id="{{ $solicitud->iCodPreTramite }}"
-                                                data-nombre="{{ $solicitud->cRazonSocial ?? $solicitud->cNombres . ' ' . $solicitud->cApePate . ' ' . $solicitud->cApeMate }}"
-                                                data-asunto="{{ $solicitud->cAsunto }}"
-                                                data-fecharegistro="{{ \Carbon\Carbon::parse($solicitud->dFechaSolicitud)->format('Y-m-d') }}"
-                                                data-fechaactualizacion="{{ $solicitud->dFechaActualizacion ? \Carbon\Carbon::parse($solicitud->dFechaActualizacion)->format('Y-m-d') : '' }}"
-                                                data-usuario="{{ $solicitud->cUsuarioActualizacion ?? '' }}"
-                                                data-estado="{{ $solicitud->nFlgEstado }}" style="padding: 0rem;">
-                                                <i class="fa-solid fa-pen-to-square fs-2"></i>
+                                            <a href="#" class="btn btn-success btn-circle me-2">
+                                                <i class="fa-solid fa-check fs-3"></i>
+                                            </a>
+                                            <a href="#" class="btn btn-danger btn-circle me-2">
+                                                <i class="fa-solid fa-xmark fs-3"></i>
                                             </a>
                                         </td>
                                     </tr>

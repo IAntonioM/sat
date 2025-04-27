@@ -119,7 +119,8 @@ class SolicitudAcceso extends Model
     public static function obtenerSolicitudes($estado)
     {
         return DB::select(
-            'EXEC SolicitudAcceso @Accion = 2, @nFlgEstado = ?;',[$estado]
+            'EXEC SolicitudAcceso @Accion = 2, @nFlgEstado = ?;',
+            [$estado]
         );
     }
 
@@ -164,5 +165,18 @@ class SolicitudAcceso extends Model
         $result = DB::select($sql, ['nNumDocuId' => $nNumDocuId]);
 
         return !empty($result) && $result[0]->Existe == 1;
+    }
+
+    public static function aceptarDenegarSolicitud($iCodPreTramite, $nFlgEstado, $cUsuarioActualizacion, $cEstacionActualizacion)
+    {
+        return DB::select(
+            'EXEC dbo.SolicitudAcceso
+            @Accion = ?,
+            @iCodPreTramite = ?,
+            @nFlgEstado = ?,
+            @cUsuarioActualizacion = ?,
+            @cEstacionActualizacion = ?',
+            [5, $iCodPreTramite, $nFlgEstado, $cUsuarioActualizacion, $cEstacionActualizacion]
+        );
     }
 }
