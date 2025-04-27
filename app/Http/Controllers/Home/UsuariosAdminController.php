@@ -115,10 +115,8 @@ class UsuariosAdminController extends Controller
         }
     }
 
-    public function update(UpdateUsuarioRequest $request)
+    public function update(UsuarioRequest $request)
     {
-
-
         // Asignar los valores del formulario a variables
         $vlogin = $request->input('user_id');
         $nombres = $request->input('nombres');

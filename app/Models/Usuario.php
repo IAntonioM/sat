@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 
 class Usuario extends Authenticatable
 {
@@ -31,31 +32,35 @@ class Usuario extends Authenticatable
 
     public function validateUserCredentials(string $usuario, string $password)
     {
-        return DB::table('musuario')
+        $user = DB::table('musuario')
             ->where('vcodcontr', $usuario)
-            ->whereRaw("CAST(vpass AS VARCHAR(20)) = ?", [$password])
             ->first();
+
+        if ($user && Hash::check($password, $user->vpass)) {
+            return $user; // Credenciales válidas
+        }
+
+        return null; // Credenciales inválidas
     }
+
     public function updatePassword(string $usuario, string $passwordActual, string $nuevoPassword)
     {
-        $update = DB::update(
-            "UPDATE musuario
-             SET vpreg = '1', vpass = CAST(? AS varbinary)
-             WHERE vcodcontr = ?
-               AND CAST(vpass AS varchar(20)) = ?
-               AND vestado = '001'",
-            [$nuevoPassword, $usuario, $passwordActual]
-        );
-
-        if ($update > 0) {
+        $user = DB::table('musuario')
+            ->where('vcodcontr', $usuario)
+            ->first();
+        if ($user && Hash::check($passwordActual, $user->vpass)) {
+            $nuevoHash = Hash::make($nuevoPassword);
+            DB::table('musuario')
+                ->where('vcodcontr', $usuario)
+                ->update([
+                    'vpass' => $nuevoHash,
+                    'vpreg' => '1', // Aquí actualizas el campo vpreg
+                ]);
             return DB::table('musuario')
                 ->where('vcodcontr', $usuario)
-                ->whereRaw("CAST(vpass AS VARCHAR(20)) = ?", [$nuevoPassword])
                 ->where('vestado', '001')
                 ->first();
         }
-
-        return null;
+        return null; // Si no se cumple la validación
     }
-
 }

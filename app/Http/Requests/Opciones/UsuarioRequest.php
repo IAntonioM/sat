@@ -20,16 +20,23 @@ class UsuarioRequest extends FormRequest
      */
     public function rules(): array
     {
-        return [
+        $rules = [
             'nombres' => 'required|string|max:255',
             'apellidos' => 'required|string|max:255',
             'usuario' => 'required|string|max:255',
-            'password' => 'required|string|min:6',
             'fechaRegistro' => 'required|date',
             'estado' => 'required|boolean',
-            'tipoAdministrador' => 'required|boolean'
+            'tipoAdministrador' => 'required|boolean',
         ];
+
+        // Si se está creando (sin user_id) o si se envía password, validar
+        if (!$this->filled('user_id') || $this->filled('password')) {
+            $rules['password'] = 'required|string|min:6';
+        }
+
+        return $rules;
     }
+
 
     /**
      * Get custom error messages for validator errors.
@@ -69,7 +76,12 @@ class UsuarioRequest extends FormRequest
      */
     protected function failedValidation(\Illuminate\Contracts\Validation\Validator $validator)
     {
-        Session::flash('modal_open_add', true);
+        if ($this->filled('user_id')) {
+            Session::flash('modal_open_edit', true);
+            Session::flash('user_id', $this->input('user_id'));
+        } else {
+            Session::flash('modal_open_add', true);
+        }
 
         parent::failedValidation($validator);
     }

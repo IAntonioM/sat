@@ -4,7 +4,8 @@ document.addEventListener('DOMContentLoaded', function () {
             const id = this.getAttribute('data-id');
             const nombres = this.getAttribute('data-nombres');
             const apellidos = this.getAttribute('data-apellidos');
-            const fecha = this.getAttribute('data-fecha');
+            const fechaCompleta = this.getAttribute('data-fecha');
+            const fechaFormateada = fechaCompleta.split(' ')[0];
             const usuario = this.getAttribute('data-usuario');
             const tipo = this.getAttribute('data-tipo');
             const estado = this.getAttribute('data-estado');
@@ -16,7 +17,7 @@ document.addEventListener('DOMContentLoaded', function () {
             document.getElementById('edit_nombres').value = nombres;
             document.getElementById('edit_apellidos').value = apellidos;
             document.getElementById('edit_usuario').value = usuario;
-            document.getElementById('edit_fechaRegistro').value = fecha;
+            document.getElementById('edit_fechaRegistro').value = fechaFormateada;
             document.getElementById('edit_estado').value = estado;
 
             document.getElementById('edit_tipoAdministrador_0').checked = tipo == '003';

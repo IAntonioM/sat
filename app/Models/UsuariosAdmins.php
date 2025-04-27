@@ -5,6 +5,7 @@ namespace App\Models;
 use DebugBar\DebugBar;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 use PDO;
 
 class UsuariosAdmins extends Model
@@ -71,6 +72,7 @@ class UsuariosAdmins extends Model
     public static function crearUsuario($vnombre, $vpater, $vmater, $vusuario, $vestado, $dfecregist, $vestado_cuenta, $vpass)
     {
         try {
+            $vpass = Hash::make($vpass);
             // Usar statement en lugar de DB::select
             $pdo = DB::connection()->getPdo();
             $stmt = $pdo->prepare('EXEC sp_UsuarioAdmin @accion = ?, @vnombre = ?, @vpater = ?, @vmater = ?, @vusuario = ?, @vestado = ?, @vestado_cuenta = ?, @dfecregist = ?, @vpass = ?, @vlogin = ?');
@@ -105,6 +107,9 @@ class UsuariosAdmins extends Model
     public static function actualizarUsuario($vlogin, $vnombre, $vpater, $vmater, $vusuario, $vestado, $vestado_cuenta, $vpass, $dfecregist)
     {
         try {
+            if (!empty($vpass)) {
+                $vpass = Hash::make($vpass); // Usar Hash::make en lugar de bcrypt
+            }
             $pdo = DB::connection()->getPdo();
             $stmt = $pdo->prepare('EXEC sp_UsuarioAdmin
                 @accion = ?,
@@ -147,6 +152,4 @@ class UsuariosAdmins extends Model
     {
         return DB::statement('EXEC sp_UsuarioAdmin @accion = 3, @vlogin = ?', [$vlogin]);
     }
-
-
 }

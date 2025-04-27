@@ -213,7 +213,7 @@
                                     <label class="required fw-semibold fs-6 mb-2">Apellidos</label>
 
                                     <input type="text" name="apellidos" id="edit_apellidos"
-                                        class="form-control form-control-solid mb-3 mb-lg-0" required />
+                                        class="form-control form-control-solid mb-3 mb-lg-0" value="{{ old('apellidos') }}" required />
                                     @error('apellidos')
                                         <div style="color: #d12d2d">{{ $message }}</div>
                                     @enderror
