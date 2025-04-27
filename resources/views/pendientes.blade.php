@@ -122,12 +122,27 @@
                                             @endif
                                         </td>
                                         <td>
-                                            <a href="#" class="btn btn-success btn-circle me-2">
-                                                <i class="fa-solid fa-check fs-3"></i>
-                                            </a>
-                                            <a href="#" class="btn btn-danger btn-circle me-2">
-                                                <i class="fa-solid fa-xmark fs-3"></i>
-                                            </a>
+                                            <form action="{{ route('AceptarSolicitud') }}" method="POST" style="display:inline-block">
+                                                @csrf
+                                                <input type="hidden" name="iCodPreTramite" value="{{ $solicitud->iCodPreTramite }}">
+                                                <input type="hidden" name="nFlgEstado" value="1">
+                                                <button type="submit" class="btn btn-success btn-circle me-2">
+                                                    <i class="fa-solid fa-check fs-3"></i>
+                                                </button>
+                                            </form>
+                                            <form action="{{ route('DenegarSolicitud') }}" method="POST" style="display:inline-block">
+                                                @csrf
+                                                <input type="hidden" name="iCodPreTramite" value="{{ $solicitud->iCodPreTramite }}">
+                                                <input type="hidden" name="nFlgEstado" value="0">
+                                                <button type="submit" class="btn btn-danger btn-circle me-2">
+                                                    <i class="fa-solid fa-xmark fs-3"></i>
+                                                </button>
+                                            </form>
+                                            <form action="{{ route('VerDocumentoSolicitud') }}" method="GET" style="display:inline-block">
+                                                <button type="submit" class="btn btn-warning btn-circle me-2">
+                                                    <i class="fa-solid fa-file fs-3"></i>
+                                                </button>
+                                            </form>
                                         </td>
                                     </tr>
                                 @endforeach

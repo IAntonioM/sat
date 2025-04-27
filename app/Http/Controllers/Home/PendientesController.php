@@ -79,7 +79,7 @@ class PendientesController extends Controller
 
         SolicitudAcceso::aceptarDenegarSolicitud($iCodPreTramite, $nFlgEstado, $vusuario, $estacionActualizacion);
 
-        return view('pendientes');
+        return redirect()->route('Pendiente')->with('success', 'Solicitud aceptada correctamente');
     }
 
     public function DenegarSolicitud(Request $request)
@@ -98,6 +98,10 @@ class PendientesController extends Controller
 
         SolicitudAcceso::aceptarDenegarSolicitud($iCodPreTramite, $nFlgEstado, $vusuario, $estacionActualizacion);
 
-        return view('pendientes');
+        return redirect()->route('Pendiente')->with('success', 'Solicitud denegada correctamente');
+    }
+
+    public function VerDocumentoSolicitud(Request $request)
+    {
     }
 }

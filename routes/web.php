@@ -106,4 +106,7 @@ Route::middleware(['check.login', 'force.password.change', 'admin.access'])->gro
     // Rutas para pendientes
     Route::get('Pendiente', [PendientesController::class, 'index'])->name('Pendiente');
     Route::post('Pendiente', [PendientesController::class, 'index'])->name('Pendiente');
+    Route::post('AceptarSolicitud', [PendientesController::class, 'AceptarSolicitud'])->name('AceptarSolicitud');
+    Route::post('DenegarSolicitud', [PendientesController::class, 'DenegarSolicitud'])->name('DenegarSolicitud');
+    Route::get('VerDocumentoSolicitud', [PendientesController::class, 'VerDocumentoSolicitud'])->name('VerDocumentoSolicitud');
 });

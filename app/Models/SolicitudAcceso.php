@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Barryvdh\Debugbar\Facades\Debugbar;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
 
@@ -169,14 +170,36 @@ class SolicitudAcceso extends Model
 
     public static function aceptarDenegarSolicitud($iCodPreTramite, $nFlgEstado, $cUsuarioActualizacion, $cEstacionActualizacion)
     {
-        return DB::select(
-            'EXEC dbo.SolicitudAcceso
-            @Accion = ?,
-            @iCodPreTramite = ?,
-            @nFlgEstado = ?,
-            @cUsuarioActualizacion = ?,
-            @cEstacionActualizacion = ?',
-            [5, $iCodPreTramite, $nFlgEstado, $cUsuarioActualizacion, $cEstacionActualizacion]
-        );
+        try {
+            DB::statement(
+                'EXEC dbo.SolicitudAcceso
+                @Accion = ?,
+                @iCodPreTramite = ?,
+                @nFlgEstado = ?,
+                @cUsuarioActualizacion = ?,
+                @cEstacionActualizacion = ?',
+                [5, $iCodPreTramite, $nFlgEstado, $cUsuarioActualizacion, $cEstacionActualizacion]
+            );
+            return true;
+        } catch (\Exception $e) {
+            Debugbar::error('Error al procesar la solicitud: ' . $e->getMessage());
+            return false;
+        }
+    }
+
+    public static function verDocumentoSolicitud($iCodPreTramite)
+    {
+        try {
+            DB::select(
+                'EXEC dbo.SolicitudAcceso
+                @Accion = ?,
+                @iCodPreTramite = ?',
+                [6, $iCodPreTramite]
+            );
+            return true;
+        } catch (\Exception $e) {
+            Debugbar::error('Error al procesar la solicitud: ' . $e->getMessage());
+            return false;
+        }
     }
 }
