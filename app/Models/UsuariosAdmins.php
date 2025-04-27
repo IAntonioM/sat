@@ -5,6 +5,7 @@ namespace App\Models;
 use DebugBar\DebugBar;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
+use PDO;
 
 class UsuariosAdmins extends Model
 {
@@ -70,7 +71,10 @@ class UsuariosAdmins extends Model
     public static function crearUsuario($vnombre, $vpater, $vmater, $vusuario, $vestado, $dfecregist, $vestado_cuenta, $vpass)
     {
         try {
-            $result = DB::select('EXEC sp_UsuarioAdmin @accion = ?, @vnombre = ?, @vpater = ?, @vmater = ?, @vusuario = ?, @vestado = ?, @vestado_cuenta = ?, @dfecregist = ?, @vpass = ?, @vlogin = ?', [
+            // Usar statement en lugar de DB::select
+            $pdo = DB::connection()->getPdo();
+            $stmt = $pdo->prepare('EXEC sp_UsuarioAdmin @accion = ?, @vnombre = ?, @vpater = ?, @vmater = ?, @vusuario = ?, @vestado = ?, @vestado_cuenta = ?, @dfecregist = ?, @vpass = ?, @vlogin = ?');
+            $stmt->execute([
                 1, // @accion = 1
                 $vnombre,
                 $vpater,
@@ -82,16 +86,27 @@ class UsuariosAdmins extends Model
                 $vpass,
                 null // @vlogin
             ]);
-
-            // Since the stored procedure now returns data, check if result contains data
-            return !empty($result) ? $result : false;
+            $result = [];
+            do {
+                if ($stmt->columnCount() > 0) {
+                    $rows = $stmt->fetchAll(PDO::FETCH_OBJ);
+                    if (count($rows) > 0) {
+                        $result = $rows;
+                        break;
+                    }
+                }
+            } while ($stmt->nextRowset());
+            return !empty($result) ? $result[0] : $result;
         } catch (\Exception $e) {
             return false;
         }
     }
+
     public static function actualizarUsuario($vlogin, $vnombre, $vpater, $vmater, $vusuario, $vestado, $vestado_cuenta, $vpass, $dfecregist)
     {
-        $query = 'EXEC sp_UsuarioAdmin
+        try {
+            $pdo = DB::connection()->getPdo();
+            $stmt = $pdo->prepare('EXEC sp_UsuarioAdmin
                 @accion = ?,
                 @vnombre = ?,
                 @vpater = ?,
@@ -101,24 +116,28 @@ class UsuariosAdmins extends Model
                 @vestado = ?,
                 @vestado_cuenta = ?,
                 @vpass = ?,
-                @vlogin = ?';
-
-        $params = [
-            2,             // @accion = 2 (Actualizar)
-            $vnombre,
-            $vpater,
-            $vmater,
-            $vusuario,
-            $dfecregist,   // ¡No lo olvides!
-            $vestado,
-            $vestado_cuenta,
-            $vpass,
-            $vlogin        // Debe ir al final según el SP
-        ];
-
-        try {
-            $result = DB::select($query, $params);
-            return !empty($result) ? $result[0] : false;
+                @vlogin = ?');
+            $stmt->execute([
+                2, // @accion = 2 (Actualizar)
+                $vnombre,
+                $vpater,
+                $vmater,
+                $vusuario,
+                $dfecregist,
+                $vestado,
+                $vestado_cuenta,
+                $vpass,
+                $vlogin
+            ]);
+            if ($stmt->columnCount() > 0) {
+                $result = $stmt->fetch(PDO::FETCH_OBJ);
+                return $result ?: true;
+            }
+            while ($stmt->nextRowset() && $stmt->columnCount() > 0) {
+                $result = $stmt->fetch(PDO::FETCH_OBJ);
+                if ($result) return $result;
+            }
+            return $result; // La operación fue exitosa pero no devolvió datos
         } catch (\Exception $e) {
             return false;
         }
@@ -126,9 +145,8 @@ class UsuariosAdmins extends Model
 
     public static function eliminarUsuario($vlogin)
     {
-        // Ejecutar el procedimiento almacenado para la acción 3 (Eliminar usuario)
-        $result = DB::select('EXEC sp_UsuarioAdmin @accion = 3, @vlogin = ?', [$vlogin]);
-
-        return $result ? true : false;
+        return DB::statement('EXEC sp_UsuarioAdmin @accion = 3, @vlogin = ?', [$vlogin]);
     }
+
+
 }

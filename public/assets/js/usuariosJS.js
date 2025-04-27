@@ -8,8 +8,11 @@ document.addEventListener('DOMContentLoaded', function () {
             const usuario = this.getAttribute('data-usuario');
             const tipo = this.getAttribute('data-tipo');
             const estado = this.getAttribute('data-estado');
+            console.log('User ID seleccionado:', id);
+
 
             document.getElementById('edit_user_id').value = id;
+            document.getElementById('delete_user_id').value = id;
             document.getElementById('edit_nombres').value = nombres;
             document.getElementById('edit_apellidos').value = apellidos;
             document.getElementById('edit_usuario').value = usuario;

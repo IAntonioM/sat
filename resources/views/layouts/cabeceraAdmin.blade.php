@@ -40,24 +40,17 @@
 <body id="kt_body" class="header-fixed header-tablet-and-mobile-fixed toolbar-enabled">
     <!--begin::Theme mode setup on page load-->
     <script>
-        var defaultThemeMode = "light";
-        var themeMode;
-        if (document.documentElement) {
-            if (document.documentElement.hasAttribute("data-bs-theme-mode")) {
-                themeMode = document.documentElement.getAttribute("data-bs-theme-mode");
-            } else {
-                if (localStorage.getItem("data-bs-theme") !== null) {
-                    themeMode = localStorage.getItem("data-bs-theme");
-                } else {
-                    themeMode = defaultThemeMode;
-                }
-            }
-            if (themeMode === "system") {
-                themeMode = window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
-            }
-            document.documentElement.setAttribute("data-bs-theme", themeMode);
-        }
-    </script>
+        // Set theme to light
+        document.documentElement.setAttribute("data-bs-theme", "light");
+
+        // Store the preference in localStorage
+        localStorage.setItem("data-bs-theme", "light");
+
+        // This will ensure the theme stays light even if system preferences change
+        window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change", () => {
+          document.documentElement.setAttribute("data-bs-theme", "light");
+        });
+      </script>
     <!--end::Theme mode setup on page load-->
     <!--begin::Main-->
     <!--begin::Root-->
@@ -353,8 +346,22 @@
                                 : 'primary'))) }}'
             }
         });
+
     </script>
 @endif
+<script>
+    // Verifica si la variable 'modal_open_add' está presente en la sesión
+    @if(session('modal_open_add'))
+        document.addEventListener('DOMContentLoaded', function() {
+            var modal = new bootstrap.Modal(document.getElementById('kt_modal_add_user'), {
+                backdrop: 'static',  // No se puede cerrar al hacer clic fuera del modal
+                keyboard: false      // No se puede cerrar con la tecla ESC
+            });
+            modal.show(); // Abre el modal
+        });
+    @endif
+</script>
+
 <!--end::Body-->
 
 </html>

@@ -137,8 +137,7 @@
                                     <td>
                                         <a href="#" class="btn btn-active-color-primary btn-sm me-1 editar-usuario"
                                             style="padding: 0rem;" data-bs-toggle="modal"
-                                            data-bs-target="#kt_modal_edit_user"
-                                            data-id="{{ $usuario->vlogin }}"
+                                            data-bs-target="#kt_modal_edit_user" data-id="{{ $usuario->vlogin }}"
                                             data-nombres="{{ $usuario->vnombre }}" data-usuario="{{ $usuario->vusuario }}"
                                             data-apellidos="{{ trim($usuario->vpater . ' ' . $usuario->vmater) }}"
                                             data-fecha="{{ $usuario->dfecregist }}" data-tipo="{{ $usuario->vestado }}"
@@ -146,9 +145,13 @@
                                             <i class="fa-solid fa-pen-to-square fs-2"></i>
                                         </a>
 
-                                        <a href="#" class="btn btn-active-color-danger btn-sm me-1"
+                                        <a href="#" class="btn btn-active-color-danger btn-sm me-1 editar-usuario"
                                             style="padding: 0rem;" data-bs-toggle="modal"
-                                            data-bs-target="#kt_modal_delete_user">
+                                            data-bs-target="#kt_modal_delete_user" data-id="{{ $usuario->vlogin }}"
+                                            data-nombres="{{ $usuario->vnombre }}" data-usuario="{{ $usuario->vusuario }}"
+                                            data-apellidos="{{ trim($usuario->vpater . ' ' . $usuario->vmater) }}"
+                                            data-fecha="{{ $usuario->dfecregist }}" data-tipo="{{ $usuario->vestado }}"
+                                            data-estado="{{ $usuario->vestado_cuenta }}">
                                             <i class="fa-solid fa-trash fs-2"></i>
                                         </a>
                                     </td>
@@ -191,9 +194,11 @@
                 </div>
                 <!--end::Modal header-->
                 <!--begin::Modal body-->
+
                 <div class="modal-body px-5 my-7">
                     <!--begin::Form-->
-                    <form id="kt_modal_edit_user_form" class="form" action="{{ route('actualizarUsuario') }}" method="POST">
+                    <form id="kt_modal_edit_user_form" class="form" action="{{ route('actualizarUsuario') }}"
+                        method="POST">
                         @csrf
                         <input type="hidden" name="user_id" id="edit_user_id">
                         <!--begin::Scroll-->
@@ -209,18 +214,18 @@
 
                                     <input type="text" name="apellidos" id="edit_apellidos"
                                         class="form-control form-control-solid mb-3 mb-lg-0" required />
-                                        @error('apellidos')
-                                            <div style="color: #d12d2d">{{ $message }}</div>
-                                        @enderror
+                                    @error('apellidos')
+                                        <div style="color: #d12d2d">{{ $message }}</div>
+                                    @enderror
                                 </div>
                                 <div class="col-xl-6 " style="padding: 0px 0px 0px 5px">
                                     <label class="required fw-semibold fs-6 mb-2">Nombres</label>
 
                                     <input type="text" name="nombres" id="edit_nombres"
                                         class="form-control form-control-solid mb-3 mb-lg-0" required />
-                                        @error('nombres')
-                                            <div style="color: #d12d2d">{{ $message }}</div>
-                                        @enderror
+                                    @error('nombres')
+                                        <div style="color: #d12d2d">{{ $message }}</div>
+                                    @enderror
                                 </div>
                                 <!--end::Input-->
                             </div>
@@ -231,9 +236,9 @@
 
                                     <input type="text" name="usuario" id="edit_usuario"
                                         class="form-control form-control-solid mb-3 mb-lg-0" required />
-                                        @error('usuario')
-                                            <div style="color: #d12d2d">{{ $message }}</div>
-                                        @enderror
+                                    @error('usuario')
+                                        <div style="color: #d12d2d">{{ $message }}</div>
+                                    @enderror
                                 </div>
                                 <div class="col-xl-6 " style="padding: 0px 0px 0px 5px">
                                     <label class="fw-semibold fs-6 mb-2">Password</label>
@@ -263,9 +268,9 @@
 
                                     <input type="date" name="fechaRegistro" id="edit_fechaRegistro"
                                         class="form-control form-control-solid mb-3 mb-lg-0" required />
-                                        @error('fechaRegistro')
-                                            <div style="color: #d12d2d">{{ $message }}</div>
-                                        @enderror
+                                    @error('fechaRegistro')
+                                        <div style="color: #d12d2d">{{ $message }}</div>
+                                    @enderror
                                 </div>
                                 <div class="col-xl-6 " style="padding: 0px 0px 0px 5px">
                                     <label class="required fw-semibold fs-6 mb-2">Estado</label>
@@ -353,7 +358,7 @@
     </div>
 
     <!-- Modal Nuevo Usuario -->
-    <div class="modal fade" id="kt_modal_add_user" tabindex="-1" aria-hidden="true">
+    <div class="modal fade" id="kt_modal_add_user" tabindex="-1" aria-hidden="true" >
         <!--begin::Modal dialog-->
         <div class="modal-dialog modal-dialog-centered mw-650px">
             <!--begin::Modal content-->
@@ -424,9 +429,9 @@
 
                                     <input type="password" name="password"
                                         class="form-control form-control-solid mb-3 mb-lg-0" required />
-                                        @error('password')
-                                            <div style="color: #d12d2d">{{ $message }}</div>
-                                        @enderror
+                                    @error('password')
+                                        <div style="color: #d12d2d">{{ $message }}</div>
+                                    @enderror
                                 </div>
                                 <!--end::Input-->
                             </div>
@@ -437,9 +442,9 @@
                                     <input type="date" name="fechaRegistro"
                                         class="form-control form-control-solid mb-3 mb-lg-0" value="{{ date('Y-m-d') }}"
                                         required />
-                                        @error('fechaRegistro')
-                                            <div style="color: #d12d2d">{{ $message }}</div>
-                                        @enderror
+                                    @error('fechaRegistro')
+                                        <div style="color: #d12d2d">{{ $message }}</div>
+                                    @enderror
                                 </div>
                                 <div class="col-xl-6 " style="padding: 0px 0px 0px 5px">
                                     <label class="required fw-semibold fs-6 mb-2">Estado</label>
@@ -544,9 +549,10 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-light" data-bs-dismiss="modal">Cancelar</button>
-                    <form id="form-eliminar-usuario" action="#" method="POST" class="d-inline">
+                    <form id="form-eliminar-usuario" action="{{ route('eliminarUsuario') }}" method="POST"
+                        class="d-inline">
                         @csrf
-                        @method('DELETE')
+                        <input type="hidden" name="user_id" id="delete_user_id">
                         <button type="submit" class="btn btn-danger">Eliminar</button>
                     </form>
                 </div>

@@ -92,6 +92,7 @@ class UsuariosAdminController extends Controller
 
         // Llamar al modelo UsuariosAdmins para crear el usuario utilizando el procedimiento almacenado
         $result = UsuariosAdmins::crearUsuario($nombres, $vpater, $vmater, $usuario, $vestado, $fechaRegistro, $estado_cuenta, $password);
+        Debugbar::info('Datos de registro', $result);
 
         if ($result) {
             return redirect()->route('UsuariosAdmin')->with([
@@ -103,10 +104,11 @@ class UsuariosAdminController extends Controller
             ]);
         } else {
             return redirect()->back()->with([
+                'modal_open_add' => true,
                 'alert' => [
                     'type' => 'error',
                     'title' => 'Error',
-                    'message' => 'Hubo un problema al crear el usuario.'
+                    'message' => 'Hubo un problema al crear el usuario. '
                 ]
             ]);
         }
@@ -163,10 +165,38 @@ class UsuariosAdminController extends Controller
             ]);
         } else {
             return redirect()->back()->with([
+                'modal_open_edit' => true,
+                'user_id' => $vlogin,
                 'alert' => [
                     'type' => 'error',
                     'title' => 'Error',
                     'message' => 'Hubo un problema al actualizar el usuario.'
+                ]
+            ]);
+        }
+    }
+
+    public function delete(Request $request)
+    {
+
+        $vlogin = $request->input('user_id');
+
+        $result = UsuariosAdmins::eliminarUsuario($vlogin);
+
+        if ($result) {
+            return redirect()->route('UsuariosAdmin')->with([
+                'alert' => [
+                    'type' => 'success',
+                    'title' => '¡Éxito!',
+                    'message' => 'Usuario eliminado con éxito.'
+                ]
+            ]);
+        } else {
+            return redirect()->back()->with([
+                'alert' => [
+                    'type' => 'error',
+                    'title' => 'Error',
+                    'message' => 'Hubo un problema al eliminar el usuario.'
                 ]
             ]);
         }
