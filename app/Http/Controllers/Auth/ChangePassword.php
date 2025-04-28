@@ -24,8 +24,9 @@ class ChangePassword extends Controller
         if (session('errors')) {
             Debugbar::error('⚠️ Errores de sesión', session('errors')->all());
         }
-        $codigo_contribuyente = Session::get('codigo_contribuyente');
-        return view('cambiarClave', compact('codigo_contribuyente'));
+        //$codigo_contribuyente = Session::get('codigo_contribuyente');
+        $vnrodoc = Session::get('vnrodoc');
+        return view('cambiarClave', compact('vnrodoc'));
     }
 
     public function cambiarClave(ChangePassRequest $request)
@@ -84,7 +85,7 @@ class ChangePassword extends Controller
 
         session([
            // 'usuario' => $user,
-            'cod_usuario' => $user->cidusu,
+            'vnrodoc' => $user->vnrodoc,
             'codigo_contribuyente' => $user -> vcodcontr
         ]);
 

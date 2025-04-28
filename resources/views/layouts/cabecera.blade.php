@@ -257,7 +257,7 @@
 											<!--end::Menu separator-->
 											<!--begin::Menu item-->
 											<div class="menu-item px-5">
-												<a href="#" class="menu-link px-5">Mi Perfil</a>
+												<a href="{{ route('perfil') }}" class="menu-link px-5">Mi Perfil</a>
 											</div>
 											<!--end::Menu item-->
 											<!--begin::Menu item-->
