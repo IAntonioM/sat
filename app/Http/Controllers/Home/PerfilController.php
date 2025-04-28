@@ -16,12 +16,22 @@ class PerfilController extends Controller
 {
     public function index(Request $request)
     {
-        $codigoContribuyente = session('codigo_contribuyente') ;
+        $login = session('login');
+        $codigoContribuyente = session('codigo_contribuyente');
         $usuario = Contribuyente::obtenerDatosContri($codigoContribuyente);
         $listarCuentas = Usuario::listarCuentasPorNroDoc($usuario->vnrodoc);
         $fechaActual = Carbon::now()->format('d/m/Y');
         Debugbar::info('Datos:', $listarCuentas);
-        return view('perfil', compact('usuario','fechaActual','listarCuentas'));
+        if ($login && count($listarCuentas) === 1) {
+            return redirect()->route('principal')->with([
+                'alert' => [
+                    'type' => 'success',
+                    'title' => 'Inicio de sesión exitoso',
+                    'message' => 'BIENVENIDO, ' . trim(($usuario->vpater ?? '') . ' ' . ($usuario->vmater ?? '') . ' ' . ($usuario->vnombre ?? 'Usuario'))
+                ]
+            ]);
+        }
+        return view('perfil', compact('usuario', 'fechaActual', 'listarCuentas'));
     }
 
     public function select(Request $request, $codigo)
@@ -58,8 +68,4 @@ class PerfilController extends Controller
             ]
         ]);
     }
-
-
-
-
 }

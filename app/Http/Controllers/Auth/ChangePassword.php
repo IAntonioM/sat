@@ -103,21 +103,23 @@ class ChangePassword extends Controller
 
         // ESTADOS CORRECTOS PARA EL INICIO DE SESION
         if (in_array($user->vestado, ['002', '003'])) {
-            return redirect()->route('principal')->with([
+            return redirect()->route('perfil')->with([
+                'login' => true,
                 'alert' => [
                     'type' => 'success',
                     'title' => 'Cambio de clave exitoso',
-                    'message' => 'BIENVENIDO, ' . ($user->vnombre ?? 'Usuario')
+                    'message' => 'BIENVENIDO, ' . trim(($ususeruario->vpater ?? '') . ' ' . ($user->vmater ?? '') . ' ' . ($user->vnombre ?? 'Usuario'))
                 ]
             ]);
         }
 
         //DEFAULT
-        return redirect()->route('principal')->with([
+        return redirect()->route('perfil')->with([
+            'login' => true,
             'alert' => [
                 'type' => 'success',
                 'title' => 'Cambio de clave exitoso',
-                'message' => 'BIENVENIDO, ' . ($user->vnombre ?? 'Usuario')
+                'message' => 'BIENVENIDO, ' . trim(($ususeruario->vpater ?? '') . ' ' . ($user->vmater ?? '') . ' ' . ($user->vnombre ?? 'Usuario'))
             ]
         ]);
     }
