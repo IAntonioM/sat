@@ -109,7 +109,7 @@
                             <th class="min-w-30px" style="text-align: center;">Placa</th>
                             <th class=" min-w-30px" style="text-align: center;">Infracción</th>
                             <th class=" min-w-30px" style="text-align: center;">Fecha de Infracción</th>
-                            <th class=" min-w-30px" style="text-align: center;">Propietario</th>
+                            <th class=" min-w-30px" style="text-align: center;">Infractor</th>
                             <th class=" min-w-30px" style="text-align: center;">Estado</th>
 
                             <th class=" min-w-30px" style="text-align: center;">Deuda</th>
@@ -126,7 +126,7 @@
                                 <td>{{ $item->placa }}</td>
                                 <td>{{ $item->infraccion }}</td>
                                 <td>{{ \Carbon\Carbon::parse($item->fecha_infraccion)->format('d/m/Y') }}</td>
-                                <td>{{ $item->nombre_propietario }}</td>
+                                <td>{{ $item->infractor }}</td>
                                 <td>
                                     @if($item->estado == 1)
                                         <div class="badge badge-light-danger" style="font-size:12px">Pendiente</div>

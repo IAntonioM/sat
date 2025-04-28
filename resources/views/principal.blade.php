@@ -18,7 +18,7 @@
             <div class="fw-bold text-white py-2">
                 <span class="opacity-50">Pago en Linea</span>
                 <span class="fs-2hx text-white fw-bold me-6" >Consolidado</span>
-
+                <span class="opacity-50">Impuesto Predial y Arbitrios</span>
             </div>
 
             <!--end::Info-->
@@ -38,6 +38,7 @@
     </div>
     <!--end::Card widget 3-->
 </div>
+<div class="col-xl-1"></div>
 <div class="col-xl-3">
     <!--begin::Card widget 3-->
     <div class="card card-flush bgi-no-repeat bgi-size-contain bgi-position-x-end h-xl-100" style="background-color: #7239EA;background-image:url('assets/media/svg/shapes/wave-bg-purple.svg')">
@@ -54,8 +55,8 @@
         <div class="card-body d-flex align-items-end mb-3">
             <div class="fw-bold text-white py-2">
                 <span class="opacity-50">Pago en Linea</span>
-                <span class="fs-2hx text-white fw-bold me-6" >Detallado</span>
-
+                <span class="fs-2hx text-white fw-bold me-6" >Detallado</span><br>
+                <span class="opacity-50">Impuesto Predial y Arbitrios</span>
             </div>
         </div>
         <!--end::Card body-->
@@ -73,6 +74,7 @@
     </div>
     <!--end::Card widget 3-->
 </div>
+<div class="col-xl-1"></div>
 <div class="col-xl-3">
     <!--begin::Card widget 3-->
     <div class="card card-flush bgi-no-repeat bgi-size-contain bgi-position-x-end h-xl-100" style="background-color: #0fb85b;background-image:url('assets/media/svg/shapes/widget-bg-3.png')">
@@ -144,7 +146,7 @@
     </div>
     <!--end::Card widget 3-->
 </div> --}}
-
+<div class="col-xl-2"></div>
 <div class="col-xl-3">
     <!--begin::Card widget 3-->
     <div class="card card-flush bgi-repeat bgi-size-contain bgi-position-x-end h-xl-100 " style="background-color: #009ef7;background-image:url('assets/media/svg/shapes/widget-bg-1.png'); ">
@@ -152,6 +154,44 @@
         <div class="card-header pt-5 mb-3">
             <!--begin::Icon-->
             <div class="d-flex flex-center rounded-circle h-80px w-80px" style="border: 1px dashed rgba(255, 255, 255, 0.4);background-color: #009ef7">
+                <i class="fa-solid fa-file fs-1" style="color: #fff;"></i>
+            </div>
+            <!--end::Icon-->
+        </div>
+        <!--end::Header-->
+        <!--begin::Card body-->
+        <div class="card-body d-flex align-items-end mb-3">
+            <div class="fw-bold text-white py-2">
+                <span class="opacity-50"></span><br>
+                <span class="fs-2hx text-white fw-bold me-2" >Pago de </span>
+                <span class="fs-2hx text-white fw-bold me-2" >Papeletas </span>
+
+
+            </div>
+        </div>
+        <!--end::Card body-->
+        <!--begin::Card footer-->
+        <div class="card-footer" style="border-top: 1px solid rgba(255, 255, 255, 0.3);background: rgba(0, 0, 0, 0.15);">
+            <!--begin::Progress-->
+            <div class="fw-bold text-white py-2" style="text-align: center;">
+                <a href="{{ route('record_papeleta') }}" class="btn btn-sm btn-light-primary btn-active-primary" >
+                    <i class="ki-duotone ki-plus fs-2"></i>Ir a Pago de Papeletas</a>
+                <span class="opacity-50"></span>
+            </div>
+            <!--end::Progress-->
+        </div>
+        <!--end::Card footer-->
+    </div>
+    <!--end::Card widget 3-->
+</div>
+<div class="col-xl-1"></div>
+<div class="col-xl-3">
+    <!--begin::Card widget 3-->
+    <div class="card card-flush bgi-repeat bgi-size-contain bgi-position-x-end h-xl-100 " style="background-color: #F6C000;background-image:url('assets/media/svg/shapes/widget-bg-4.png'); ">
+        <!--begin::Header-->
+        <div class="card-header pt-5 mb-3">
+            <!--begin::Icon-->
+            <div class="d-flex flex-center rounded-circle h-80px w-80px" style="border: 1px dashed rgba(255, 255, 255, 0.4);background-color: #F6C000">
                 <i class="fa-solid fa-file fs-1" style="color: #fff;"></i>
             </div>
             <!--end::Icon-->
@@ -172,7 +212,7 @@
         <div class="card-footer" style="border-top: 1px solid rgba(255, 255, 255, 0.3);background: rgba(0, 0, 0, 0.15);">
             <!--begin::Progress-->
             <div class="fw-bold text-white py-2" style="text-align: center;">
-                <a href="{{ route('record_papeleta') }}" class="btn btn-sm btn-light-primary btn-active-primary" >
+                <a href="{{ route('record_papeleta') }}" class="btn btn-sm btn-light-warning btn-active-warning" >
                     <i class="ki-duotone ki-plus fs-2"></i>Ir a Record Papeletas</a>
                 <span class="opacity-50"></span>
             </div>
@@ -182,6 +222,7 @@
     </div>
     <!--end::Card widget 3-->
 </div>
+
 
 
 

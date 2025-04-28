@@ -16,6 +16,7 @@ use App\Http\Controllers\Home\UsuariosAdminController;
 use App\Http\Controllers\Home\PendientesController;
 use App\Http\Controllers\Home\RecordPapeletaController;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Storage;
 
 /*
 |--------------------------------------------------------------------------
@@ -109,5 +110,13 @@ Route::middleware(['check.login', 'force.password.change', 'admin.access'])->gro
     Route::post('Pendiente', [PendientesController::class, 'index'])->name('Pendiente');
     Route::post('AceptarSolicitud', [PendientesController::class, 'AceptarSolicitud'])->name('AceptarSolicitud');
     Route::post('DenegarSolicitud', [PendientesController::class, 'DenegarSolicitud'])->name('DenegarSolicitud');
-    Route::get('VerDocumentoSolicitud', [PendientesController::class, 'VerDocumentoSolicitud'])->name('VerDocumentoSolicitud');
+
+    //Visualizar los archivos
+    Route::get('/ver-archivo/{path}', function($path) {
+        $path = 'archivos_solicitudAcceso/' . $path;
+        if (Storage::exists($path)) {
+            return response()->file(storage_path('app/' . $path));
+        }
+        abort(404);
+    })->where('path', '.*')->name('ver.archivo');
 });

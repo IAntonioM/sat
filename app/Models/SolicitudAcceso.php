@@ -186,20 +186,4 @@ class SolicitudAcceso extends Model
             return false;
         }
     }
-
-    public static function verDocumentoSolicitud($iCodPreTramite)
-    {
-        try {
-            DB::select(
-                'EXEC dbo.SolicitudAcceso
-                @Accion = ?,
-                @iCodPreTramite = ?',
-                [6, $iCodPreTramite]
-            );
-            return true;
-        } catch (\Exception $e) {
-            Debugbar::error('Error al procesar la solicitud: ' . $e->getMessage());
-            return false;
-        }
-    }
 }

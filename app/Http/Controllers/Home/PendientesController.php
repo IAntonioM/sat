@@ -101,7 +101,4 @@ class PendientesController extends Controller
         return redirect()->route('Pendiente')->with('success', 'Solicitud denegada correctamente');
     }
 
-    public function VerDocumentoSolicitud(Request $request)
-    {
-    }
 }
