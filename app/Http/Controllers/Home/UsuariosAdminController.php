@@ -33,7 +33,7 @@ class UsuariosAdminController extends Controller
         $estadosDisponibles = UsuariosAdmins::obtenerEstadosDisponibles();
         $tiposAdmins = UsuariosAdmins::obtenerTipoAdminDisponibles();
         $fechaActual = Carbon::now()->format('d/m/Y');
-        Debugbar::info('Datos de registro', $usuario);
+        Debugbar::info('Datos de registro', $UsuariosList);
 
         return view('usuarios', compact(
             'UsuariosList',
@@ -98,7 +98,7 @@ class UsuariosAdminController extends Controller
     public function update(UsuarioRequest $request)
     {
         // Asignar los valores del formulario a variables
-        $vlogin = $request->input('user_id');
+        $vnrodoc = $request->input('user_id');
         $nombres = $request->input('nombres');
         $apellidos = $request->input('apellidos');
         $usuario = $request->input('usuario');
@@ -115,7 +115,7 @@ class UsuariosAdminController extends Controller
         $vmater = $apellidosArray[1] ?? ''; // El segundo apellido es el materno, si existe
 
         // Determinar el estado del usuario según el tipo de administrador
-        if ($tipoAdministrador == 1) {
+        if ($tipoAdministrador == 0) {
             $vestado = '002'; // Administrador
         } else {
             $vestado = '003'; // Moderador
@@ -123,7 +123,7 @@ class UsuariosAdminController extends Controller
 
         // Llamar al modelo UsuariosAdmins para actualizar el usuario
         $result = UsuariosAdmins::actualizarUsuario(
-            $vlogin,
+            $vnrodoc,
             $nombres,
             $vpater,
             $vmater,
@@ -139,13 +139,13 @@ class UsuariosAdminController extends Controller
                 'alert' => [
                     'type' => 'success',
                     'title' => '¡Éxito!',
-                    'message' => 'Usuario actualizado con éxito.'
+                    'message' => 'Usuario actualizado con éxito.'.$tipoAdministrador
                 ]
             ]);
         } else {
             return redirect()->back()->with([
                 'modal_open_edit' => true,
-                'user_id' => $vlogin,
+                'user_id' => $vnrodoc,
                 'alert' => [
                     'type' => 'error',
                     'title' => 'Error',
@@ -158,9 +158,9 @@ class UsuariosAdminController extends Controller
     public function delete(Request $request)
     {
 
-        $vlogin = $request->input('user_id');
+        $vnrodoc = $request->input('user_id');
 
-        $result = UsuariosAdmins::eliminarUsuario($vlogin);
+        $result = UsuariosAdmins::eliminarUsuario($vnrodoc);
 
         if ($result) {
             return redirect()->route('UsuariosAdmin')->with([

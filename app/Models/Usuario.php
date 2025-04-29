@@ -89,4 +89,12 @@ class Usuario extends Authenticatable
             ->where('vestado', '<>', '004')
             ->exists();
     }
+    public static function existeNroDocumento(string $nroDoc): bool
+    {
+        $nroDoc = trim($nroDoc);
+        return DB::table('musuario')
+            ->where('vnrodoc', $nroDoc)
+            ->where('vestado', '<>', '004')
+            ->exists();
+    }
 }

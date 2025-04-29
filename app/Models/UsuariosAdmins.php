@@ -75,7 +75,7 @@ class UsuariosAdmins extends Model
             $vpass = Hash::make($vpass);
             // Usar statement en lugar de DB::select
             $pdo = DB::connection()->getPdo();
-            $stmt = $pdo->prepare('EXEC sp_UsuarioAdmin @accion = ?, @vnombre = ?, @vpater = ?, @vmater = ?, @vusuario = ?, @vestado = ?, @vestado_cuenta = ?, @dfecregist = ?, @vpass = ?, @vlogin = ?');
+            $stmt = $pdo->prepare('EXEC sp_UsuarioAdmin @accion = ?, @vnombre = ?, @vpater = ?, @vmater = ?, @vusuario = ?, @vestado = ?, @vestado_cuenta = ?, @dfecregist = ?, @vpass = ?, @vnrodoc = ?');
             $stmt->execute([
                 1, // @accion = 1
                 $vnombre,
@@ -86,7 +86,7 @@ class UsuariosAdmins extends Model
                 $vestado_cuenta,
                 $dfecregist,
                 $vpass,
-                null // @vlogin
+                null
             ]);
             $result = [];
             do {
@@ -104,7 +104,7 @@ class UsuariosAdmins extends Model
         }
     }
 
-    public static function actualizarUsuario($vlogin, $vnombre, $vpater, $vmater, $vusuario, $vestado, $vestado_cuenta, $vpass, $dfecregist)
+    public static function actualizarUsuario($vnrodoc, $vnombre, $vpater, $vmater, $vusuario, $vestado, $vestado_cuenta, $vpass, $dfecregist)
     {
         try {
             if (!empty($vpass)) {
@@ -121,7 +121,7 @@ class UsuariosAdmins extends Model
                 @vestado = ?,
                 @vestado_cuenta = ?,
                 @vpass = ?,
-                @vlogin = ?');
+                @vnrodoc = ?');
             $stmt->execute([
                 2, // @accion = 2 (Actualizar)
                 $vnombre,
@@ -132,7 +132,7 @@ class UsuariosAdmins extends Model
                 $vestado,
                 $vestado_cuenta,
                 $vpass,
-                $vlogin
+                $vnrodoc
             ]);
             if ($stmt->columnCount() > 0) {
                 $result = $stmt->fetch(PDO::FETCH_OBJ);
@@ -148,8 +148,8 @@ class UsuariosAdmins extends Model
         }
     }
 
-    public static function eliminarUsuario($vlogin)
+    public static function eliminarUsuario($vnrodoc)
     {
-        return DB::statement('EXEC sp_UsuarioAdmin @accion = 3, @vlogin = ?', [$vlogin]);
+        return DB::statement('EXEC sp_UsuarioAdmin @accion = 3, @vnrodoc = ?', [$vnrodoc]);
     }
 }

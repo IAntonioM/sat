@@ -2,22 +2,18 @@
 
 namespace App\Http\Requests\Opciones;
 
+use App\Models\Usuario;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Validation\ValidationException;
 
 class UsuarioRequest extends FormRequest
 {
-    /**
-     * Determine if the user is authorized to make this request.
-     */
     public function authorize(): bool
     {
         return true;
     }
 
-    /**
-     * Get the validation rules that apply to the request.
-     */
     public function rules(): array
     {
         $rules = [
@@ -29,7 +25,7 @@ class UsuarioRequest extends FormRequest
             'tipoAdministrador' => 'required|boolean',
         ];
 
-        // Si se está creando (sin user_id) o si se envía password, validar
+        // Validar password solo en creación o si se modifica
         if (!$this->filled('user_id') || $this->filled('password')) {
             $rules['password'] = 'required|string|min:6';
         }
@@ -37,13 +33,10 @@ class UsuarioRequest extends FormRequest
         return $rules;
     }
 
-
-    /**
-     * Get custom error messages for validator errors.
-     */
     public function messages(): array
     {
         return [
+            // tus mensajes personalizados, igual que los que ya tienes
             'nombres.required' => 'El campo nombres es obligatorio.',
             'nombres.string' => 'El campo nombres debe ser texto.',
             'nombres.max' => 'El campo nombres no debe exceder los 255 caracteres.',
@@ -71,9 +64,6 @@ class UsuarioRequest extends FormRequest
         ];
     }
 
-    /**
-     * Handle a failed validation attempt.
-     */
     protected function failedValidation(\Illuminate\Contracts\Validation\Validator $validator)
     {
         if ($this->filled('user_id')) {
@@ -84,5 +74,27 @@ class UsuarioRequest extends FormRequest
         }
 
         parent::failedValidation($validator);
+    }
+
+    public function withValidator($validator)
+    {
+        $validator->after(function ($validator) {
+            $nuevoNroDoc = trim($this->input('usuario'));
+            $userId = $this->input('user_id');
+
+            // Si se está creando o el nroDoc cambió
+            if (!$userId) {
+                if (Usuario::existeNroDocumento($nuevoNroDoc)) {
+                    $validator->errors()->add('usuario', 'El número de documento ya está registrado.');
+                }
+            } else {
+
+                    if ($userId !== $nuevoNroDoc) {
+                        if (Usuario::existeNroDocumento($nuevoNroDoc)) {
+                            $validator->errors()->add('usuario', 'El número de documento ya está registrado por otro usuario.');
+                        }
+                    }
+            }
+        });
     }
 }

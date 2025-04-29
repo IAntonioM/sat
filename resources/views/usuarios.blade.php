@@ -137,7 +137,7 @@
                                     <td>
                                         <a href="#" class="btn btn-active-color-primary btn-sm me-1 editar-usuario"
                                             style="padding: 0rem;" data-bs-toggle="modal"
-                                            data-bs-target="#kt_modal_edit_user" data-id="{{ $usuarioItem->vlogin }}"
+                                            data-bs-target="#kt_modal_edit_user" data-id="{{ $usuarioItem->vnrodoc }}"
                                             data-nombres="{{ $usuarioItem->vnombre }}" data-usuario="{{ $usuarioItem->vusuario }}"
                                             data-apellidos="{{ trim($usuarioItem->vpater . ' ' . $usuarioItem->vmater) }}"
                                             data-fecha="{{ $usuarioItem->dfecregist }}" data-tipo="{{ $usuarioItem->vestado }}"
@@ -147,7 +147,7 @@
 
                                         <a href="#" class="btn btn-active-color-danger btn-sm me-1 editar-usuario"
                                             style="padding: 0rem;" data-bs-toggle="modal"
-                                            data-bs-target="#kt_modal_delete_user" data-id="{{ $usuarioItem->vlogin }}"
+                                            data-bs-target="#kt_modal_delete_user" data-id="{{ $usuarioItem->vnrodoc }}"
                                             data-nombres="{{ $usuarioItem->vnombre }}" data-usuario="{{ $usuarioItem->vusuario }}"
                                             data-apellidos="{{ trim($usuarioItem->vpater . ' ' . $usuario->vmater) }}"
                                             data-fecha="{{ $usuarioItem->dfecregist }}" data-tipo="{{ $usuarioItem->vestado }}"
@@ -201,6 +201,7 @@
                         method="POST">
                         @csrf
                         <input type="hidden" name="user_id" id="edit_user_id">
+                        <input type="hidden" name="nrdocActual" id="nrdocActual_">
                         <!--begin::Scroll-->
                         <div class="d-flex flex-column scroll-y px-5 px-lg-10" id="kt_modal_edit_user_scroll"
                             data-kt-scroll="true" data-kt-scroll-activate="true" data-kt-scroll-max-height="auto"

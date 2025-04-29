@@ -10,6 +10,7 @@ document.addEventListener('DOMContentLoaded', function () {
             const tipo = this.getAttribute('data-tipo');
             const estado = this.getAttribute('data-estado');
             console.log('User ID seleccionado:', id);
+            console.log('Estado cuenta:', estado); // Add this line to debug
 
 
             document.getElementById('edit_user_id').value = id;
@@ -19,6 +20,8 @@ document.addEventListener('DOMContentLoaded', function () {
             document.getElementById('edit_usuario').value = usuario;
             document.getElementById('edit_fechaRegistro').value = fechaFormateada;
             document.getElementById('edit_estado').value = estado;
+            $('#edit_estado').val(estado).trigger('change'); // <-- necesario para Select2
+
 
             document.getElementById('edit_tipoAdministrador_0').checked = tipo == '003';
             document.getElementById('edit_tipoAdministrador_1').checked = tipo == '002';
