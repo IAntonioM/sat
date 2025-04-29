@@ -2,34 +2,70 @@
 
 namespace App\Reports;
 
-use App\Models\Contribuyente;
-use App\Models\HR;
-use App\Models\Predio;
+use App\Models\Pago;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
 use FPDF;
 
 class PagosReport extends FPDF
 {
-    protected $codigos;
-    protected $nombre;
-    protected $vdirecc;
-    protected $year;
-    /** @var object|null $datosContribuyente */ // ✅ tipo correcto
-    protected $datosContribuyente;
+    protected $anioSeleccionado;
+    protected $tipoTributo;
+    protected $fechaActual;
+    protected $pagos;
+    protected $totalPagado;
+    protected $codigo_contribuyente;
 
-
-    public function __construct()
+    public function __construct($anioSeleccionado = '%', $tipoTributo = '%')
     {
-        parent::__construct('L', 'mm', 'a5');
+        parent::__construct('L', 'mm', 'A4');
 
-        // Obtener datos de sesión
-        $this->codigos = Session::get('codigo_contribuyente');
-        $this->nombre = Session::get('nombr');
-        $this->vdirecc = Session::get('vdirecc');
-        $this->year = date('Y');
+        $this->anioSeleccionado = $anioSeleccionado;
+        $this->tipoTributo = $tipoTributo;
+        $this->fechaActual = date('d/m/Y');
+        $this->codigo_contribuyente = Session::get('codigo_contribuyente');
 
-        // Obtener datos del contribuyente
-        $this->datosContribuyente = HR::obtenerDatosContribuyente($this->codigos);
+        // Obtener los pagos según los filtros
+        $this->pagos = $this->obtenerPagos($this->codigo_contribuyente, $this->anioSeleccionado, $this->tipoTributo);
+
+        // Calcular el total pagado
+        $this->totalPagado = $this->calcularTotalPagado($this->pagos);
+    }
+
+    /**
+     * Obtiene los pagos del contribuyente según los filtros
+     *
+     * @param string $codigo_contribuyente
+     * @param string $anio
+     * @param string $tipo_tributo
+     * @return array
+     */
+    private function obtenerPagos($codigo_contribuyente, $anio, $tipo_tributo)
+    {
+        // Esta consulta debería estar en un modelo, pero por simplicidad la ponemos aquí
+        // En un entorno real, se recomienda moverla a un modelo Pago
+        return DB::table('PAGOS')
+            ->where('CONTRIBUYENTE', $codigo_contribuyente)
+            ->where('ANIO', 'like', $anio)
+            ->where('TIPO', 'like', $tipo_tributo)
+            ->orderBy('ANIO', 'desc')
+            ->orderBy('FECHA_PAGO', 'desc')
+            ->get();
+    }
+
+    /**
+     * Calcula el total pagado de los pagos
+     *
+     * @param array $pagos
+     * @return float
+     */
+    private function calcularTotalPagado($pagos)
+    {
+        $total = 0;
+        foreach ($pagos as $pago) {
+            $total += floatval($pago->TOTAL);
+        }
+        return $total;
     }
 
     //Cabecera de página
@@ -37,271 +73,208 @@ class PagosReport extends FPDF
     {
         $imagePath = public_path('assets/media/logos/custom-3-h25-2.png');
 
-    // Usar el método Image para insertar la imagen en el encabezado
-    // $this->Image( ruta, x, y, width, height);
-    // Puedes ajustar la posición (x, y) y el tamaño de la imagen (width, height)
-        $this->Image($imagePath, 11, 16, 25); // 10, 10 es la posición y 40 es el ancho de la imagen
+        // Insertar la imagen en el encabezado
+        $this->Image($imagePath, 10, 16, 30);
 
-        // $this->SetFont('Arial', 'B', 7);
-        // $this->SetXY(25, 16);
-        // $this->Cell(0, 4, "MUNICIPALIDAD DISTRITAL");
-        // $this->Ln();
-
-        // $this->SetFont('Arial', 'B', 7);
-        // $this->SetXY(25, 19);
-        // $this->Cell(0, 4, "DE HUMAY");
-        // $this->Ln();
-
-        $this->SetXY(190, 15);
+        $this->SetY(15);
         $this->SetFont('Arial', 'B', 14);
-        $this->Cell(0, 4, "HR");
-        $this->Ln(3);
+        $this->Cell(0, 4, "REPORTE DE PAGOS DEL CONTRIBUYENTE", 0, 0, 'C');
+        $this->Ln(8);
 
-        $this->SetXY(183, 20);
-        $this->SetFont('Arial', 'B', 6);
-        $this->Cell(0, 4, "(HOJA DE RESUMEN)");
-        $this->Ln(3);
-
-        $this->SetXY(70, 15);
-        $this->SetFont('Arial', 'B', 13);
-        $this->Cell(0, 4, 'IMPUESTO PREDIAL - ' . $this->datosContribuyente->cperiod    );
-        $this->Ln(3);
-
-        $this->SetXY(87, 19);
-        $this->SetFont('Arial', 'B', 7);
-        $this->Cell(0, 4, "DECLARACION JURADA");
-        $this->Ln(3);
-
-        $this->SetXY(62, 23);
-        $this->SetFont('Arial', 'B', 7);
-        $this->Cell(0, 4, utf8_decode("T.U.O. DE LA LEY DE TRIBUTACION MUNICIPAL (D.S.N°156-2004-EF)"), 'C');
-        $this->Ln(3);
-
-        $this->SetXY(5, 38);
-        $header = array('I. DATOS DEL CONTRIBUYENTE');
-        $this->SetFillColor(255, 255, 255);
-        $this->SetTextColor(0);
-        $this->SetDrawColor(0);
-        $this->SetLineWidth(.2);
-
-        $w = array(200);
-        for($i = 0; $i < count($header); $i++)
-            $this->Cell($w[$i], 4, $header[$i], 0, 0, 'L', 1);
-        $this->Ln();
-
-        $this->SetXY(5, 42);
-        $header = array('CONTRIBUYENTE');
-        $this->SetFillColor(229, 229, 229);
-        $this->SetTextColor(0);
-        $this->SetDrawColor(0);
-        $this->SetLineWidth(.2);
-
-        $w = array(28);
-        for($i = 0; $i < count($header); $i++)
-            $this->Cell($w[$i], 5, $header[$i], 1, 0, 'C', 1);
-        $this->Ln();
-
-        $this->SetXY(33, 42);
-        $nombre_formateado = utf8_decode($this->datosContribuyente->nombre);
-        $header = array($nombre_formateado);
-        $this->SetFont('Arial', 'B', 6);
-        $this->SetFillColor(255, 255, 255);
-        $this->SetTextColor(0);
-        $this->SetDrawColor(0);
-        $this->SetLineWidth(.2);
-
-        $w = array(102);
-        for($i = 0; $i < count($header); $i++)
-            $this->Cell($w[$i], 5, $header[$i], 1, 0, 'L', 1);
-        $this->Ln();
-
-        $this->SetXY(135, 42);
-        $header = array('CODIGO DE CONTRIBUYENTE');
-        $this->SetFillColor(229, 229, 229);
-        $this->SetTextColor(0);
-        $this->SetDrawColor(0);
-        $this->SetLineWidth(.2);
-
-        $w = array(35);
-        for($i = 0; $i < count($header); $i++)
-            $this->Cell($w[$i], 5, $header[$i], 1, 0, 'C', 1);
-        $this->Ln();
-
-        $this->SetXY(135, 47);
-        $header = array($this->datosContribuyente->codigo1);
+        $this->SetY(22);
         $this->SetFont('Arial', 'B', 8);
-        $this->SetFillColor(255, 255, 255);
-        $this->SetTextColor(0);
-        $this->SetDrawColor(0);
-        $this->SetLineWidth(.2);
+        $filtroTexto = 'TODOS LOS PAGOS';
 
-        $w = array(35);
-        for($i = 0; $i < count($header); $i++)
-            $this->Cell($w[$i], 5, $header[$i], 1, 0, 'C', 1);
-        $this->Ln();
+        if ($this->anioSeleccionado != '%') {
+            $filtroTexto = "AÑO: " . $this->anioSeleccionado;
+        }
 
-        $this->SetXY(170, 42);
-        $header = array('DOCUMENTO');
+        if ($this->tipoTributo != '%') {
+            // Obtener descripción del tributo
+            $descripcionTributo = DB::table('TIPO_TRIBUTOS')
+                ->where('tipo', $this->tipoTributo)
+                ->value('tipo_d');
+
+            if ($this->anioSeleccionado != '%') {
+                $filtroTexto .= " - TRIBUTO: " . $descripcionTributo;
+            } else {
+                $filtroTexto = "TRIBUTO: " . $descripcionTributo;
+            }
+        }
+
+        $this->Cell(0, 4, $filtroTexto, 0, 0, 'C');
+        $this->Ln(8);
+
+        // Datos del contribuyente
+        $datosContribuyente = DB::table('CONTRIBUYENTES')
+            ->where('codigo', $this->codigo_contribuyente)
+            ->first();
+
+        if ($datosContribuyente) {
+            $this->SetXY(10, 32);
+            $this->SetFont('Arial', 'B', 8);
+            $this->Cell(0, 4, "Contribuyente: " . utf8_decode($datosContribuyente->nombre), 0, 0, 'L');
+            $this->Ln(6);
+
+            $this->SetXY(10, 38);
+            $this->Cell(0, 4, "Código: " . $this->codigo_contribuyente, 0, 0, 'L');
+            $this->Ln(6);
+        }
+
+        $this->SetXY(10, 44);
+        $this->SetFont('Arial', 'B', 8);
+        $this->Cell(0, 4, "Fecha de generación: " . $this->fechaActual, 0, 0, 'L');
+        $this->Ln(10);
+
+        // Mostrar el total pagado
+        $this->SetFont('Arial', 'B', 10);
+        $this->SetXY(200, 38);
+        $this->Cell(0, 4, "Total Pagado: S/. " . number_format($this->totalPagado, 2), 0, 0, 'R');
+        $this->Ln(10);
+
+        // Cabecera de la tabla
+        $this->SetFont('Arial', 'B', 8);
         $this->SetFillColor(229, 229, 229);
         $this->SetTextColor(0);
         $this->SetDrawColor(0);
         $this->SetLineWidth(.2);
-        $this->SetFont('Arial', 'B', 6);
 
-        $w = array(35);
-        for($i = 0; $i < count($header); $i++)
-            $this->Cell($w[$i], 5, $header[$i], 1, 0, 'C', 1);
-        $this->Ln();
+        $this->SetXY(10, 54);
+        $header = array('Tributo', 'Año', 'Imp. Insoluto', 'Reajuste', 'Mora', 'Costos', 'Total', 'Fecha', 'N° Recibo');
+        $w = array(40, 25, 25, 25, 25, 25, 30, 30, 35);
 
-        $this->SetXY(170, 47);
-        $header = array(trim($this->datosContribuyente->num_doc));
-
-        $this->SetFont('Arial', 'B', 7);
-        $this->SetFillColor(255, 255, 255);
-        $this->SetTextColor(0);
-        $this->SetDrawColor(0);
-        $this->SetLineWidth(.2);
-
-        $w = array(35);
-        for($i = 0; $i < count($header); $i++)
-            $this->Cell($w[$i], 5, $header[$i], 1, 0, 'C', 1);
-        $this->Ln();
-
-        $this->SetXY(5, 47);
-        $header = array('DOMICILIO FISCAL');
-        $this->SetFillColor(229, 229, 229);
-        $this->SetTextColor(0);
-        $this->SetDrawColor(0);
-        $this->SetLineWidth(.2);
-        $this->SetFont('Arial', 'B', 7);
-
-        $w = array(28);
-        for($i = 0; $i < count($header); $i++)
-            $this->Cell($w[$i], 5, $header[$i], 1, 0, 'C', 1);
-        $this->Ln();
-
-        $this->SetXY(33, 47);
-        $direccion_formateada = utf8_decode($this->datosContribuyente->direcc);
-        $header = array($direccion_formateada);
-        $this->SetFont('Arial', 'B', 6);
-        $this->SetFillColor(255, 255, 255);
-        $this->SetTextColor(0);
-        $this->SetDrawColor(0);
-        $this->SetLineWidth(.2);
-
-        $w = array(102);
-        for($i = 0; $i < count($header); $i++)
-            $this->Cell($w[$i], 5, $header[$i], 1, 0, 'L', 1);
-        $this->Ln();
-
-        $this->SetXY(5, 55);
-        $header = array('II. RELACION DE PREDIOS');
-        $this->SetFillColor(255, 255, 255);
-        $this->SetTextColor(0);
-        $this->SetDrawColor(0);
-        $this->SetLineWidth(.2);
-        $this->SetFont('Arial', 'B', 7);
-
-        $w = array(200);
-        for($i = 0; $i < count($header); $i++)
-            $this->Cell($w[$i], 4, $header[$i], 0, 0, 'L', 1);
-        $this->Ln();
-
-        $this->SetXY(5, 60);
-        $header = array('TIPO','CODIGO', 'DIRECCION DEL PREDIO', 'VALOR DEL PREDIO', '% PROPIEDAD.', 'MONTO INAFECTO', 'VALOR AFECTO');
-        $this->SetFillColor(229, 229, 229);
-        $this->SetTextColor(0);
-        $this->SetDrawColor(0);
-        $this->SetLineWidth(.2);
-        $this->SetFont('Arial', 'B', 5);
-
-        $w = array(14,14, 106, 18, 16, 17, 17);
-        for($i = 0; $i < count($header); $i++)
-            $this->Cell($w[$i], 8, $header[$i], 1, 0, 'C', 1);
+        for($i = 0; $i < count($header); $i++) {
+            $this->Cell($w[$i], 8, utf8_decode($header[$i]), 1, 0, 'C', 1);
+        }
         $this->Ln();
     }
 
     //Pie de página
     public function Footer()
     {
-        $this->SetY(-20);
-        $this->SetX(5);
-        $this->SetFont('Arial', 'B', 5);
-        $this->Cell(0, 3, "NOTA IMPORTANTE :");
-        $this->Ln(3);
-
-        $this->SetX(5);
-        $this->SetFont('Arial', '', 4.7);
-        $this->Cell(200, 3, utf8_decode("BASE LEGAL: ULTIMO PARRAFO DEL ART. 14 DEL TUO DE LA LEY DE TRIBUTACION MUNICIPAL, APROBADA MEDIANTE EL D.S. 156-2004-EF"), 'C');
-        $this->Ln(3);
-
         $this->SetY(-15);
-        $this->SetFont('Arial', 'I', 5);
-        $this->Cell(0, 10, 'Pagina ' . $this->PageNo() . '/{nb}', 0, 0, 'C');
+        $this->SetFont('Arial', 'I', 8);
+        $this->Cell(0, 10, 'Página ' . $this->PageNo() . '/{nb}', 0, 0, 'C');
     }
 
     public function generarPDF()
     {
         $this->AliasNbPages();
         $this->AddPage();
-        $this->SetFont('Times', '', 7);
+        $this->SetFont('Arial', '', 8);
 
-        $predios = HR::obtenerRelacionPredios($this->codigos, $this->year);
-        $valuo = 0;
+        $y = 62;
+        $pagosAgrupados = [];
+        $totalesPorAnio = [];
 
-        foreach ($predios as $predio) {
-            $this->SetFont('Arial', 'B', 6);
-            $this->SetX(5);
+        // Agrupar los pagos por año
+        foreach ($this->pagos as $pago) {
+            $anio = explode('-', $pago->ANIO)[0];
+            if (!isset($pagosAgrupados[$anio])) {
+                $pagosAgrupados[$anio] = [];
+            }
+            $pagosAgrupados[$anio][] = $pago;
 
-            $this->SetFillColor(255, 255, 255);
-            $this->SetTextColor(0, 0, 0);
-
-            $this->Cell(14, 6, $predio->tipo_predio, 1, 0, 'C');
-
-            $this->Cell(14, 6, $predio->cod_pred, 1, 0, 'C');
-
-            $this->SetFont('Arial', 'B', 5);
-            $this->Cell(106, 6, utf8_decode($predio->direccion), 1, 0, 'L'); // era {'8'}
-            $this->Cell(18, 6, $predio->val_autoavaluo, 1, 0, 'C');      // era {'11'}
-            $this->Cell(16, 6, $predio->porcen_propiedad, 1, 0, 'C');    // era {'9'}
-            $this->Cell(17, 6, $predio->total, 1, 0, 'C');               // era {'19'}
-            $this->Cell(17, 6, $predio->Valor_Afecto, 1, 0, 'C');        // era {'12'}
-
-            $this->Ln(6);
-
-            $valuo += $predio->val_autoavaluo;
+            // Calcular totales por año
+            if (!isset($totalesPorAnio[$anio])) {
+                $totalesPorAnio[$anio] = 0;
+            }
+            $totalesPorAnio[$anio] += floatval($pago->TOTAL);
         }
 
-        $resumen = HR::obtenerTotales($this->codigos, $this->year);
+        // Ordenar años en orden descendente
+        krsort($pagosAgrupados);
 
-        $this->SetXY(5, 110);
-        $header = array('TOTAL PREDIOS', 'PREDIO AFECTO', 'BASE IMPONIBLE', 'BASE EXONERADA', 'IMPUESTO ANUAL', 'CUOTA TRIMESTRAL', 'EMISION Y DISTRIBUCION', 'TOTAL A PAGAR');
-        $this->SetFillColor(229, 229, 229);
-        $this->SetFont('Arial', 'B', 6);
-        $this->SetTextColor(0);
-        $this->SetDrawColor(0, 0, 0);
-        $this->SetLineWidth(.1);
+        // Configuración de tabla
+        $w = array(40, 25, 25, 25, 25, 25, 30, 30, 35);
 
-        $w = array(22, 22, 22, 25, 26, 27, 29, 27);
-        for($i = 0; $i < count($header); $i++)
-            $this->Cell($w[$i], 6, $header[$i], 1, 0, 'C', 1);
-        $this->Ln();
+        // Dibujar filas de datos agrupadas por año
+        foreach ($pagosAgrupados as $anio => $pagosPorAnio) {
+            // Verificar si hay suficiente espacio en la página actual
+            if ($y > 180) {
+                $this->AddPage();
+                $y = 62;
+            }
 
-        $this->SetFont('Arial', 'B', 6);
-        $this->SetXY(5, 116);
+            // Cabecera del año
+            $this->SetXY(10, $y);
+            $this->SetFont('Arial', 'B', 9);
+            $this->SetFillColor(241, 250, 255);
+            $this->SetTextColor(0, 158, 247);
+            $this->Cell(array_sum($w), 8, "Año: " . $anio, 1, 0, 'L', 1);
+            $this->Ln();
+            $y += 8;
 
-        $this->SetFillColor(255, 255, 255);
-        $this->SetTextColor(0, 0, 0);
+            // Pagos del año
+            $this->SetFont('Arial', '', 8);
+            $this->SetTextColor(0);
 
-        $this->Cell(22, 6, $resumen['total_predios'], 1, 0, 'C');            // TOTAL PREDIOS
-        $this->Cell(22, 6, $resumen['total_afecto'], 1, 0, 'C');             // PREDIO AFECTO
-        $this->Cell(22, 6, $resumen['base_imponible'], 1, 0, 'C');           // BASE IMPONIBLE
-        $this->Cell(25, 6, $resumen['base_exonerada'], 1, 0, 'C');           // BASE EXONERADA
-        $this->Cell(26, 6, $resumen['imp_anual'], 1, 0, 'C');                // IMPUESTO ANUAL
-        $this->Cell(27, 6, $resumen['imp_trime'], 1, 0, 'C');                // CUOTA TRIMESTRAL
-        $this->Cell(29, 6, $resumen['costo_emi'], 1, 0, 'C');                // EMISION Y DISTRIBUCION
-        $this->Cell(27, 6, $resumen['total'], 1, 0, 'C');                    // TOTAL A PAGAR
+            foreach ($pagosPorAnio as $pago) {
+                // Controlar que no se salga de la página
+                if ($y > 180) {
+                    $this->AddPage();
+                    $y = 62;
+                }
 
-        return $this->Output('HR-Report.pdf', 'I');
+                $this->SetXY(10, $y);
+
+                // Determinar el estilo del tipo de tributo
+                $badgeColor = ($pago->TIPO_D == "IMP.PREDIAL") ?
+                    $this->SetTextColor(15, 150, 72) :
+                    $this->SetTextColor(220, 53, 69);
+
+                // Imprimir los datos
+                $this->Cell($w[0], 8, utf8_decode($pago->TIPO_D), 1, 0, 'L');
+                $this->SetTextColor(0); // Restaurar color de texto
+                $this->Cell($w[1], 8, $pago->ANIO, 1, 0, 'C');
+                $this->Cell($w[2], 8, number_format(floatval($pago->IMP_INSOL), 2), 1, 0, 'R');
+                $this->Cell($w[3], 8, '0.00', 1, 0, 'R');
+                $this->Cell($w[4], 8, number_format(floatval($pago->MORA), 2), 1, 0, 'R');
+                $this->Cell($w[5], 8, number_format(floatval($pago->COSTO_EMIS), 2), 1, 0, 'R');
+                $this->Cell($w[6], 8, number_format(floatval($pago->TOTAL), 2), 1, 0, 'R');
+                $this->Cell($w[7], 8, $pago->FECHA_PAGO ?? '-', 1, 0, 'C');
+                $this->Cell($w[8], 8, $pago->NRO_RECIBO ?? '-', 1, 0, 'C');
+
+                $this->Ln();
+                $y += 8;
+            }
+
+            // Fila de total por año
+            if ($y > 180) {
+                $this->AddPage();
+                $y = 62;
+            }
+
+            $this->SetXY(10, $y);
+            $this->SetFont('Arial', 'B', 9);
+            $this->SetFillColor(241, 241, 242);
+
+            // Celdas vacías para las primeras columnas
+            $this->Cell($w[0] + $w[1] + $w[2] + $w[3] + $w[4], 8, '', 1, 0, 'R', 1);
+
+            // Celda de texto "TOTAL"
+            $this->Cell($w[5], 8, 'TOTAL', 1, 0, 'C', 1);
+
+            // Celda del total
+            $this->SetFont('Arial', 'B', 10);
+            $this->Cell($w[6], 8, number_format($totalesPorAnio[$anio], 2), 1, 0, 'R');
+
+            // Celdas vacías para las últimas columnas
+            $this->Cell($w[7] + $w[8], 8, '', 1, 0, 'C', 1);
+
+            $this->Ln();
+            $y += 10; // Espacio adicional después de cada grupo
+        }
+
+        // Si no hay pagos, mostrar mensaje
+        if (count($this->pagos) == 0) {
+            $this->SetXY(10, $y);
+            $this->SetFont('Arial', 'B', 10);
+            $this->SetFillColor(217, 237, 247);
+            $this->SetTextColor(49, 112, 143);
+            $this->Cell(array_sum($w), 20, 'No se encontraron registros de pagos con los filtros seleccionados.', 1, 0, 'C', 1);
+        }
+
+        return $this->Output('Reporte-Pagos.pdf', 'I');
     }
 }
