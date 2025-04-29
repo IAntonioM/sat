@@ -187,3 +187,7 @@ class SolicitudAcceso extends Model
         }
     }
 }
+
+//1 - aceptado
+//2 -denegado
+//0 pendiente
