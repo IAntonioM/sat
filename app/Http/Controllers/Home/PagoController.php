@@ -15,7 +15,7 @@ class PagoController extends Controller
     public function index(Request $request)
     {
         $codigo_contribuyente = Session::get('codigo_contribuyente');
-        $usuario = Contribuyente::obtenerDatosContri($codigo_contribuyente);
+        $usuario = PagosModel::getUserData($codigo_contribuyente);
 
         $fechaActual = Carbon::now()->format('d/m/Y');
 

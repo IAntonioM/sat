@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Home;
 
+use App\Services\ServicioEmail;
 use App\Http\Controllers\Controller;
 use App\Models\SolicitudAcceso;
 use App\Models\Contribuyente;
@@ -65,22 +66,34 @@ class PendientesController extends Controller
 
     public function AceptarSolicitud(Request $request)
     {
-        $codigoContribuyente = session('codigo_contribuyente') ??
-            session('cod_usuario') ?? null;
+        $codigoContribuyente = session('codigo_contribuyente') ?? session('cod_usuario') ?? null;
         $usuario = Contribuyente::obtenerDatosContri($codigoContribuyente);
         $vusuario = $usuario->vusuario;
 
-        //Datos que se trae desde el view
         $iCodPreTramite = $request->iCodPreTramite;
         $nFlgEstado = $request->nFlgEstado;
-
-        //Dato para la estacion
         $estacionActualizacion = gethostname();
 
+        // Aceptar o denegar la solicitud
         SolicitudAcceso::aceptarDenegarSolicitud($iCodPreTramite, $nFlgEstado, $vusuario, $estacionActualizacion);
+
+        // Obtener datos de la solicitud para mandar el correo
+        $solicitud = SolicitudAcceso::where('iCodPreTramite', $iCodPreTramite)->first();
+
+        if ($solicitud && $solicitud->correoDestino) {
+            // Enviar correo
+            $servicioEmail = new ServicioEmail();
+            $correoDestino = $solicitud->correoDestino;
+            $asunto = 'Solicitud de Acceso Aceptada';
+            $contenido = '<p>Estimado usuario,</p><p>Su solicitud de acceso con el asunto <strong>' . $solicitud->cAsunto . '</strong> ha sido aceptada.</p><p>Gracias por confiar en nosotros.</p>';
+
+            $servicioEmail->enviar($correoDestino, $asunto, $contenido);
+        }
 
         return redirect()->route('Pendiente')->with('success', 'Solicitud aceptada correctamente');
     }
+
+
 
     public function DenegarSolicitud(Request $request)
     {
@@ -100,5 +113,4 @@ class PendientesController extends Controller
 
         return redirect()->route('Pendiente')->with('success', 'Solicitud denegada correctamente');
     }
-
 }

@@ -75,7 +75,7 @@ class ReporteController extends Controller
             case 'PagosReport':
                 $anioSeleccionado = $request->input('anio', '%');
                 $tipoTributo = $request->input('tipo_tributo', '%');
-                $report = new PagosReport($anioSeleccionado, $tipoTributo);
+                $report = new PagosReport();
                 return $report->generarPDF();
                 break;
 
