@@ -94,6 +94,7 @@ Route::middleware(['check.login', 'force.password.change', 'user.access'])->grou
 
 // lo peude ver vestado 002 y 003
 Route::middleware(['check.login', 'force.password.change', 'moderator.access'])->group(function () {
+    Route::get('/perfilAdmin', [PerfilController::class, 'indexAdmin'])->name('perfilAdmin');
     Route::get('Pendiente', [PendientesController::class, 'index'])->name('Pendiente');
     Route::post('Pendiente', [PendientesController::class, 'index'])->name('Pendiente');
     // Rutas para pendientes

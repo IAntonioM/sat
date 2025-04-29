@@ -34,6 +34,7 @@ class PerfilController extends Controller
         return view('perfil', compact('usuario', 'fechaActual', 'listarCuentas'));
     }
 
+
     public function select(Request $request, $codigo)
     {
         $codigoSeleccionado = trim($codigo); // desde la URL como parámetro
@@ -67,5 +68,23 @@ class PerfilController extends Controller
                 'message' => 'Cuenta con código ' . $codigoSeleccionado . ' ha sido seleccionada correctamente.',
             ]
         ]);
+    }
+
+    public function indexAdmin(Request $request)
+    {
+        $login = session('login');
+        $codigoContribuyente = session('codigo_contribuyente');
+        $usuario = Contribuyente::obtenerDatosContri($codigoContribuyente);
+        $fechaActual = Carbon::now()->format('d/m/Y');
+        if ($login ) {
+            return redirect()->route('principal')->with([
+                'alert' => [
+                    'type' => 'success',
+                    'title' => 'Inicio de sesión exitoso',
+                    'message' => 'BIENVENIDO, ' . trim(($usuario->vpater ?? '') . ' ' . ($usuario->vmater ?? '') . ' ' . ($usuario->vnombre ?? 'Usuario'))
+                ]
+            ]);
+        }
+        return view('perfilAdmin', compact('usuario', 'fechaActual'));
     }
 }

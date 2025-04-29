@@ -126,32 +126,32 @@
                             </tr>
                         </thead>
                         <tbody class="fw-semibold text-gray-600" id="tabla_usuarios">
-                            @forelse($Usuarios as $usuario)
+                            @forelse($UsuariosList as $usuarioItem)
                                 <tr style="text-align: center; font-size:12px">
-                                    <td>{{ $usuario->vusuario }}</td>
-                                    <td>{{ trim($usuario->vpater . ' ' . $usuario->vmater . ' ' . $usuario->vnombre) }}
+                                    <td>{{ $usuarioItem->vusuario }}</td>
+                                    <td>{{ trim($usuarioItem->vpater . ' ' . $usuarioItem->vmater . ' ' . $usuarioItem->vnombre) }}
                                     </td>
-                                    <td>{{ $usuario->dfecregist ? date('d/m/Y', strtotime($usuario->dfecregist)) : '' }}
-                                    <td>{{ $usuario->tipo_admin ?? 'N/A' }}</td>
-                                    <td>{{ $usuario->estado_nombre ?? 'N/A' }}</td>
+                                    <td>{{ $usuarioItem->dfecregist ? date('d/m/Y', strtotime($usuarioItem->dfecregist)) : '' }}
+                                    <td>{{ $usuarioItem->tipo_admin ?? 'N/A' }}</td>
+                                    <td>{{ $usuarioItem->estado_nombre ?? 'N/A' }}</td>
                                     <td>
                                         <a href="#" class="btn btn-active-color-primary btn-sm me-1 editar-usuario"
                                             style="padding: 0rem;" data-bs-toggle="modal"
-                                            data-bs-target="#kt_modal_edit_user" data-id="{{ $usuario->vlogin }}"
-                                            data-nombres="{{ $usuario->vnombre }}" data-usuario="{{ $usuario->vusuario }}"
-                                            data-apellidos="{{ trim($usuario->vpater . ' ' . $usuario->vmater) }}"
-                                            data-fecha="{{ $usuario->dfecregist }}" data-tipo="{{ $usuario->vestado }}"
-                                            data-estado="{{ $usuario->vestado_cuenta }}">
+                                            data-bs-target="#kt_modal_edit_user" data-id="{{ $usuarioItem->vlogin }}"
+                                            data-nombres="{{ $usuarioItem->vnombre }}" data-usuario="{{ $usuarioItem->vusuario }}"
+                                            data-apellidos="{{ trim($usuarioItem->vpater . ' ' . $usuarioItem->vmater) }}"
+                                            data-fecha="{{ $usuarioItem->dfecregist }}" data-tipo="{{ $usuarioItem->vestado }}"
+                                            data-estado="{{ $usuarioItem->vestado_cuenta }}">
                                             <i class="fa-solid fa-pen-to-square fs-2"></i>
                                         </a>
 
                                         <a href="#" class="btn btn-active-color-danger btn-sm me-1 editar-usuario"
                                             style="padding: 0rem;" data-bs-toggle="modal"
-                                            data-bs-target="#kt_modal_delete_user" data-id="{{ $usuario->vlogin }}"
-                                            data-nombres="{{ $usuario->vnombre }}" data-usuario="{{ $usuario->vusuario }}"
-                                            data-apellidos="{{ trim($usuario->vpater . ' ' . $usuario->vmater) }}"
-                                            data-fecha="{{ $usuario->dfecregist }}" data-tipo="{{ $usuario->vestado }}"
-                                            data-estado="{{ $usuario->vestado_cuenta }}">
+                                            data-bs-target="#kt_modal_delete_user" data-id="{{ $usuarioItem->vlogin }}"
+                                            data-nombres="{{ $usuarioItem->vnombre }}" data-usuario="{{ $usuarioItem->vusuario }}"
+                                            data-apellidos="{{ trim($usuarioItem->vpater . ' ' . $usuario->vmater) }}"
+                                            data-fecha="{{ $usuarioItem->dfecregist }}" data-tipo="{{ $usuarioItem->vestado }}"
+                                            data-estado="{{ $usuarioItem->vestado_cuenta }}">
                                             <i class="fa-solid fa-trash fs-2"></i>
                                         </a>
                                     </td>

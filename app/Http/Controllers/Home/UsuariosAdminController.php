@@ -18,35 +18,16 @@ class UsuariosAdminController extends Controller
     public function index(Request $request)
     {
         // Obtener el código del contribuyente de la sesión o del parámetro
-        $codigoContribuyente = session('codigo_contribuyente') ??
-            session('cod_usuario') ?? null; // Valor por defecto para pruebas
-
+        $codigoContribuyente = session('codigo_contribuyente') ;
         $usuario = Contribuyente::obtenerDatosContri($codigoContribuyente);
-
-        if (!$codigoContribuyente) {
-            // Si no hay código de contribuyente, redirigir al login
-            return redirect()->route('login')->with([
-                'alert' => [
-                    'type' => 'error',
-                    'title' => 'Sesión inválida',
-                    'message' => 'No se encontró el código de contribuyente en la sesión'
-                ]
-            ]);
-        }
-
-        // Obtener datos del contribuyente
-        $contribuyente = UsuariosAdmins::obtenerDatosContribuyente($codigoContribuyente);
-
-        if (!$contribuyente) {
-            return redirect()->route('login')->with('error', 'No se encontró el contribuyente');
-        }
+        Debugbar::info('Datos de registro', $usuario);
 
         // Obtener los filtros
         $tipoAdministrador = $request->tipoAdministrador ?? '%';
         $estadoSeleccionado  = $request->estadoSeleccionado ?? '%';
 
         // Obtener las usuarios detalladas
-        $Usuarios = UsuariosAdmins::obtenerUsuarios($tipoAdministrador, $estadoSeleccionado);
+        $UsuariosList = UsuariosAdmins::obtenerUsuarios($tipoAdministrador, $estadoSeleccionado);
 
         // Preparar datos para la vista
         $estadosDisponibles = UsuariosAdmins::obtenerEstadosDisponibles();
@@ -55,8 +36,7 @@ class UsuariosAdminController extends Controller
         Debugbar::info('Datos de registro', $usuario);
 
         return view('usuarios', compact(
-            'contribuyente',
-            'Usuarios',
+            'UsuariosList',
             'estadosDisponibles',
             'tipoAdministrador',
             'estadoSeleccionado',

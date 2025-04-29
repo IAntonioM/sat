@@ -77,11 +77,11 @@
                         <!--end::Heaeder menu toggle-->
                         <!--begin::Header Logo-->
                         <div class="header-logo me-5 me-md-10 flex-grow-1 flex-lg-grow-0">
+                            <a href="{{ route('principal') }}">
 
-                            <img alt="Logo" src="{{ asset('assets/media/logos/custom-3-h25.png') }}"
-                                class="logo-default h-25px" />
-                            <img alt="Logo" src="{{ asset('assets/media/logos/custom-3-h25-2.png') }}"
-                                class="logo-sticky h-25px" />
+                                <img alt="Logo" src="assets/media/logos/custom-3-h25.png" class="logo-default h-25px" />
+                                <img alt="Logo" src="assets/media/logos/custom-3-h25-2.png" class="logo-sticky h-25px" />
+                            </a>
 
                         </div>
                         <!--end::Header Logo-->
@@ -102,6 +102,7 @@
                                     <div class="menu menu-rounded menu-column menu-lg-row menu-active-bg menu-title-gray-700 menu-state-primary menu-arrow-gray-400 fw-semibold my-5 my-lg-0 align-items-stretch px-2 px-lg-0"
                                          id="#kt_header_menu" data-kt-menu="true">
                                         <!--begin:Menu item-->
+                                        @if($usuario->vestado == '002')
                                             <div data-kt-menu-trigger="{default: 'click', lg: 'hover'}"
                                                  data-kt-menu-placement="bottom-start"
                                                  class="menu-item here show menu-here-bg menu-lg-down-accordion me-0 me-lg-2">
@@ -115,8 +116,10 @@
                                                 <!--end:Menu sub-->
                                             </div>
                                             <!--end:Menu item-->
+                                        @endif
 
                                         <!--begin:Menu item-->
+                                        @if($usuario->vestado == '002' || $usuario->vestado == '003')
                                             <div data-kt-menu-trigger="{default: 'click', lg: 'hover'}"
                                                  data-kt-menu-placement="bottom-start"
                                                  class="menu-item menu-lg-down-accordion menu-sub-lg-down-indention me-0 me-lg-2">
@@ -126,6 +129,7 @@
 
                                             </div>
                                             <!--end:Menu item-->
+                                        @endif
                                     </div>
                                     <!--end::Menu-->
                                 </div>
@@ -184,7 +188,7 @@
                                         <!--end::Menu separator-->
                                         <!--begin::Menu item-->
                                         <div class="menu-item px-5">
-                                            <a href="{{ route('perfil') }}" class="menu-link px-5">Mi Perfil</a>
+                                            <a href="{{ route('perfilAdmin') }}" class="menu-link px-5">Mi Perfil</a>
                                         </div>
                                         <!--end::Menu item-->
                                         <!--begin::Menu item-->

@@ -1,6 +1,7 @@
 @extends('layouts.cabeceraAdmin')
 @section('content')
 <div class="col-xl-3"></div>
+@if($usuario->vestado == '002' )
 <div class="col-xl-3">
     <!--begin::Card widget 3-->
     <div class="card card-flush bgi-no-repeat bgi-size-contain bgi-position-x-end h-xl-100" style="background-color: #F1416C;background-image:url('assets/media/svg/shapes/wave-bg-red.svg')">
@@ -17,9 +18,9 @@
         <div class="card-body d-flex align-items-end mb-3">
             <!--begin::Info-->
             <div class="fw-bold text-white py-2">
-                
+
                 <span class="fs-2hx text-white fw-bold me-6" >Mantenimiento de Usuarios</span>
-                
+
             </div>
 
             <!--end::Info-->
@@ -39,7 +40,9 @@
     </div>
     <!--end::Card widget 3-->
 </div>
+@endif
 <div class="col-xl-1"></div>
+@if($usuario->vestado == '002' || $usuario->vestado == '003')
 <div class="col-xl-3">
     <!--begin::Card widget 3-->
     <div class="card card-flush bgi-no-repeat bgi-size-contain bgi-position-x-end h-xl-100" style="background-color: #7239EA;background-image:url('assets/media/svg/shapes/wave-bg-purple.svg')">
@@ -55,9 +58,9 @@
         <!--begin::Card body-->
         <div class="card-body d-flex align-items-end mb-3">
             <div class="fw-bold text-white py-2">
-                
+
                 <span class="fs-2hx text-white fw-bold me-6" >Pendientes por Aprobar</span><br>
-                
+
             </div>
         </div>
         <!--end::Card body-->
@@ -75,6 +78,7 @@
     </div>
     <!--end::Card widget 3-->
 </div>
+@endif
 <div class="col-xl-3"></div>
 
 
