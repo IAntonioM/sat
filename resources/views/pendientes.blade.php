@@ -107,7 +107,8 @@
                                         <td>{{ \Carbon\Carbon::parse($solicitud->dFechaSolicitud)->format('d/m/Y') }}</td>
                                         <td>{{ $solicitud->dFechaActualizacion ? \Carbon\Carbon::parse($solicitud->dFechaActualizacion)->format('d/m/Y') : '-' }}
                                         </td>
-                                        <td>{{ $solicitud->cUsuarioActualizacion = 'ADMIN' ? 'sin usuario' : $solicitud->cUsuarioActualizacion }}</td>
+                                        <td>{{ $solicitud->cNomUsuario = '' ? 'sin usuario' : $solicitud->cNomUsuario }}
+                                        </td>
                                         <td>
                                             @if ($solicitud->nFlgEstado == 1)
                                                 <div class="badge badge-light-success" style="font-size:12px">Aceptado</div>
@@ -128,7 +129,8 @@
                                                 <input type="hidden" name="iCodPreTramite"
                                                     value="{{ $solicitud->iCodPreTramite }}">
                                                 <input type="hidden" name="nFlgEstado" value="1">
-                                                <button type="submit" class="btn btn-success btn-circle me-2">
+                                                <button type="submit" class="btn btn-success btn-circle me-2"
+                                                    {{ $solicitud->nFlgEstado == 1 ? 'disabled' : '' }}>
                                                     <i class="fa-solid fa-check fs-3"></i>
                                                 </button>
                                             </form>
@@ -138,11 +140,13 @@
                                                 <input type="hidden" name="iCodPreTramite"
                                                     value="{{ $solicitud->iCodPreTramite }}">
                                                 <input type="hidden" name="nFlgEstado" value="0">
-                                                <button type="submit" class="btn btn-danger btn-circle me-2">
+                                                <button type="submit" class="btn btn-danger btn-circle me-2"
+                                                {{ $solicitud->nFlgEstado == 1 ? 'disabled' : '' }}>
                                                     <i class="fa-solid fa-xmark fs-3"></i>
                                                 </button>
                                             </form>
-                                            <a href="{{ route('ver.archivo', basename($solicitud->cRutaFile)) }}" target="_blank" class="btn btn-warning btn-circle me-2">
+                                            <a href="{{ route('ver.archivo', basename($solicitud->cRutaFile)) }}"
+                                                target="_blank" class="btn btn-warning btn-circle me-2">
                                                 <i class="fa-solid fa-file fs-3"></i>
                                             </a>
                                         </td>
