@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Home;
 use App\Http\Controllers\Controller;
 use App\Models\Contribuyente;
 use App\Models\PagosModel;
+use Barryvdh\Debugbar\Facades\Debugbar;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
@@ -47,6 +48,7 @@ class PagoController extends Controller
             'tipoTributo' => $tipotributo
         ];
 
+        Debugbar::info('data:', $viewData);
         return view('pagos', $viewData);
     }
 }
