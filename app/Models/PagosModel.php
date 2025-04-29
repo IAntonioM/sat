@@ -13,11 +13,12 @@ class PagosModel extends Model
     public static function getPagos($vcodcontr, $anio, $tipotributo)
     {
         return DB::select(
-            "EXEC pxConsultasWeb2 '21',
+            "EXEC pxConsultasWeb2
+                @msquery = ?,
                 @vcodcontr = '?',
                 @paramt2 = '?',
                 @paramt3 = '?'",
-            [$vcodcontr, $anio, $tipotributo]
+            [21, $vcodcontr, $anio, $tipotributo]
         );
     }
 

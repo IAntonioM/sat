@@ -61,9 +61,9 @@
                                     <option></option>
                                     <option value="%" {{ $anioSeleccionado == '%' ? 'selected' : '' }}>Todos los años
                                     </option>
-                                    @foreach ($aniosDisponibles as $anio)
-                                        <option value="{{ $anio }}"
-                                            {{ $anioSeleccionado == $anio ? 'selected' : '' }}>{{ $anio }}
+                                    @foreach ($aniosDisponibles as $anioItem)
+                                        <option value="{{ $anioItem->año }}"
+                                            {{ $anioSeleccionado == $anioItem->año ? 'selected' : '' }}>{{ $anioItem->año }}
                                         </option>
                                     @endforeach
                                 </select>
@@ -80,7 +80,7 @@
                                     @foreach ($tiposTributo as $tributo)
                                         <option value="{{ $tributo->tipo }}"
                                             {{ $tipoTributo == $tributo->tipo ? 'selected' : '' }}>
-                                            {{ $tributo->mtipo }}
+                                            {{ $tributo->tipo_d }}
                                         </option>
                                     @endforeach
                                 </select>
