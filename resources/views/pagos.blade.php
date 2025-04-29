@@ -77,7 +77,7 @@
                 <!--begin::Card toolbar-->
                 <div class="card-toolbar flex-row-fluid justify-content-end gap-5">
                     <!--begin::Add product-->
-                    <a href="#" class="btn btn-primary" onclick="window.print()"><i class="fa-solid fa-print"></i> Imprimir</a>
+                    <a href="{{ route('reporte', ['tipo' => 'PagosReport', 'anio' => $anioSeleccionado, 'tipo_tributo' => $tipoTributo]) }}" class="btn btn-primary" target="_blank"><i class="fa-solid fa-print"></i> Imprimir</a>
                     <!--end::Add product-->
                 </div>
                 <!--end::Card toolbar-->

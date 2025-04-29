@@ -72,12 +72,12 @@ class ReporteController extends Controller
                 return $report->generarPDF();
                 break;
 
-                case 'PagosReport':
-                    $vcodcontr = $request->input('vcodcontr');
-                    $idanexo = $request->input('idanexo');
-                    $report = new PagosReport($vcodcontr, $idanexo);
-                    return $report->generarPDF();
-                    break;
+            case 'PagosReport':
+                $anioSeleccionado = $request->input('anio', '%');
+                $tipoTributo = $request->input('tipo_tributo', '%');
+                $report = new PagosReport($anioSeleccionado, $tipoTributo);
+                return $report->generarPDF();
+                break;
 
             default:
                 return redirect()->back()->with('error', 'Tipo de reporte no válido');
