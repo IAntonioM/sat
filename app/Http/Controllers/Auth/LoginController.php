@@ -51,7 +51,7 @@ class LoginController extends Controller
 
 
        // SI EL ESTADO DE USAURIO ES INACTIVO
-       if ($user->vestado === '004') {
+       if ($user->vestado === '004' || $user->vestado_cuenta==0) {
            return redirect()->route('login')->with([
                'alert' => [
                    'type' => 'error',

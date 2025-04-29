@@ -46,25 +46,25 @@ class UsuariosAdminController extends Controller
         $estadoSeleccionado  = $request->estadoSeleccionado ?? '%';
 
         // Obtener las usuarios detalladas
-        $usuarios = UsuariosAdmins::obtenerUsuarios($tipoAdministrador, $estadoSeleccionado);
+        $Usuarios = UsuariosAdmins::obtenerUsuarios($tipoAdministrador, $estadoSeleccionado);
 
         // Preparar datos para la vista
-        $estados = UsuariosAdmins::obtenerEstadosDisponibles();
+        $estadosDisponibles = UsuariosAdmins::obtenerEstadosDisponibles();
         $tiposAdmins = UsuariosAdmins::obtenerTipoAdminDisponibles();
         $fechaActual = Carbon::now()->format('d/m/Y');
-        Debugbar::info('usuarios', $usuarios);
-        $viewData = [
-            'contribuyente' => $contribuyente,
-            'Usuarios' => $usuarios,
-            'estadosDisponibles' => $estados,
-            'tipoAdministrador' => $tipoAdministrador,
-            'estadoSeleccionado' => $estadoSeleccionado,
-            'tiposAdmins' => $tiposAdmins,
-            'fechaActual' => $fechaActual,
-            'usuario' => $usuario
-        ];
+        Debugbar::info('Datos de registro', $usuario);
 
-        return view('usuarios', $viewData);
+        return view('usuarios', compact(
+            'contribuyente',
+            'Usuarios',
+            'estadosDisponibles',
+            'tipoAdministrador',
+            'estadoSeleccionado',
+            'tiposAdmins',
+            'fechaActual',
+            'usuario'
+        ));
+
     }
 
     public function store(UsuarioRequest $request)

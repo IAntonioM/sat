@@ -89,17 +89,25 @@ Route::middleware(['check.login', 'force.password.change', 'user.access'])->grou
     Route::get('/perfil', [PerfilController::class, 'index'])->name('perfil');
     Route::get('/perfil-select/{codigo}', [PerfilController::class, 'select'])->name('SeleccionarPerfil');
 
-    Route::get('/Pagos',[PagoController::class, 'index'])->name('Pagos');
+    Route::get('/Pagos', [PagoController::class, 'index'])->name('Pagos');
 });
 
 // lo peude ver vestado 002 y 003
 Route::middleware(['check.login', 'force.password.change', 'moderator.access'])->group(function () {
-    // Área de moderador
+    Route::get('Pendiente', [PendientesController::class, 'index'])->name('Pendiente');
+    Route::post('Pendiente', [PendientesController::class, 'index'])->name('Pendiente');
     // Rutas para pendientes
-    Route::get('/moderador/Pendiente', [PendientesController::class, 'index'])->name('moderador/Pendiente');
-    Route::post('/moderador/Pendiente/filtrar', [PendientesController::class, 'filtrar'])->name('moderador/Pendiente.filtrar');
-    Route::get('/moderador/UsuariosAdmin', [UsuariosAdminController::class, 'index'])->name('moderador/UsuariosAdmin');
-    Route::post('/moderador/UsuariosAdmin', [UsuariosAdminController::class, 'index'])->name('moderador/UsuariosAdmin');
+    Route::post('AceptarSolicitud', [PendientesController::class, 'AceptarSolicitud'])->name('AceptarSolicitud');
+    Route::post('DenegarSolicitud', [PendientesController::class, 'DenegarSolicitud'])->name('DenegarSolicitud');
+
+    //Visualizar los archivos
+    Route::get('/ver-archivo/{path}', function ($path) {
+        $path = 'archivos_solicitudAcceso/' . $path;
+        if (Storage::exists($path)) {
+            return response()->file(storage_path('app/' . $path));
+        }
+        abort(404);
+    })->where('path', '.*')->name('ver.archivo');
 });
 
 // Rutas exclusivas para administradores (vestado 003)
@@ -111,18 +119,4 @@ Route::middleware(['check.login', 'force.password.change', 'admin.access'])->gro
     Route::post('crearUsuario', [UsuariosAdminController::class, 'store'])->name('crearUsuario');
     Route::post('actualizarUsuario', [UsuariosAdminController::class, 'update'])->name('actualizarUsuario');
     Route::post('eliminarUsuario', [UsuariosAdminController::class, 'delete'])->name('eliminarUsuario');
-    // Rutas para pendientes
-    Route::get('Pendiente', [PendientesController::class, 'index'])->name('Pendiente');
-    Route::post('Pendiente', [PendientesController::class, 'index'])->name('Pendiente');
-    Route::post('AceptarSolicitud', [PendientesController::class, 'AceptarSolicitud'])->name('AceptarSolicitud');
-    Route::post('DenegarSolicitud', [PendientesController::class, 'DenegarSolicitud'])->name('DenegarSolicitud');
-
-    //Visualizar los archivos
-    Route::get('/ver-archivo/{path}', function($path) {
-        $path = 'archivos_solicitudAcceso/' . $path;
-        if (Storage::exists($path)) {
-            return response()->file(storage_path('app/' . $path));
-        }
-        abort(404);
-    })->where('path', '.*')->name('ver.archivo');
 });
