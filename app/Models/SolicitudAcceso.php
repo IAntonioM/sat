@@ -168,7 +168,7 @@ class SolicitudAcceso extends Model
         return !empty($result) && $result[0]->Existe == 1;
     }
 
-    public static function aceptarDenegarSolicitud($iCodPreTramite, $nFlgEstado, $cUsuarioActualizacion, $cEstacionActualizacion)
+    public static function aceptarDenegarSolicitud($iCodPreTramite, $nFlgEstado, $cUsuarioActualizacion, $cEstacionActualizacion, $PasswordHash)
     {
         try {
             DB::statement(
@@ -177,13 +177,29 @@ class SolicitudAcceso extends Model
                 @iCodPreTramite = ?,
                 @nFlgEstado = ?,
                 @cUsuarioActualizacion = ?,
-                @cEstacionActualizacion = ?',
-                [5, $iCodPreTramite, $nFlgEstado, $cUsuarioActualizacion, $cEstacionActualizacion]
+                @cEstacionActualizacion = ?,
+                @PasswordHash = ?',
+                [5, $iCodPreTramite, $nFlgEstado, $cUsuarioActualizacion, $cEstacionActualizacion, $PasswordHash]
             );
             return true;
         } catch (\Exception $e) {
             Debugbar::error('Error al procesar la solicitud: ' . $e->getMessage());
             return false;
+        }
+    }
+
+    public static function traerUsuarioNuevo($nroDoc)
+    {
+        try {
+            $resultado = DB::select(
+                'select top 1 * from MUSUARIO where vnrodoc = ? order by cidusu desc',
+                [$nroDoc]
+            );
+
+            return $resultado ? $resultado[0] : null;
+        } catch (\Exception $e) {
+            Debugbar::error('Error al procesar la solicitud: ' . $e->getMessage());
+            return null;
         }
     }
 }

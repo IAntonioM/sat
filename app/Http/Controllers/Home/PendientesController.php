@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Session;
 use Illuminate\Http\Request;
 use Barryvdh\Debugbar\Facades\Debugbar;
 use Illuminate\Support\Facades\Date;
+use Illuminate\Support\Facades\Hash;
 
 class PendientesController extends Controller
 {
@@ -66,29 +67,46 @@ class PendientesController extends Controller
 
     public function AceptarSolicitud(Request $request)
     {
+        $iCodPreTramite = $request->iCodPreTramite;
+        $solicitud = SolicitudAcceso::where('iCodPreTramite', $iCodPreTramite)->first();
+
         $codigoContribuyente = session('codigo_contribuyente') ?? session('cod_usuario') ?? null;
         $usuario = Contribuyente::obtenerDatosContri($codigoContribuyente);
         $vusuario = $usuario->vusuario;
 
-        $iCodPreTramite = $request->iCodPreTramite;
+        $dni = $solicitud->nNumDocuId;
+
+
         $nFlgEstado = $request->nFlgEstado;
         $estacionActualizacion = gethostname();
+        $PasswordHash = Hash::make($dni);
 
         // Aceptar o denegar la solicitud
-        SolicitudAcceso::aceptarDenegarSolicitud($iCodPreTramite, $nFlgEstado, $vusuario, $estacionActualizacion);
+        SolicitudAcceso::aceptarDenegarSolicitud($iCodPreTramite, $nFlgEstado, $vusuario, $estacionActualizacion, $PasswordHash);
 
         // Obtener datos de la solicitud para mandar el correo
-        $solicitud = SolicitudAcceso::where('iCodPreTramite', $iCodPreTramite)->first();
 
-        if ($solicitud && $solicitud->correoDestino) {
+
+        $nuevoUSuarioDAtos = SolicitudAcceso::traerUsuarioNuevo($solicitud->nNumDocuId);
+
+        Debugbar::info('data:',$solicitud,'NuevosUsuairo', $nuevoUSuarioDAtos,'vusuaroi', $vusuario,'usuario', $usuario);
+
+        if ($solicitud && $solicitud->correoDestino && $nuevoUSuarioDAtos) {
             // Enviar correo
             $servicioEmail = new ServicioEmail();
             $correoDestino = $solicitud->correoDestino;
             $asunto = 'Solicitud de Acceso Aceptada';
-            $contenido = '<p>Estimado usuario,</p><p>Su solicitud de acceso con el asunto <strong>' . $solicitud->cAsunto . '</strong> ha sido aceptada.</p><p>Gracias por confiar en nosotros.</p>';
+            $contenido = '<p>Estimado usuario,</p>
+                <p>Su solicitud de acceso con el asunto <strong>' . $solicitud->cAsunto . '</strong> ha sido aceptada.</p>
+                <p><strong>Credenciales del usuario:</strong><br>
+                Nombre de usuario: ' . $nuevoUSuarioDAtos->vnrodoc . '<br>
+                Contraseña de usuario: ' . $nuevoUSuarioDAtos->vnrodoc . '</p>
+                <p>Gracias por confiar en nosotros.</p>';
 
             $servicioEmail->enviar($correoDestino, $asunto, $contenido);
         }
+
+
 
         return redirect()->route('Pendiente')->with('success', 'Solicitud aceptada correctamente');
     }
@@ -109,7 +127,7 @@ class PendientesController extends Controller
         //Dato para la estacion
         $estacionActualizacion = gethostname();
 
-        SolicitudAcceso::aceptarDenegarSolicitud($iCodPreTramite, $nFlgEstado, $vusuario, $estacionActualizacion);
+        SolicitudAcceso::aceptarDenegarSolicitud($iCodPreTramite, $nFlgEstado, $vusuario, $estacionActualizacion, '%');
 
         return redirect()->route('Pendiente')->with('success', 'Solicitud denegada correctamente');
     }
