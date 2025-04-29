@@ -172,7 +172,7 @@
         <div class="card-footer" style="border-top: 1px solid rgba(255, 255, 255, 0.3);background: rgba(0, 0, 0, 0.15);">
             <!--begin::Progress-->
             <div class="fw-bold text-white py-2" style="text-align: center;">
-                <a href="{{ route('pago_papeletas') }}" class="btn btn-sm btn-light-primary btn-active-primary" >
+                <a href="{{ route('Pagos') }}" class="btn btn-sm btn-light-primary btn-active-primary" >
                     <i class="ki-duotone ki-plus fs-2"></i>Ir a Pago de Papeletas</a>
                 <span class="opacity-50"></span>
             </div>
