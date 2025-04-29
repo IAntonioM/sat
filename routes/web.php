@@ -9,6 +9,7 @@ use App\Http\Controllers\Home\DeudaConsolidadaController;
 use App\Http\Controllers\Home\DetalladoController;
 use App\Http\Controllers\Home\HlaController;
 use App\Http\Controllers\Home\HRController;
+use App\Http\Controllers\Home\PagoController;
 use App\Http\Controllers\Home\ReporteController;
 use App\Http\Controllers\Home\PUController;
 use App\Http\Controllers\Home\PRController;
@@ -87,6 +88,8 @@ Route::middleware(['check.login', 'force.password.change', 'user.access'])->grou
     Route::get('/record_papeleta', [RecordPapeletaController::class, 'index'])->name('record_papeleta');
     Route::get('/perfil', [PerfilController::class, 'index'])->name('perfil');
     Route::get('/perfil-select/{codigo}', [PerfilController::class, 'select'])->name('SeleccionarPerfil');
+
+    Route::get('/Pagos',[PagoController::class, 'index'])->name('Pagos');
 });
 
 // lo peude ver vestado 002 y 003
