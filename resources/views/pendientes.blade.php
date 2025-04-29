@@ -130,7 +130,7 @@
                                                     value="{{ $solicitud->iCodPreTramite }}">
                                                 <input type="hidden" name="nFlgEstado" value="1">
                                                 <button type="submit" class="btn btn-success btn-circle me-2"
-                                                    {{ $solicitud->nFlgEstado == 1 ? 'disabled' : '' }}>
+                                                    {{ $solicitud->nFlgEstado == 1 || $solicitud->nFlgEstado == 0 ? 'disabled' : '' }}>
                                                     <i class="fa-solid fa-check fs-3"></i>
                                                 </button>
                                             </form>
@@ -141,7 +141,7 @@
                                                     value="{{ $solicitud->iCodPreTramite }}">
                                                 <input type="hidden" name="nFlgEstado" value="0">
                                                 <button type="submit" class="btn btn-danger btn-circle me-2"
-                                                {{ $solicitud->nFlgEstado == 1 ? 'disabled' : '' }}>
+                                                {{ $solicitud->nFlgEstado == 1 || $solicitud->nFlgEstado == 0 ? 'disabled' : '' }}>
                                                     <i class="fa-solid fa-xmark fs-3"></i>
                                                 </button>
                                             </form>
