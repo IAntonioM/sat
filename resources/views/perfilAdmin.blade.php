@@ -81,41 +81,24 @@
                 <!--end::Col-->
             </div>
             <div class="separator separator-dashed my-6"></div>
-            <div class="row mb-7">
-                <!--begin::Label-->
-                <label class="col-lg-4 fw-semibold text-muted">Telefóno</label>
-                <!--end::Label-->
-                <!--begin::Col-->
-                <div class="col-lg-8 fv-row">
-                    <span class="fw-semibold text-gray-800 fs-6">{{ $usuario->vtel ?? 'Sin telefono' }}</span>
-                </div>
-                <!--end::Col-->
-            </div>
-            <div class="separator separator-dashed my-6"></div>
-            <div class="row mb-7">
-                <!--begin::Label-->
-                <label class="col-lg-4 fw-semibold text-muted">Celular</label>
-                <!--end::Label-->
-                <!--begin::Col-->
-                <div class="col-lg-8 fv-row">
-                    <span class="fw-semibold text-gray-800 fs-6">{{ $usuario->vcel ?? 'Sin Celular' }}</span>
-                </div>
-                <!--end::Col-->
-            </div>
-            <div class="separator separator-dashed my-6"></div>
-            <!--end::Input group-->
-            <!--begin::Input group-->
-            <div class="row mb-7">
-                <!--begin::Label-->
-                <label class="col-lg-4 fw-semibold text-muted">Email</label>
-                <!--end::Label-->
-                <!--begin::Col-->
-                <div class="col-lg-8 d-flex align-items-center">
-                    <span class="fw-bold fs-6 text-gray-800 me-2">{{ $usuario->vcorreo ?? 'Sin Correo' }}</span>
 
+            <!-- Contacto en una sola línea -->
+            <div class="row mb-7">
+                <!--begin::Label-->
+                <label class="col-lg-4 fw-semibold text-muted">Contacto</label>
+                <!--end::Label-->
+                <!--begin::Col-->
+                <div class="col-lg-8 fv-row">
+                    <span class="fw-semibold text-gray-800 fs-6">
+                        @if($usuario->vtel) <i class="fa-solid fa-phone me-1"></i>{{ $usuario->vtel }} @endif
+                        @if($usuario->vcel) <i class="fa-solid fa-mobile-alt mx-1"></i>{{ $usuario->vcel }} @endif
+                        @if($usuario->vcorreo) <i class="fa-solid fa-envelope mx-1"></i>{{ $usuario->vcorreo }} @endif
+                        @if(!$usuario->vtel && !$usuario->vcel && !$usuario->vcorreo) Sin información de contacto @endif
+                    </span>
                 </div>
                 <!--end::Col-->
             </div>
+            <div class="separator separator-dashed my-6"></div>
 
         </div>
         <!--end::Card body-->
