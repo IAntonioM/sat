@@ -99,7 +99,8 @@
                 <!--begin::Card toolbar-->
                 <div class="card-toolbar flex-row-fluid justify-content-end gap-5">
                     <!--begin::Add product-->
-                    <a href="{{ route('reporte', ['tipo' => 'reportePagos', 'codigo_contribuyente' => session('codigo_contribuyente'), 'anio' => $anioSeleccionado, 'tipo_tributo' => $tipoTributo]) }}" class="btn btn-primary" target="_blank">
+                    <a href="{{ route('reporte', ['tipo' => 'PagosReport']) }}"
+                        class="btn btn-primary" target="_blank">
                         <i class="fa-solid fa-print"></i> Imprimir
                     </a>
                     <!--end::Add product-->
@@ -144,7 +145,7 @@
                             @foreach ($pagosPorAnio as $pago)
                                 <tr style="text-align: center; font-size:12px">
                                     <td>
-                                        <div class="badge {{ !is_null($pago->tipo) && strpos($pago->tipo, '02.') !== false ? 'badge-light-success' : 'badge-light-danger' }}"
+                                        <div class="badge {{ isset($pago->tipo) && strpos($pago->tipo, '02.') !== false ? 'badge-light-success' : 'badge-light-danger' }}"
                                             style="font-size:12px">
                                             {{ $pago->mtipo ?? 'Sin tipo' }}
                                         </div>

@@ -10,6 +10,7 @@ use App\Reports\PendientesReport;
 use App\Reports\UsuariosAdminReport;
 use App\Reports\ConsolidadoReport;
 use App\Reports\DetalladoReport;
+use App\Reports\PagosReport;
 use App\Reports\PRReport;
 use Illuminate\Http\Request;
 
@@ -70,6 +71,13 @@ class ReporteController extends Controller
                 $report = new PRReport($vcodcontr, $idanexo);
                 return $report->generarPDF();
                 break;
+
+                case 'PagosReport':
+                    $vcodcontr = $request->input('vcodcontr');
+                    $idanexo = $request->input('idanexo');
+                    $report = new PagosReport($vcodcontr, $idanexo);
+                    return $report->generarPDF();
+                    break;
 
             default:
                 return redirect()->back()->with('error', 'Tipo de reporte no válido');

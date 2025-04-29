@@ -15,9 +15,9 @@ class PagosModel extends Model
         return DB::select(
             "EXEC pxConsultasWeb2
                 @msquery = ?,
-                @vcodcontr = '?',
-                @paramt2 = '?',
-                @paramt3 = '?'",
+                @vcodcontr = ?,
+                @paramt2 = ?,
+                @paramt3 = ?",
             [21, $vcodcontr, $anio, $tipotributo]
         );
     }
