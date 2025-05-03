@@ -163,7 +163,7 @@ class PagosReport extends FPDF
                     $this->Cell(25, 7, 'Imp. Insoluto', 1, 0, 'C', true);
                     $this->Cell(20, 7, 'Reajuste', 1, 0, 'C', true);
                     $this->Cell(20, 7, 'Mora', 1, 0, 'C', true);
-                    $this->Cell(20, 7, 'Emisión', 1, 0, 'C', true);
+                    $this->Cell(20, 7, utf8_decode('Emisión'), 1, 0, 'C', true);
                     $this->Cell(20, 7, 'Total', 1, 0, 'C', true);
                     $this->Cell(25, 7, 'Fecha Pago', 1, 1, 'C', true);
                     $this->SetFont('Arial', '', 8);
