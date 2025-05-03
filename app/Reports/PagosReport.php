@@ -52,7 +52,7 @@ class PagosReport extends FPDF
         $this->Ln(2);
 
         $this->SetFont('Arial', '', 10);
-        $this->Cell(40, 7, 'Código:', 0, 0, 'L');
+        $this->Cell(40, 7, utf8_decode('Código:'), 0, 0, 'L');
         $this->Cell(60, 7, $this->vcodcontr, 0, 0, 'L');
         $this->Cell(40, 7, 'Fecha:', 0, 0, 'L');
         $this->Cell(50, 7, $this->fechaActual, 0, 1, 'L');
@@ -63,10 +63,10 @@ class PagosReport extends FPDF
 
             $this->Cell(40, 7, 'DNI/RUC:', 0, 0, 'L');
             $this->Cell(60, 7, $this->usuario->dni_ruc ?? 'N/A', 0, 0, 'L');
-            $this->Cell(40, 7, 'Teléfono:', 0, 0, 'L');
+            $this->Cell(40, 7, utf8_decode('Teléfono:'), 0, 0, 'L');
             $this->Cell(50, 7, $this->usuario->telefono ?? 'N/A', 0, 1, 'L');
 
-            $this->Cell(40, 7, 'Dirección:', 0, 0, 'L');
+            $this->Cell(40, 7, utf8_decode('Dirección:'), 0, 0, 'L');
             $this->Cell(150, 7, $this->usuario->direccion ?? 'N/A', 0, 1, 'L');
         }
 
@@ -85,7 +85,7 @@ class PagosReport extends FPDF
         // Arial italic 8
         $this->SetFont('Arial', 'I', 8);
         // Número de página
-        $this->Cell(0, 10, 'Página ' . $this->PageNo() . '/{nb}', 0, 0, 'C');
+        $this->Cell(0, 10, utf8_decode('Página ') . $this->PageNo() . '/{nb}', 0, 0, 'C');
     }
 
     // Tabla de pagos
@@ -117,8 +117,8 @@ class PagosReport extends FPDF
         $this->SetFont('Arial', 'B', 10);
         $this->Cell(0, 7, 'FILTROS APLICADOS', 0, 1, 'L');
         $this->SetFont('Arial', '', 10);
-        $this->Cell(30, 7, 'Año:', 0, 0, 'L');
-        $this->Cell(60, 7, ($this->anio == '%') ? 'Todos los años' : $this->anio, 0, 1, 'L');
+        $this->Cell(30, 7, utf8_decode('Año:'), 0, 0, 'L');
+        $this->Cell(60, 7, ($this->anio == '%') ? utf8_decode('Todos los años') : $this->anio, 0, 1, 'L');
         $this->Cell(30, 7, 'Tributo:', 0, 0, 'L');
         $this->Cell(60, 7, ($this->tipoTributo == '%') ? 'Todos los tributos' : $this->tipoTributo, 0, 1, 'L');
         $this->Ln(5);
@@ -134,17 +134,17 @@ class PagosReport extends FPDF
             // Título del año
             $this->SetFillColor(241, 250, 255);
             $this->SetFont('Arial', 'B', 10);
-            $this->Cell(0, 7, 'AÑO: ' . $anio, 1, 1, 'L', true);
+            $this->Cell(0, 7, utf8_decode('AÑO: ') . $anio, 1, 1, 'L', true);
 
             // Cabecera de la tabla
             $this->SetFillColor(248, 248, 249);
             $this->SetFont('Arial', 'B', 9);
             $this->Cell(45, 7, 'Tributo', 1, 0, 'C', true);
-            $this->Cell(15, 7, 'Año', 1, 0, 'C', true);
+            $this->Cell(15, 7, utf8_decode('Año'), 1, 0, 'C', true);
             $this->Cell(25, 7, 'Imp. Insoluto', 1, 0, 'C', true);
             $this->Cell(20, 7, 'Reajuste', 1, 0, 'C', true);
             $this->Cell(20, 7, 'Mora', 1, 0, 'C', true);
-            $this->Cell(20, 7, 'Emisión', 1, 0, 'C', true);
+            $this->Cell(20, 7, utf8_decode('Emisión'), 1, 0, 'C', true);
             $this->Cell(20, 7, 'Total', 1, 0, 'C', true);
             $this->Cell(25, 7, 'Fecha Pago', 1, 1, 'C', true);
 
@@ -159,7 +159,7 @@ class PagosReport extends FPDF
                     $this->SetFillColor(248, 248, 249);
                     $this->SetFont('Arial', 'B', 9);
                     $this->Cell(45, 7, 'Tributo', 1, 0, 'C', true);
-                    $this->Cell(15, 7, 'Año', 1, 0, 'C', true);
+                    $this->Cell(15, 7, utf8_decode('Año'), 1, 0, 'C', true);
                     $this->Cell(25, 7, 'Imp. Insoluto', 1, 0, 'C', true);
                     $this->Cell(20, 7, 'Reajuste', 1, 0, 'C', true);
                     $this->Cell(20, 7, 'Mora', 1, 0, 'C', true);
@@ -185,7 +185,7 @@ class PagosReport extends FPDF
 
             // Fila de total por año
             $this->SetFillColor(241, 241, 242);
-            $this->Cell(145, 7, 'TOTAL DEL AÑO ' . $anio, 1, 0, 'R', true);
+            $this->Cell(145, 7, utf8_decode('TOTAL DEL AÑO ') . $anio, 1, 0, 'R', true);
             $this->SetFont('Arial', 'B', 9);
             $this->Cell(45, 7, 'S/. ' . number_format($totalesPorAnio[$anio], 2), 1, 1, 'R');
 
