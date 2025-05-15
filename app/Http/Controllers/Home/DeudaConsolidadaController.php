@@ -64,7 +64,15 @@ class DeudaConsolidadaController extends Controller
         $tiposTributo = DeudaConsolidada::obtenerTiposTributo($codigoContribuyente);
         $fechaActual = Carbon::now()->format('d/m/Y');
 
-        Debugbar::info($contribuyente);
+        Debugbar::info('contribuyente',$contribuyente);
+        Debugbar::info('totalDeuda',$totalDeuda);
+        Debugbar::info('deudas',$deudas);
+        Debugbar::info('aniosDisponibles',$aniosDisponibles);
+        Debugbar::info('tiposTributo',$tiposTributo);
+        Debugbar::info('anioSeleccionado',$anioSeleccionado);
+        Debugbar::info('tipoTributo',$tipoTributo);
+        Debugbar::info('fechaActual',$fechaActual);
+        Debugbar::info('usuario',$usuario);
 
         return view('consolidado', compact(
             'contribuyente',
@@ -85,12 +93,52 @@ class DeudaConsolidadaController extends Controller
      * @param DeudaConsolidadaRequest $request
      * @return \Illuminate\Http\JsonResponse
      */
-    public function pagar(DeudaConsolidadaRequest $request)
+    public function filtrar(DeudaConsolidadaRequest $request)
     {
-        $codigoConsolidado = $request->tipo_tributo;
-        $tipoConsolidado = $request->tipo_tributo;
-        $anoConsolidado = $request->tipo_tributo;
-        DeudaConsolidada::pagarConsolidado($codigoConsolidado, $tipoConsolidado, $anoConsolidado);
-        return view('consolidado');
+        // Este método se mantiene como está, ya implementado en el index
+        return $this->index($request);
+    }
+
+    /**
+     * Procesa el pago de las deudas seleccionadas
+     *
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function pagar(Request $request)
+    {
+        $results = [];
+
+        if ($request->has('items')) {
+            foreach ($request->items as $item) {
+                // Cada item debe contener codigo|tipo|año
+                $parts = explode('|', $item);
+                if (count($parts) === 3) {
+                    $codigoContribuyente = $parts[0];
+                    $tipoConsolidado = $parts[1];
+                    $anoConsolidado = $parts[2];
+
+                    // Llamar al método para pagar
+                    $result = DeudaConsolidada::pagarConsolidado(
+                        $codigoContribuyente,
+                        $tipoConsolidado,
+                        $anoConsolidado
+                    );
+
+                    $results[] = [
+                        'codigo' => $codigoContribuyente,
+                        'tipo' => $tipoConsolidado,
+                        'ano' => $anoConsolidado,
+                        'result' => $result
+                    ];
+                }
+            }
+        }
+
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Pagos procesados correctamente',
+            'results' => $results
+        ]);
     }
 }

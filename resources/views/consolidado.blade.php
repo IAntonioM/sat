@@ -6,13 +6,14 @@
             <div class="d-flex flex-wrap flex-sm-nowrap mb-6">
                 <!--begin::Image-->
                 <!--<div class="d-flex flex-center flex-shrink-0 bg-light rounded w-100px h-100px w-lg-150px h-lg-150px me-7 mb-4">
-                                    <img class="mw-50px mw-lg-75px" src="assets/media/svg/brand-logos/volicity-9.svg" alt="image" />
-                                </div>-->
+                                                <img class="mw-50px mw-lg-75px" src="assets/media/svg/brand-logos/volicity-9.svg" alt="image" />
+                                            </div>-->
                 <!--end::Image-->
                 <!--begin::Wrapper-->
                 <div class="flex-grow-1">
                     <!--begin::Head-->
                     <div class="d-flex justify-content-between align-items-start flex-wrap mb-2">
+                        <meta name="csrf-token" content="{{ csrf_token() }}">
                         <!--begin::Details-->
                         <div class="d-flex flex-column">
                             <!--begin::Status-->
@@ -74,7 +75,8 @@
                                     <select class="form-select form-select-solid" name="anio" id="anio_select"
                                         data-control="select2" data-hide-search="true" data-placeholder="Seleccione el Año">
                                         <option></option>
-                                        <option value="%" {{ $anioSeleccionado == '%' ? 'selected' : '' }}>Todos los años
+                                        <option value="%" {{ $anioSeleccionado == '%' ? 'selected' : '' }}>Todos los
+                                            años
                                         </option>
                                         @foreach ($aniosDisponibles as $anio)
                                             <option value="{{ $anio }}"
@@ -91,7 +93,8 @@
                                         id="tipo_tributo_select" data-control="select2" data-hide-search="true"
                                         data-placeholder="Seleccione el Tributo">
                                         <option></option>
-                                        <option value="%" {{ $tipoTributo == '%' ? 'selected' : '' }}>Todos los tributos
+                                        <option value="%" {{ $tipoTributo == '%' ? 'selected' : '' }}>Todos los
+                                            tributos
                                         </option>
                                         @foreach ($tiposTributo as $tributo)
                                             <option value="{{ $tributo->tipo }}"
@@ -117,7 +120,8 @@
                         <!--begin::Add product-->
                         <a href="{{ route('reporte', ['tipo' => 'reporteConsolidado', 'codigo_contribuyente' => session('codigo_contribuyente'), 'anio' => $anioSeleccionado, 'tipo_tributo' => $tipoTributo]) }}"
                             class="btn btn-primary" target="_blank"><i class="fa-solid fa-print"></i> Imprimir</a>
-                        <a href="" class="btn btn-success"><i class="fa-solid fa-money-bill-1-wave"></i>Pagar</a>
+                        <button id="btnPagar" class="btn btn-success"><i
+                                class="fa-solid fa-money-bill-1-wave"></i>Pagar</button>
                         <!--end::Add product-->
                     </div>
                     <!--end::Card toolbar-->
@@ -178,7 +182,9 @@
                                         <td class="text-end">
                                             <div class="form-check form-check-sm form-check-custom form-check-solid">
                                                 <input class="form-check-input checkbox-recibo" type="checkbox"
-                                                    value="{{ $deuda->idrecibo }}" data-id="{{ $deuda->idrecibo }}" />
+                                                    value="{{ session('codigo_contribuyente') }}|{{ $deuda->tipo }}|{{ $deuda->año }}"
+                                                    data-tipo="{{ $deuda->tipo }}" data-anio="{{ $deuda->año }}"
+                                                    data-total="{{ $deuda->total }}" />
                                             </div>
                                         </td>
                                     </tr>
