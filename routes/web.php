@@ -90,6 +90,8 @@ Route::middleware(['check.login', 'force.password.change', 'user.access'])->grou
     Route::get('/perfil-select/{codigo}', [PerfilController::class, 'select'])->name('SeleccionarPerfil');
 
     Route::get('/Pagos', [PagoController::class, 'index'])->name('Pagos');
+    // Esta ruta ya debería existir pero verifica que sea así
+    Route::post('/consolidado/pagar', [DeudaConsolidadaController::class, 'pagar'])->name('consolidado.pagar');
 });
 
 // lo peude ver vestado 002 y 003
