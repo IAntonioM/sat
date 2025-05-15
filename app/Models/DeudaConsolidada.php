@@ -72,4 +72,15 @@ class DeudaConsolidada extends Model
         $result = DB::select('SELECT DISTINCT tipo,mtipo FROM CONSOLIDADO WHERE codigo = ?', [$codigoContribuyente]);
         return $result;
     }
+
+    /**
+     * Obtiene los tipos de tributos disponibles
+     *
+     * @return array
+     */
+    public static function pagarConsolidado($codigoConsolidado, $tipoConsolidado, $anoConsolidado)
+    {
+        $result = DB::statement('EXEC pxConsultasWeb2 @msquery = 30 , @Codigo = ?, @Tipo = ?, @Ano = ?', [$codigoConsolidado, $tipoConsolidado, $anoConsolidado]);
+        return $result;
+    }
 }
