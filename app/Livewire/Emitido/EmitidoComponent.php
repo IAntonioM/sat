@@ -12,7 +12,7 @@ class EmitidoComponent extends Component
     public $documentos = [];
     public $padre = null;
     public $hijos = [];
-    public $correlativo = '';
+    public $nu_emi = '';
     public $anio = null;
     public $visible = false;
     protected EmitidoService $service;
@@ -23,16 +23,16 @@ class EmitidoComponent extends Component
     }
 
     #[On('documentoSeleccionado')]
-    public function cargarDocumento($correlativo)
+    public function cargarDocumento($nu_emi)
     {
         $this->visible = true;
-        $this->correlativo = $correlativo;
+        $this->nu_emi = $nu_emi;
         $this->buscarDocumento();
     }
 
     public function buscarDocumento()
     {
-        if (!$this->correlativo) {
+        if (!$this->nu_emi) {
             $this->documentos = [];
             $this->padre = null;
             $this->hijos = [];
@@ -40,16 +40,16 @@ class EmitidoComponent extends Component
         }
 
         $resultado = $this->service->buscar([
-            'correlativo' => $this->correlativo,
+            'nu_emi' => $this->nu_emi,
             'anio' => $this->anio ?? date('Y'),
         ]);
 
         $this->documentos = $resultado ?? [];
 
         // Separar padre e hijos
-        $this->padre = collect($this->documentos)->firstWhere('correlativo', $this->correlativo);
+        $this->padre = collect($this->documentos)->firstWhere('nu_emi', $this->nu_emi);
         $this->hijos = collect($this->documentos)
-            ->where('padre_correlativo', $this->correlativo)
+            ->where('nu_emi_padre', $this->nu_emi)
             ->values();
     }
 

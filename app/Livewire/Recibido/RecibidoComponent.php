@@ -38,10 +38,10 @@ class RecibidoComponent extends Component
         $this->buscarDocumentos();
     }
 
-    //Selcionar un documento para pasar el correlativo y mostrar la vista
-    public function seleccionarDocumento($correlativo)
+    //Selcionar un documento para pasar el correlativo y mostrar la
+    public function seleccionarDocumento($nu_emi)
     {
-        $this->dispatch('documentoSeleccionado', correlativo: $correlativo);
+        $this->dispatch('documentoSeleccionado', nu_emi: $nu_emi);
     }
 
 

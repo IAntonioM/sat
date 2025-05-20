@@ -15,7 +15,7 @@ class Recibido extends Model
     public static function executeProcedure(array $params)
     {
         $sql = "EXEC sp_recibido
-        @accion = ?, @correlativo = ?, @anio = ?, @emitido_correlativo = ?,
+        @accion = ?, @nu_emi = ?, @nu_cor = ?, @anio = ?, @emitido_correlativo = ?,
         @estado_recepcion_id = ?, @fecha_recepcion = ?,
         @flag_favorito = ?, @flag_marcador = ?, @flag_archivado = ?,
         @fecha_inicio = ?, @fecha_fin = ?, @usuario_creacion = ?,
@@ -24,7 +24,8 @@ class Recibido extends Model
 
         return DB::select($sql, [
             $params['accion'] ?? null,
-            $params['correlativo'] ?? null,
+            $params['nu_emi'] ?? null,
+            $params['nu_cor'] ?? null,
             $params['anio'] ?? null,
             $params['emitido_correlativo'] ?? null,
             $params['estado_recepcion_id'] ?? null,

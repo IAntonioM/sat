@@ -32,13 +32,13 @@
                             <td class="ps-4">
                                 <div class="form-check form-check-sm form-check-custom form-check-solid mt-3">
                                     <input class="form-check-input" type="checkbox"
-                                        value="{{ $documento->correlativo ?? '' }}" />
+                                        value="{{ $documento->nu_cor ?? '' }}" />
                                 </div>
                             </td>
                             <td>
                                 <div class="text-dark gap-1 pt-2">
                                     <a href="#"
-                                        wire:click.prevent="seleccionarDocumento('{{ $documento->correlativo }}')"
+                                        wire:click.prevent="seleccionarDocumento('{{ $documento->nu_emi }}')"
                                         class="text-primary {{ $documento->estado_recepcion_id == 0 ? 'fw-bolder' : '' }}"
                                         style="padding: 0 10px 0 0 ">
                                         <span class="fw-bold">{{ $documento->asunto ?? 'Sin asunto' }}</span>
