@@ -17,6 +17,7 @@ use App\Http\Controllers\Home\UsuariosAdminController;
 use App\Http\Controllers\Home\PendientesController;
 use App\Http\Controllers\Home\PerfilController;
 use App\Http\Controllers\Home\RecordPapeletaController;
+use App\Http\Controllers\Casilla\CasillaController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Storage;
 
@@ -111,6 +112,9 @@ Route::middleware(['check.login', 'force.password.change', 'moderator.access'])-
         }
         abort(404);
     })->where('path', '.*')->name('ver.archivo');
+
+
+    Route::get('/casilla', [CasillaController::class, 'index'])->name('casilla');
 });
 
 // Rutas exclusivas para administradores (vestado 003)
