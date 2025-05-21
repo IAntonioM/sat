@@ -57,7 +57,7 @@ class RecibidoComponent extends Component
             'registros_por_pagina' => 10,
             'anio' => (int)$anioActual,
             'tipo_documento_emitido_id' => 1,
-            'receptor_id' => $usuario->cidusu,
+            'receptor_id' => $usuario->vcodcontr,
             'asunto' => $this->search ?: null,  // si search vacío, enviar null
         ]);
 

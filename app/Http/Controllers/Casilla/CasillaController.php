@@ -22,4 +22,17 @@ class CasillaController extends Controller
 
         return view('casilla', compact('usuario'));
     }
+
+        public function store()
+    {
+        $codigo_contribuyente = Session::get('codigo_contribuyente');
+
+        // Obtener datos del contribuyente
+        $usuario = Contribuyente::obtenerDatosContri($codigo_contribuyente);
+
+        Debugbar::info('📄 Datos contribuyente:', $usuario);
+
+
+        return view('casillaNuevo', compact('usuario'));
+    }
 }

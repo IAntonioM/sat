@@ -62,4 +62,11 @@ class EmitidoComponent extends Component
             'hijos' => $this->hijos
         ]);
     }
+
+    #[On('messageSent')]
+    public function actualizarChats()
+    {
+        $this->buscarDocumento();
+    }
+
 }

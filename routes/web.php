@@ -115,6 +115,7 @@ Route::middleware(['check.login', 'force.password.change', 'moderator.access'])-
 
 
     Route::get('/casilla', [CasillaController::class, 'index'])->name('casilla');
+    Route::get('/casilla-nuevo', [CasillaController::class, 'store'])->name('createCasilla');
 });
 
 // Rutas exclusivas para administradores (vestado 003)

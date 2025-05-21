@@ -97,4 +97,15 @@ class Usuario extends Authenticatable
             ->where('vestado', '<>', '004')
             ->exists();
     }
+
+    public static function executeProcedure(array $params)
+    {
+        $sql = "EXEC sp_musuario
+            @accion = ?, @term = ?";
+
+        return DB::select($sql, [
+            $params['accion'] ?? null,
+            $params['term'] ?? null,
+        ]);
+    }
 }

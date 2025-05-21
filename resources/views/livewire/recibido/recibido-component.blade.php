@@ -28,7 +28,8 @@
                 </thead>
                 <tbody>
                     @forelse ($documentos as $documento)
-                        <tr class="{{ $documento->estado_recepcion_id == 0 ? 'bg-light-warning' : '' }}">
+                        {{-- <tr class="{{ $documento->estado_recepcion_id == 0 ? 'bg-light-warning' : '' }}"> --}}
+                        <tr >
                             <td class="ps-4">
                                 <div class="form-check form-check-sm form-check-custom form-check-solid mt-3">
                                     <input class="form-check-input" type="checkbox"

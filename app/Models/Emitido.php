@@ -18,7 +18,7 @@ public static function executeProcedure(array $params)
         @accion = ?, @nu_emi = ?, @anio = ?, @asunto = ?, @contenido = ?,
         @emisor_id = ?, @receptor_id = ?, @tipo_documento_emitido_id = ?, @estado_emitido_id = ?,
         @fecha_emision = ?, @usuario_creacion = ?, @nu_emi_padre = ?,
-        @fecha_inicio = ?, @fecha_fin = ?, @pagina = ?, @registros_por_pagina = ?";
+        @fecha_inicio = ?, @fecha_fin = ?, @pagina = ?, @registros_por_pagina = ?, @nu_cor = ?";
 
     return DB::select($sql, [
         $params['accion'] ?? null,
@@ -37,6 +37,7 @@ public static function executeProcedure(array $params)
         $params['fecha_fin'] ?? null,
         $params['pagina'] ?? 1,
         $params['registros_por_pagina'] ?? 10,
+        $params['nu_cor'] ?? 1,
     ]);
 }
 

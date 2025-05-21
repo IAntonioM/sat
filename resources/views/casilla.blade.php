@@ -1,69 +1,73 @@
 @extends('layouts.cabecera')
 @section('content')
-<style>
-.table > :not(caption) > * > * {
-    padding: 0.75rem 0.2rem;
-}</style>
+    <style>
+        .table> :not(caption)>*>* {
+            padding: 0.75rem 0.2rem;
+        }
+    </style>
 
 
-<div class="card " style="background-image: url(assets/media/logos/fondo1.jpg);background-position: center center;">
-    <div class="card-body pt-9 pb-0">
-        <!--begin::Details-->
-        <div class="d-flex flex-wrap flex-sm-nowrap mb-6">
-            <!--begin::Image-->
-            <!--<div class="d-flex flex-center flex-shrink-0 bg-light rounded w-100px h-100px w-lg-150px h-lg-150px me-7 mb-4">
-                <img class="mw-50px mw-lg-75px" src="assets/media/svg/brand-logos/volicity-9.svg" alt="image" />
-            </div>-->
-            <!--end::Image-->
-            <!--begin::Wrapper-->
-            <div class="flex-grow-1">
-                <!--begin::Head-->
-                <div class="d-flex justify-content-between align-items-start flex-wrap mb-2">
-                    <!--begin::Details-->
-                    <div class="d-flex flex-column">
-                        <!--begin::Status-->
-                        <div class="d-flex align-items-center mb-1">
-                            <span class="text-gray-800 text-primary fs-1 fw-bold me-3">Casilla Electrónica</span>
-                            <!--<span class="badge badge-light-success me-auto">In Progress</span>-->
-                        </div>
-                        <!--end::Status-->
-                        <!--begin::Description-->
-                        <div class="d-flex flex-wrap fw-semibold mb-4 fs-5 text-gray-400">Actualizado al    15/04/2025</div>
-                        <!--end::Description-->
-                    </div>
-                    <!--
-                    <div class="d-flex mb-4">
-                        <div class="border border-gray-300 border-dashed rounded min-w-125px py-3 px-4 me-6 mb-3 badge-light-primary">
-                            <div class="fw-semibold fs-6 text-gray-400">Su Deuda Actual es:</div>
-                            <div class="d-flex align-items-center">
-                                <div class=" fw-bold" data-kt-countup="true" data-kt-countup-value="15000" data-kt-countup-prefix="S/." style="font-size:30px">0</div>
+    <div class="card " style="background-image: url(assets/media/logos/fondo1.jpg);background-position: center center;">
+        <div class="card-body pt-9 pb-0">
+            <!--begin::Details-->
+            <div class="d-flex flex-wrap flex-sm-nowrap mb-6">
+                <!--begin::Image-->
+                <!--<div class="d-flex flex-center flex-shrink-0 bg-light rounded w-100px h-100px w-lg-150px h-lg-150px me-7 mb-4">
+                        <img class="mw-50px mw-lg-75px" src="assets/media/svg/brand-logos/volicity-9.svg" alt="image" />
+                    </div>-->
+                <!--end::Image-->
+                <!--begin::Wrapper-->
+                <div class="flex-grow-1">
+                    <!--begin::Head-->
+                    <div class="d-flex justify-content-between align-items-start flex-wrap mb-2">
+                        <!--begin::Details-->
+                        <div class="d-flex flex-column">
+                            <!--begin::Status-->
+                            <div class="d-flex align-items-center mb-1">
+                                <span class="text-gray-800 text-primary fs-1 fw-bold me-3">Casilla Electrónica</span>
+                                <!--<span class="badge badge-light-success me-auto">In Progress</span>-->
                             </div>
+                            <!--end::Status-->
+                            <!--begin::Description-->
+                            <div class="d-flex flex-wrap fw-semibold mb-4 fs-5 text-gray-400">
+                                Actualizado al {{ \Carbon\Carbon::now()->format('d/m/Y') }}</div>
+                            <!--end::Description-->
                         </div>
-                    </div>
-                    -->
-                </div>
-                <!--end::Head-->
 
+                        <!--
+                            <div class="d-flex mb-4">
+                                <div class="border border-gray-300 border-dashed rounded min-w-125px py-3 px-4 me-6 mb-3 badge-light-primary">
+                                    <div class="fw-semibold fs-6 text-gray-400">Su Deuda Actual es:</div>
+                                    <div class="d-flex align-items-center">
+                                        <div class=" fw-bold" data-kt-countup="true" data-kt-countup-value="15000" data-kt-countup-prefix="S/." style="font-size:30px">0</div>
+                                    </div>
+                                </div>
+                            </div>
+                            -->
+                    </div>
+                    <!--end::Head-->
+
+                </div>
             </div>
         </div>
     </div>
-</div>
-<div id="kt_content_container" class="d-flex flex-column-fluid align-items-start " style="padding-right: calc(0px * .5); padding-left: calc(0px * .5);">
-    <!--begin::Post-->
-    <div class="content flex-row-fluid" id="kt_content">
-        <!--begin::Products-->
-        <div class="card card-flush">
-            <!--begin::Card header-->
+    <div id="kt_content_container" class="d-flex flex-column-fluid align-items-start "
+        style="padding-right: calc(0px * .5); padding-left: calc(0px * .5);">
+        <!--begin::Post-->
+        <div class="content flex-row-fluid" id="kt_content">
+            <!--begin::Products-->
+            <div class="card card-flush">
+                <!--begin::Card header-->
 
-            <!--end::Card header-->
-            <!--begin::Card body-->
-            <div class="card-body pt-0">
-                <!--begin::Table-->
-                            <div class="d-flex flex-column flex-lg-row">
+                <!--end::Card header-->
+                <!--begin::Card body-->
+                <div class="card-body pt-0">
+                    <!--begin::Table-->
+                    <div class="d-flex flex-column flex-lg-row">
 
-                                <livewire:menu-casilla.menu-casilla-component />
-                                <livewire:recibido.recibido-component />
-                                {{-- <div class=" col-xl-3 row" style="margin: 0 1rem; border-left: 1px solid #f1f1f2;">
+                        <livewire:menu-casilla.menu-casilla-component />
+                        <livewire:recibido.recibido-component />
+                        {{-- <div class=" col-xl-3 row" style="margin: 0 1rem; border-left: 1px solid #f1f1f2;">
 									<!--begin::Card-->
 									<div class="card">
 										<div class="card-header align-items-center py-5 gap-2 gap-md-5" style="padding: 0 1rem;">
@@ -472,189 +476,211 @@
 									</div>
 									<!--end::Card-->
 								</div> --}}
-                                <div class=" col-xl-6" style="border-left: 1px solid #f1f1f2;">
-									<!--begin::Card-->
-									<div class="card">
-										<div class="card-header align-items-center py-5 gap-5">
-											<!--begin::Actions-->
-											<div class="d-flex">
-												<!--begin::Back-->
-												<a href="../../demo2/dist/apps/inbox/listing.html" class="btn btn-sm btn-icon btn-clear btn-active-light-primary me-3" data-bs-toggle="tooltip" data-bs-placement="top" title="Back">
-													<i class="ki-duotone ki-arrow-left fs-1 m-0">
-														<span class="path1"></span>
-														<span class="path2"></span>
-													</i>
-												</a>
-												<!--end::Back-->
-												<!--begin::Archive-->
-												<a href="#" class="btn btn-sm btn-icon btn-light btn-active-light-primary me-2" data-bs-toggle="tooltip" data-bs-placement="top" title="Archive">
-													<i class="ki-duotone ki-sms fs-2 m-0">
-														<span class="path1"></span>
-														<span class="path2"></span>
-													</i>
-												</a>
-												<!--end::Archive-->
-												<!--begin::Spam-->
-												<a href="#" class="btn btn-sm btn-icon btn-light btn-active-light-primary me-2" data-bs-toggle="tooltip" data-bs-placement="top" title="Spam">
-													<i class="ki-duotone ki-information fs-2 m-0">
-														<span class="path1"></span>
-														<span class="path2"></span>
-														<span class="path3"></span>
-													</i>
-												</a>
-												<!--end::Spam-->
-												<!--begin::Delete-->
-												<a href="#" class="btn btn-sm btn-icon btn-light btn-active-light-primary me-2" data-bs-toggle="tooltip" data-bs-placement="top" title="Delete">
-													<i class="ki-duotone ki-trash fs-2 m-0">
-														<span class="path1"></span>
-														<span class="path2"></span>
-														<span class="path3"></span>
-														<span class="path4"></span>
-														<span class="path5"></span>
-													</i>
-												</a>
-												<!--end::Delete-->
-												<!--begin::Mark as read-->
-												<a href="#" class="btn btn-sm btn-icon btn-light btn-active-light-primary me-2" data-bs-toggle="tooltip" data-bs-placement="top" title="Mark as read">
-													<i class="ki-duotone ki-copy fs-2 m-0"></i>
-												</a>
-												<!--end::Mark as read-->
-												<!--begin::Move-->
-												<a href="#" class="btn btn-sm btn-icon btn-light btn-active-light-primary" data-bs-toggle="tooltip" data-bs-placement="top" title="Move">
-													<i class="ki-duotone ki-entrance-left fs-2 m-0">
-														<span class="path1"></span>
-														<span class="path2"></span>
-													</i>
-												</a>
-												<!--end::Move-->
-											</div>
-											<!--end::Actions-->
-											<!--begin::Pagination-->
-											<div class="d-flex align-items-center">
-												<!--begin::Pages info-->
-												<span class="fw-semibold text-muted me-2">1 - 50 of 235</span>
-												<!--end::Pages info-->
-												<!--begin::Prev page-->
-												<a href="#" class="btn btn-sm btn-icon btn-light btn-active-light-primary me-3" data-bs-toggle="tooltip" data-bs-placement="top" title="Previous message">
-													<i class="ki-duotone ki-left fs-2 m-0"></i>
-												</a>
-												<!--end::Prev page-->
-												<!--begin::Next page-->
-												<a href="#" class="btn btn-sm btn-icon btn-light btn-active-light-primary me-2" data-bs-toggle="tooltip" data-bs-placement="top" title="Next message">
-													<i class="ki-duotone ki-right fs-2 m-0"></i>
-												</a>
-												<!--end::Next page-->
-												<!--begin::Settings menu-->
-												<div>
-													<a href="#" class="btn btn-sm btn-icon btn-light btn-active-light-primary me-2" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end" data-bs-toggle="tooltip" data-bs-placement="top" title="Settings">
-														<i class="ki-duotone ki-dots-square fs-2 m-0">
-															<span class="path1"></span>
-															<span class="path2"></span>
-															<span class="path3"></span>
-															<span class="path4"></span>
-														</i>
-													</a>
-													<!--begin::Menu-->
-													<div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary fw-semibold fs-7 w-250px py-4" data-kt-menu="true">
-														<!--begin::Menu item-->
-														<div class="menu-item px-3">
-															<a href="#" class="menu-link px-3">
-															<i class="ki-duotone ki-element-11 fs-3 me-3">
-																<span class="path1"></span>
-																<span class="path2"></span>
-																<span class="path3"></span>
-																<span class="path4"></span>
-															</i>New Group</a>
-														</div>
-														<!--end::Menu item-->
-														<!--begin::Menu item-->
-														<div class="menu-item px-3">
-															<a href="#" class="menu-link px-3">
-															<i class="ki-duotone ki-badge fs-3 me-3">
-																<span class="path1"></span>
-																<span class="path2"></span>
-																<span class="path3"></span>
-																<span class="path4"></span>
-																<span class="path5"></span>
-															</i>Contacts</a>
-														</div>
-														<!--end::Menu item-->
-														<!--begin::Menu item-->
-														<div class="menu-item px-3">
-															<a href="#" class="menu-link px-3">
-															<i class="ki-duotone ki-people fs-3 me-3">
-																<span class="path1"></span>
-																<span class="path2"></span>
-																<span class="path3"></span>
-																<span class="path4"></span>
-																<span class="path5"></span>
-															</i>Groups
-															<span class="badge badge-light-primary ms-auto">new</span></a>
-														</div>
-														<!--end::Menu item-->
-														<!--begin::Menu item-->
-														<div class="menu-item px-3">
-															<a href="#" class="menu-link px-3">
-															<i class="ki-duotone ki-element-2 fs-3 me-3">
-																<span class="path1"></span>
-																<span class="path2"></span>
-															</i>Calls</a>
-														</div>
-														<!--end::Menu item-->
-														<!--begin::Menu item-->
-														<div class="menu-item px-3">
-															<a href="#" class="menu-link px-3">
-															<i class="ki-duotone ki-setting-2 fs-3 me-3">
-																<span class="path1"></span>
-																<span class="path2"></span>
-															</i>Settings</a>
-														</div>
-														<!--end::Menu item-->
-														<div class="separator my-5"></div>
-														<!--begin::Menu item-->
-														<div class="menu-item px-3">
-															<a href="#" class="menu-link px-3">
-															<i class="ki-duotone ki-magnifier fs-3 me-3">
-																<span class="path1"></span>
-																<span class="path2"></span>
-															</i>Help</a>
-														</div>
-														<!--end::Menu item-->
-														<!--begin::Menu item-->
-														<div class="menu-item px-3">
-															<a href="#" class="menu-link px-3">
-															<i class="ki-duotone ki-shield-tick fs-3 me-3">
-																<span class="path1"></span>
-																<span class="path2"></span>
-															</i>Privacy
-															<span class="badge badge-light-danger ms-auto">5</span></a>
-														</div>
-														<!--end::Menu item-->
-													</div>
-													<!--end::Menu-->
-												</div>
-												<!--begin::Settings menu-->
-												<!--begin::Toggle-->
-												<a href="#" class="btn btn-sm btn-icon btn-color-primary btn-light btn-active-light-primary d-lg-none" data-bs-toggle="tooltip" data-bs-dismiss="click" data-bs-placement="top" title="Toggle inbox menu" id="kt_inbox_aside_toggle">
-													<i class="ki-duotone ki-burger-menu-2 fs-3 m-0">
-														<span class="path1"></span>
-														<span class="path2"></span>
-														<span class="path3"></span>
-														<span class="path4"></span>
-														<span class="path5"></span>
-														<span class="path6"></span>
-														<span class="path7"></span>
-														<span class="path8"></span>
-														<span class="path9"></span>
-														<span class="path10"></span>
-													</i>
-												</a>
-												<!--end::Toggle-->
-											</div>
-											<!--end::Pagination-->
-										</div>
-                                        <livewire:emitido.emitido-component />
-										{{-- <div class="card-body">
+                        <div class=" col-xl-6" style="border-left: 1px solid #f1f1f2;">
+                            <!--begin::Card-->
+                            <div class="card">
+                                <div class="card-header align-items-center py-5 gap-5">
+                                    <!--begin::Actions-->
+                                    <div class="d-flex">
+                                        <!--begin::Back-->
+                                        <a href="../../demo2/dist/apps/inbox/listing.html"
+                                            class="btn btn-sm btn-icon btn-clear btn-active-light-primary me-3"
+                                            data-bs-toggle="tooltip" data-bs-placement="top" title="Back">
+                                            <i class="ki-duotone ki-arrow-left fs-1 m-0">
+                                                <span class="path1"></span>
+                                                <span class="path2"></span>
+                                            </i>
+                                        </a>
+                                        <!--end::Back-->
+                                        <!--begin::Archive-->
+                                        <a href="#"
+                                            class="btn btn-sm btn-icon btn-light btn-active-light-primary me-2"
+                                            data-bs-toggle="tooltip" data-bs-placement="top" title="Archive">
+                                            <i class="ki-duotone ki-sms fs-2 m-0">
+                                                <span class="path1"></span>
+                                                <span class="path2"></span>
+                                            </i>
+                                        </a>
+                                        <!--end::Archive-->
+                                        <!--begin::Spam-->
+                                        <a href="#"
+                                            class="btn btn-sm btn-icon btn-light btn-active-light-primary me-2"
+                                            data-bs-toggle="tooltip" data-bs-placement="top" title="Spam">
+                                            <i class="ki-duotone ki-information fs-2 m-0">
+                                                <span class="path1"></span>
+                                                <span class="path2"></span>
+                                                <span class="path3"></span>
+                                            </i>
+                                        </a>
+                                        <!--end::Spam-->
+                                        <!--begin::Delete-->
+                                        <a href="#"
+                                            class="btn btn-sm btn-icon btn-light btn-active-light-primary me-2"
+                                            data-bs-toggle="tooltip" data-bs-placement="top" title="Delete">
+                                            <i class="ki-duotone ki-trash fs-2 m-0">
+                                                <span class="path1"></span>
+                                                <span class="path2"></span>
+                                                <span class="path3"></span>
+                                                <span class="path4"></span>
+                                                <span class="path5"></span>
+                                            </i>
+                                        </a>
+                                        <!--end::Delete-->
+                                        <!--begin::Mark as read-->
+                                        <a href="#"
+                                            class="btn btn-sm btn-icon btn-light btn-active-light-primary me-2"
+                                            data-bs-toggle="tooltip" data-bs-placement="top" title="Mark as read">
+                                            <i class="ki-duotone ki-copy fs-2 m-0"></i>
+                                        </a>
+                                        <!--end::Mark as read-->
+                                        <!--begin::Move-->
+                                        <a href="#" class="btn btn-sm btn-icon btn-light btn-active-light-primary"
+                                            data-bs-toggle="tooltip" data-bs-placement="top" title="Move">
+                                            <i class="ki-duotone ki-entrance-left fs-2 m-0">
+                                                <span class="path1"></span>
+                                                <span class="path2"></span>
+                                            </i>
+                                        </a>
+                                        <!--end::Move-->
+                                    </div>
+                                    <!--end::Actions-->
+                                    <!--begin::Pagination-->
+                                    <div class="d-flex align-items-center">
+                                        <!--begin::Pages info-->
+                                        <span class="fw-semibold text-muted me-2">1 - 50 of 235</span>
+                                        <!--end::Pages info-->
+                                        <!--begin::Prev page-->
+                                        <a href="#"
+                                            class="btn btn-sm btn-icon btn-light btn-active-light-primary me-3"
+                                            data-bs-toggle="tooltip" data-bs-placement="top" title="Previous message">
+                                            <i class="ki-duotone ki-left fs-2 m-0"></i>
+                                        </a>
+                                        <!--end::Prev page-->
+                                        <!--begin::Next page-->
+                                        <a href="#"
+                                            class="btn btn-sm btn-icon btn-light btn-active-light-primary me-2"
+                                            data-bs-toggle="tooltip" data-bs-placement="top" title="Next message">
+                                            <i class="ki-duotone ki-right fs-2 m-0"></i>
+                                        </a>
+                                        <!--end::Next page-->
+                                        <!--begin::Settings menu-->
+                                        <div>
+                                            <a href="#"
+                                                class="btn btn-sm btn-icon btn-light btn-active-light-primary me-2"
+                                                data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end"
+                                                data-bs-toggle="tooltip" data-bs-placement="top" title="Settings">
+                                                <i class="ki-duotone ki-dots-square fs-2 m-0">
+                                                    <span class="path1"></span>
+                                                    <span class="path2"></span>
+                                                    <span class="path3"></span>
+                                                    <span class="path4"></span>
+                                                </i>
+                                            </a>
+                                            <!--begin::Menu-->
+                                            <div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary fw-semibold fs-7 w-250px py-4"
+                                                data-kt-menu="true">
+                                                <!--begin::Menu item-->
+                                                <div class="menu-item px-3">
+                                                    <a href="#" class="menu-link px-3">
+                                                        <i class="ki-duotone ki-element-11 fs-3 me-3">
+                                                            <span class="path1"></span>
+                                                            <span class="path2"></span>
+                                                            <span class="path3"></span>
+                                                            <span class="path4"></span>
+                                                        </i>New Group</a>
+                                                </div>
+                                                <!--end::Menu item-->
+                                                <!--begin::Menu item-->
+                                                <div class="menu-item px-3">
+                                                    <a href="#" class="menu-link px-3">
+                                                        <i class="ki-duotone ki-badge fs-3 me-3">
+                                                            <span class="path1"></span>
+                                                            <span class="path2"></span>
+                                                            <span class="path3"></span>
+                                                            <span class="path4"></span>
+                                                            <span class="path5"></span>
+                                                        </i>Contacts</a>
+                                                </div>
+                                                <!--end::Menu item-->
+                                                <!--begin::Menu item-->
+                                                <div class="menu-item px-3">
+                                                    <a href="#" class="menu-link px-3">
+                                                        <i class="ki-duotone ki-people fs-3 me-3">
+                                                            <span class="path1"></span>
+                                                            <span class="path2"></span>
+                                                            <span class="path3"></span>
+                                                            <span class="path4"></span>
+                                                            <span class="path5"></span>
+                                                        </i>Groups
+                                                        <span class="badge badge-light-primary ms-auto">new</span></a>
+                                                </div>
+                                                <!--end::Menu item-->
+                                                <!--begin::Menu item-->
+                                                <div class="menu-item px-3">
+                                                    <a href="#" class="menu-link px-3">
+                                                        <i class="ki-duotone ki-element-2 fs-3 me-3">
+                                                            <span class="path1"></span>
+                                                            <span class="path2"></span>
+                                                        </i>Calls</a>
+                                                </div>
+                                                <!--end::Menu item-->
+                                                <!--begin::Menu item-->
+                                                <div class="menu-item px-3">
+                                                    <a href="#" class="menu-link px-3">
+                                                        <i class="ki-duotone ki-setting-2 fs-3 me-3">
+                                                            <span class="path1"></span>
+                                                            <span class="path2"></span>
+                                                        </i>Settings</a>
+                                                </div>
+                                                <!--end::Menu item-->
+                                                <div class="separator my-5"></div>
+                                                <!--begin::Menu item-->
+                                                <div class="menu-item px-3">
+                                                    <a href="#" class="menu-link px-3">
+                                                        <i class="ki-duotone ki-magnifier fs-3 me-3">
+                                                            <span class="path1"></span>
+                                                            <span class="path2"></span>
+                                                        </i>Help</a>
+                                                </div>
+                                                <!--end::Menu item-->
+                                                <!--begin::Menu item-->
+                                                <div class="menu-item px-3">
+                                                    <a href="#" class="menu-link px-3">
+                                                        <i class="ki-duotone ki-shield-tick fs-3 me-3">
+                                                            <span class="path1"></span>
+                                                            <span class="path2"></span>
+                                                        </i>Privacy
+                                                        <span class="badge badge-light-danger ms-auto">5</span></a>
+                                                </div>
+                                                <!--end::Menu item-->
+                                            </div>
+                                            <!--end::Menu-->
+                                        </div>
+                                        <!--begin::Settings menu-->
+                                        <!--begin::Toggle-->
+                                        <a href="#"
+                                            class="btn btn-sm btn-icon btn-color-primary btn-light btn-active-light-primary d-lg-none"
+                                            data-bs-toggle="tooltip" data-bs-dismiss="click" data-bs-placement="top"
+                                            title="Toggle inbox menu" id="kt_inbox_aside_toggle">
+                                            <i class="ki-duotone ki-burger-menu-2 fs-3 m-0">
+                                                <span class="path1"></span>
+                                                <span class="path2"></span>
+                                                <span class="path3"></span>
+                                                <span class="path4"></span>
+                                                <span class="path5"></span>
+                                                <span class="path6"></span>
+                                                <span class="path7"></span>
+                                                <span class="path8"></span>
+                                                <span class="path9"></span>
+                                                <span class="path10"></span>
+                                            </i>
+                                        </a>
+                                        <!--end::Toggle-->
+                                    </div>
+                                    <!--end::Pagination-->
+                                </div>
+                                <livewire:emitido.emitido-component />
+                                {{-- <div class="card-body">
 											<!--begin::Title-->
 											<div class="d-flex flex-wrap gap-2 justify-content-between mb-8">
 												<div class="d-flex align-items-center flex-wrap gap-2">
@@ -1230,19 +1256,19 @@
 											</form>
 											<!--end::Form-->
 										</div> --}}
-									</div>
-									<!--end::Card-->
-								</div>
                             </div>
+                            <!--end::Card-->
+                        </div>
+                    </div>
 
 
 
-                <!--end::Table-->
+                    <!--end::Table-->
+                </div>
+                <!--end::Card body-->
             </div>
-            <!--end::Card body-->
+            <!--end::Products-->
         </div>
-        <!--end::Products-->
+        <!--end::Post-->
     </div>
-    <!--end::Post-->
-</div>
 @endsection

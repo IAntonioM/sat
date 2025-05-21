@@ -1,8 +1,10 @@
 <?php
 
 namespace App\Services;
+use Barryvdh\Debugbar\Facades\Debugbar;
 
 use App\Models\Emitido;
+use App\Models\Usuario;
 
 class EmitidoService
 {
@@ -45,6 +47,7 @@ class EmitidoService
     public function crear(array $params)
     {
         $params['accion'] = 1;
+        Debugbar::info('📄 params2:', $params);
         return Emitido::executeProcedure($params);
     }
 
@@ -61,6 +64,8 @@ class EmitidoService
             'correlativo' => $correlativo,
         ]);
     }
+
+
 
     // Puedes agregar métodos para acciones 5 y 6 si están implementadas en el SP
 }
