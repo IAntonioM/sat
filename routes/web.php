@@ -93,6 +93,9 @@ Route::middleware(['check.login', 'force.password.change', 'user.access'])->grou
     Route::get('/Pagos', [PagoController::class, 'index'])->name('Pagos');
     // Esta ruta ya debería existir pero verifica que sea así
     Route::post('/consolidado/pagar', [DeudaConsolidadaController::class, 'pagar'])->name('consolidado.pagar');
+
+    Route::get('/casilla', [CasillaController::class, 'index'])->name('casilla');
+    Route::get('/casilla-nuevo', [CasillaController::class, 'store'])->name('createCasilla');
 });
 
 // lo peude ver vestado 002 y 003
@@ -113,9 +116,6 @@ Route::middleware(['check.login', 'force.password.change', 'moderator.access'])-
         abort(404);
     })->where('path', '.*')->name('ver.archivo');
 
-
-    Route::get('/casilla', [CasillaController::class, 'index'])->name('casilla');
-    Route::get('/casilla-nuevo', [CasillaController::class, 'store'])->name('createCasilla');
 });
 
 // Rutas exclusivas para administradores (vestado 003)
