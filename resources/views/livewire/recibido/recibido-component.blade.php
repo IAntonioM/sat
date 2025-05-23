@@ -16,6 +16,7 @@
                         placeholder="Buscar por asunto" />
 
                 </div>
+
             </div>
         </div>
         <div class="card-body p-0">
@@ -29,7 +30,7 @@
                 <tbody>
                     @forelse ($documentos as $documento)
                         {{-- <tr class="{{ $documento->estado_recepcion_id == 0 ? 'bg-light-warning' : '' }}"> --}}
-                        <tr >
+                        <tr>
                             <td class="ps-4">
                                 <div class="form-check form-check-sm form-check-custom form-check-solid mt-3">
                                     <input class="form-check-input" type="checkbox"

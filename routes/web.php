@@ -96,6 +96,20 @@ Route::middleware(['check.login', 'force.password.change', 'user.access'])->grou
 
     Route::get('/casilla', [CasillaController::class, 'index'])->name('casilla');
     Route::get('/casilla-nuevo', [CasillaController::class, 'store'])->name('createCasilla');
+    Route::get('/ver-archivo-casilla/{path}', function ($path) {
+        $path = 'livewire-tmp/' . $path;
+        if (Storage::exists($path)) {
+            return response()->file(storage_path('app/' . $path));
+        }
+        abort(404);
+    })->where('path', '.*')->name('ver.archivoCasilla');
+    Route::get('/ver-archivo-casilla-electronica/{path}', function ($path) {
+        $path = 'archivos_casilla_electronica/' . $path;
+        if (Storage::exists($path)) {
+            return response()->file(storage_path('app/' . $path));
+        }
+        abort(404);
+    })->where('path', '.*')->name('ver.archivoCasillaElectronica');
 });
 
 // lo peude ver vestado 002 y 003
@@ -115,7 +129,6 @@ Route::middleware(['check.login', 'force.password.change', 'moderator.access'])-
         }
         abort(404);
     })->where('path', '.*')->name('ver.archivo');
-
 });
 
 // Rutas exclusivas para administradores (vestado 003)

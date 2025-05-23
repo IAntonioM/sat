@@ -130,49 +130,71 @@
         </div>
         <!--end::Message-->
         <!--begin::Attachments-->
-        <div class="dropzone dropzone-queue px-8 py-4" id="kt_inbox_reply_attachments" data-kt-inbox-form="dropzone">
-            <div class="dropzone-items">
-                <!-- File input hidden but triggered by button -->
-                <input type="file" id="attachment-input" wire:model="attachments" multiple style="display: none;">
+        <div class="dropzone dropzone-queue px-8 py-4" id="kt_inbox_reply_attachments">
+                <div class="dropzone-items">
+                    <!-- File input que permite múltiples archivos -->
+                    <input type="file" id="attachment-input" wire:model="newAttachments" multiple
+                        style="display: none;">
 
-                <!-- Display attachments -->
-                @if (count($attachments) > 0)
-                    @foreach ($attachments as $index => $attachment)
-                        <div class="dropzone-item">
-                            <!--begin::Dropzone filename-->
-                            <div class="dropzone-file">
-                                <div class="dropzone-filename" title="{{ $attachment->getClientOriginalName() }}">
-                                    <span data-dz-name="">{{ $attachment->getClientOriginalName() }}</span>
-                                    <strong>(
-                                        <span
-                                            data-dz-size="">{{ number_format($attachment->getSize() / 1024, 0) }}kb</span>)</strong>
+
+                    <!-- Display attachments -->
+                    @if (count($attachments) > 0)
+                        <div class="mt-4">
+                            <div class="separator separator-dashed mb-4"></div>
+                            <div class="fw-bold mb-3">Archivos adjuntos ({{ count($attachments) }}):</div>
+
+                            @foreach ($attachments as $index => $attachment)
+                                <div class="mb-2">
+                                    <div
+                                        class="d-flex align-items-center justify-content-between p-3 border border-gray-300 rounded dropzone-item ">
+                                        <!--begin::Dropzone filename-->
+                                        <div class="dropzone-file">
+                                            <div class="dropzone-filename d-flex align-items-center">
+                                                <i class="ki-duotone ki-file fs-3 text-primary me-3">
+                                                    <span class="path1"></span>
+                                                    <span class="path2"></span>
+                                                </i>
+                                                <div>
+                                                    <span
+                                                        class="fw-bold text-gray-800">{{ $attachment->getClientOriginalName() }}</span>
+                                                    <div class="text-muted fs-7">
+                                                        ({{ number_format($attachment->getSize() / 1024, 0) }} KB)</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!--end::Dropzone filename-->
+
+                                        <!--begin::Dropzone toolbar-->
+                                        <div class="dropzone-toolbar d-flex gap-2">
+                                            <!-- Botón para ver archivo -->
+                                            <a href="{{ route('ver.archivoCasilla', $attachment->getFilename()) }}"
+                                                target="_blank" class="btn btn-sm btn-icon btn-light-success"
+                                                title="Ver archivo">
+                                                <i class="ki-duotone ki-eye fs-6">
+                                                    <span class="path1"></span>
+                                                    <span class="path2"></span>
+                                                    <span class="path3"></span>
+                                                </i>
+                                            </a>
+
+                                            <!-- Botón para eliminar archivo -->
+                                            <button type="button" class="btn btn-sm btn-icon btn-light-danger"
+                                                wire:click="removeAttachment({{ $index }})"
+                                                title="Eliminar archivo">
+                                                <i class="ki-duotone ki-cross fs-6">
+                                                    <span class="path1"></span>
+                                                    <span class="path2"></span>
+                                                </i>
+                                            </button>
+                                        </div>
+                                        <!--end::Dropzone toolbar-->
+                                    </div>
                                 </div>
-                                <div class="dropzone-error" data-dz-errormessage=""></div>
-                            </div>
-                            <!--end::Dropzone filename-->
-                            <!--begin::Dropzone progress-->
-                            <div class="dropzone-progress">
-                                <div class="progress bg-gray-300">
-                                    <div class="progress-bar bg-primary" role="progressbar" aria-valuemin="0"
-                                        aria-valuemax="100" aria-valuenow="100" data-dz-uploadprogress=""></div>
-                                </div>
-                            </div>
-                            <!--end::Dropzone progress-->
-                            <!--begin::Dropzone toolbar-->
-                            <div class="dropzone-toolbar">
-                                <span class="dropzone-delete" wire:click="removeAttachment({{ $index }})">
-                                    <i class="ki-duotone ki-cross fs-2">
-                                        <span class="path1"></span>
-                                        <span class="path2"></span>
-                                    </i>
-                                </span>
-                            </div>
-                            <!--end::Dropzone toolbar-->
+                            @endforeach
                         </div>
-                    @endforeach
-                @endif
+                    @endif
+                </div>
             </div>
-        </div>
         <!--end::Attachments-->
     </div>
     <!--end::Body-->
@@ -264,30 +286,30 @@
     <!--end::Footer-->
 </form>
 
-<script>
-    document.addEventListener('livewire:initialized', function() {
-        // Show/hide CC field
-        document.querySelector('[data-kt-inbox-form="cc_button"]').addEventListener('click', function() {
-            document.querySelector('[data-kt-inbox-form="cc"]').classList.remove('d-none');
-            document.querySelector('[data-kt-inbox-form="cc"]').classList.add('d-flex');
-        });
+    <script>
+        document.addEventListener('livewire:initialized', function() {
+            // Show/hide CC field
+            document.querySelector('[data-kt-inbox-form="cc_button"]').addEventListener('click', function() {
+                document.querySelector('[data-kt-inbox-form="cc"]').classList.remove('d-none');
+                document.querySelector('[data-kt-inbox-form="cc"]').classList.add('d-flex');
+            });
 
-        // Hide CC field
-        document.querySelector('[data-kt-inbox-form="cc_close"]').addEventListener('click', function() {
-            document.querySelector('[data-kt-inbox-form="cc"]').classList.remove('d-flex');
-            document.querySelector('[data-kt-inbox-form="cc"]').classList.add('d-none');
-        });
+            // Hide CC field
+            document.querySelector('[data-kt-inbox-form="cc_close"]').addEventListener('click', function() {
+                document.querySelector('[data-kt-inbox-form="cc"]').classList.remove('d-flex');
+                document.querySelector('[data-kt-inbox-form="cc"]').classList.add('d-none');
+            });
 
-        // Show/hide BCC field
-        document.querySelector('[data-kt-inbox-form="bcc_button"]').addEventListener('click', function() {
-            document.querySelector('[data-kt-inbox-form="bcc"]').classList.remove('d-none');
-            document.querySelector('[data-kt-inbox-form="bcc"]').classList.add('d-flex');
-        });
+            // Show/hide BCC field
+            document.querySelector('[data-kt-inbox-form="bcc_button"]').addEventListener('click', function() {
+                document.querySelector('[data-kt-inbox-form="bcc"]').classList.remove('d-none');
+                document.querySelector('[data-kt-inbox-form="bcc"]').classList.add('d-flex');
+            });
 
-        // Hide BCC field
-        document.querySelector('[data-kt-inbox-form="bcc_close"]').addEventListener('click', function() {
-            document.querySelector('[data-kt-inbox-form="bcc"]').classList.remove('d-flex');
-            document.querySelector('[data-kt-inbox-form="bcc"]').classList.add('d-none');
+            // Hide BCC field
+            document.querySelector('[data-kt-inbox-form="bcc_close"]').addEventListener('click', function() {
+                document.querySelector('[data-kt-inbox-form="bcc"]').classList.remove('d-flex');
+                document.querySelector('[data-kt-inbox-form="bcc"]').classList.add('d-none');
+            });
         });
-    });
-</script>
+    </script>

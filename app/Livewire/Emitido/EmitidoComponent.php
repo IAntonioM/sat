@@ -51,6 +51,7 @@ class EmitidoComponent extends Component
         $this->hijos = collect($this->documentos)
             ->where('nu_emi_padre', $this->nu_emi)
             ->values();
+        $this->dispatch('actualizarRecibido');
     }
 
     public function render()

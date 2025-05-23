@@ -8,8 +8,7 @@
                 <div class="text-dark fw-bold w-75px">Para:</div>
                 <!--end::Label-->
                 <!--begin::Input-->
-                <input type="text" class="form-control border-0" name="compose_to"
-                    wire:model="to" readonly />
+                <input type="text" class="form-control border-0" name="compose_to" wire:model="to" readonly />
                 <!--end::Input-->
                 <!--begin::CC & BCC buttons-->
                 <div class="ms-auto w-75px text-end">
@@ -67,50 +66,84 @@
             <!--end::Subject-->
             <!--begin::Message-->
             <div class="px-8 py-3">
-                <textarea
-                    wire:model="message"
-                    class="form-control border-0"
-                    rows="8"
-                    placeholder="Escribir mensaje..."
-                    style="resize: vertical; min-height: 150px;"
-                ></textarea>
+                <textarea wire:model="message" class="form-control border-0" rows="8" placeholder="Escribir mensaje..."
+                    style="resize: vertical; min-height: 150px;"></textarea>
             </div>
             <!--end::Message-->
 
             <!--begin::Attachments-->
-            <div class="dropzone dropzone-queue px-8 py-4" id="kt_inbox_reply_attachments"
-                data-kt-inbox-form="dropzone">
+            <div class="dropzone dropzone-queue px-8 py-4" id="kt_inbox_reply_attachments">
                 <div class="dropzone-items">
-                    <!-- File input hidden but triggered by button -->
-                    <input type="file" id="attachment-input" wire:model="attachments" multiple style="display: none;">
+                    <!-- File input que permite múltiples archivos -->
+                    <input type="file" id="attachment-input" wire:model="newAttachments" multiple
+                        style="display: none;">
+
 
                     <!-- Display attachments -->
-                    @if(count($attachments) > 0)
-                        @foreach($attachments as $index => $attachment)
-                            <div class="dropzone-item">
-                                <!--begin::Dropzone filename-->
-                                <div class="dropzone-file">
-                                    <div class="dropzone-filename" title="{{ $attachment->getClientOriginalName() }}">
-                                        <span>{{ $attachment->getClientOriginalName() }}</span>
-                                        <strong>({{ number_format($attachment->getSize() / 1024, 0) }}kb)</strong>
+                    @if (count($attachments) > 0)
+                        <div class="mt-4">
+                            <div class="separator separator-dashed mb-4"></div>
+                            <div class="fw-bold mb-3">Archivos adjuntos ({{ count($attachments) }}):</div>
+
+                            @foreach ($attachments as $index => $attachment)
+                                <div class="mb-2">
+                                    <div
+                                        class="d-flex align-items-center justify-content-between p-3 border border-gray-300 rounded dropzone-item ">
+                                        <!--begin::Dropzone filename-->
+                                        <div class="dropzone-file">
+                                            <div class="dropzone-filename d-flex align-items-center">
+                                                <i class="ki-duotone ki-file fs-3 text-primary me-3">
+                                                    <span class="path1"></span>
+                                                    <span class="path2"></span>
+                                                </i>
+                                                <div>
+                                                    <span
+                                                        class="fw-bold text-gray-800">{{ $attachment->getClientOriginalName() }}</span>
+                                                    <div class="text-muted fs-7">
+                                                        ({{ number_format($attachment->getSize() / 1024, 0) }} KB)</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!--end::Dropzone filename-->
+
+                                        <!--begin::Dropzone toolbar-->
+                                        <div class="dropzone-toolbar d-flex gap-2">
+                                            <!-- Botón para ver archivo -->
+                                            <a href="{{ route('ver.archivoCasilla', $attachment->getFilename()) }}"
+                                                target="_blank" class="btn btn-sm btn-icon btn-light-success"
+                                                title="Ver archivo">
+                                                <i class="ki-duotone ki-eye fs-6">
+                                                    <span class="path1"></span>
+                                                    <span class="path2"></span>
+                                                    <span class="path3"></span>
+                                                </i>
+                                            </a>
+
+                                            <!-- Botón para eliminar archivo -->
+                                            <button type="button" class="btn btn-sm btn-icon btn-light-danger"
+                                                wire:click="removeAttachment({{ $index }})"
+                                                title="Eliminar archivo">
+                                                <i class="ki-duotone ki-cross fs-6">
+                                                    <span class="path1"></span>
+                                                    <span class="path2"></span>
+                                                </i>
+                                            </button>
+                                        </div>
+                                        <!--end::Dropzone toolbar-->
                                     </div>
                                 </div>
-                                <!--end::Dropzone filename-->
-
-                                <!--begin::Dropzone toolbar-->
-                                <div class="dropzone-toolbar">
-                                    <span class="dropzone-delete" wire:click="removeAttachment({{ $index }})">
-                                        <i class="ki-duotone ki-cross fs-6">
-                                            <span class="path1"></span>
-                                            <span class="path2"></span>
-                                        </i>
-                                    </span>
-                                </div>
-                                <!--end::Dropzone toolbar-->
-                            </div>
-                        @endforeach
+                            @endforeach
+                        </div>
                     @endif
                 </div>
+            </div>
+
+            <!-- Loading indicator mientras se cargan los archivos -->
+            <div wire:loading wire:target="newAttachments" class="text-center py-3 px-3">
+                <div class="spinner-border spinner-border-sm text-primary" role="status">
+                    <span class="visually-hidden">Cargando archivos...</span>
+                </div>
+                <span class="ms-2 text-muted">Cargando archivos...</span>
             </div>
             <!--end::Attachments-->
         </div>
@@ -130,8 +163,7 @@
                     <!--end::Submit-->
                     <!--begin::Send options-->
                     <span class="btn btn-primary btn-icon fs-bold" role="button">
-                        <span class="btn btn-icon" data-kt-menu-trigger="click"
-                            data-kt-menu-placement="top-start">
+                        <span class="btn btn-icon" data-kt-menu-trigger="click" data-kt-menu-placement="top-start">
                             <i class="ki-duotone ki-down fs-2 m-0"></i>
                         </span>
                         <!--begin::Menu-->
@@ -160,7 +192,8 @@
                 <!--end::Send-->
                 <!--begin::Upload attachement-->
                 <span class="btn btn-icon btn-sm btn-clean btn-active-light-primary me-2"
-                    id="kt_inbox_reply_attachments_select" onclick="document.getElementById('attachment-input').click()">
+                    id="kt_inbox_reply_attachments_select"
+                    onclick="document.getElementById('attachment-input').click()">
                     <i class="ki-duotone ki-paper-clip fs-2 m-0"></i>
                 </span>
                 <!--end::Upload attachement-->
@@ -203,8 +236,8 @@
         <!--end::Footer-->
     </form>
 
-<script>
-        document.addEventListener('livewire:initialized', function () {
+    <script>
+        document.addEventListener('livewire:initialized', function() {
             // Show/hide CC field
             document.querySelector('[data-kt-inbox-form="cc_button"]').addEventListener('click', function() {
                 document.querySelector('[data-kt-inbox-form="cc"]').classList.remove('d-none');

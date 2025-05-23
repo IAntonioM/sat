@@ -21,6 +21,7 @@ class EmitirMensajeComponent extends Component
     public $subject = '';
     public $message = '';
     public $attachments = [];
+    public $newAttachments = []; // Nueva propiedad para archivos temporales
 
     public function boot(EmitidoService $service)
     {
@@ -38,26 +39,30 @@ class EmitirMensajeComponent extends Component
         $codigo_contribuyente = Session::get('codigo_contribuyente');
 
         if ($padre) {
-            // Determinar si el usuario actual es el emisor
             if ($padre->emisor_id == $codigo_contribuyente) {
-                // Usuario es el emisor, entonces responder al receptor
                 $this->to = $padre->nombre_receptor ?? '';
             } else {
-                // Usuario es el receptor, entonces responder al emisor
                 $this->to = $padre->nombre_emisor ?? '';
             }
 
-            // Prellenar asunto
             if (isset($padre->asunto)) {
                 $this->subject = "RE: " . $padre->asunto;
             }
         }
     }
 
-
-    public function saveAttachment($file)
+    // Método para manejar nuevos archivos
+    public function updatedNewAttachments()
     {
-        $this->attachments[] = $file;
+        if ($this->newAttachments) {
+            // Agregar los nuevos archivos a la lista existente
+            foreach ($this->newAttachments as $file) {
+                $this->attachments[] = $file;
+            }
+
+            // Limpiar la propiedad temporal
+            $this->newAttachments = [];
+        }
     }
 
     public function removeAttachment($index)
@@ -66,11 +71,22 @@ class EmitirMensajeComponent extends Component
         $this->attachments = array_values($this->attachments);
     }
 
+    // Método para obtener la URL temporal del archivo
+    public function getFileUrl($index)
+    {
+        if (isset($this->attachments[$index])) {
+            $file = $this->attachments[$index];
+            // Obtener el path temporal de Livewire
+            $temporaryPath = $file->getFilename();
+            return route('ver.archivoCasilla', $temporaryPath);
+        }
+        return null;
+    }
+
     public function send()
     {
         Debugbar::info('📥 padre en EmitirMensajeComponent:', $this->padre);
 
-        // Validate inputs
         $this->validate([
             'to' => 'required',
             'message' => 'required',
@@ -81,14 +97,58 @@ class EmitirMensajeComponent extends Component
             ? $this->padre->receptor_id
             : $this->padre->emisor_id;
 
+        // Procesar archivos adjuntos para generar JSON
+        $anexosArray = [];
+
+        if (!empty($this->attachments)) {
+            foreach ($this->attachments as $attachment) {
+                try {
+                    // Nombre original del archivo subido por el usuario
+                    $originalName = $attachment->getClientOriginalName();
+
+                    // Extraer extensión del archivo, ej: 'pdf', 'docx'
+                    $extension = $attachment->getClientOriginalExtension();
+
+                    // Generar nombre único para el archivo guardado
+                    $fileName = time() . '_' . uniqid() . '.' . $extension;
+
+                    // Guardar archivo en storage/app/archivos_casilla_electronica
+                    $filePath = $attachment->storeAs('archivos_casilla_electronica', $fileName);
+
+                    // Agregar al array de anexos con nombre original y archivo almacenado
+                    $anexosArray[] = [
+                        'nombre_archivo' => $originalName,  // ← lo que pidió el usuario
+                        'url_archivo' => $fileName,         // ← lo que guardaste físicamente
+                        'extension_tipo' => $extension
+                    ];
+
+                    Debugbar::info('📎 Archivo procesado:', [
+                        'original' => $originalName,
+                        'stored_as' => $fileName,
+                        'path' => $filePath,
+                        'ext' => $extension,
+                        'size' => $attachment->getSize()
+                    ]);
+                } catch (\Exception $e) {
+                    Debugbar::error('❌ Error subiendo archivo:', [
+                        'file' => $attachment->getClientOriginalName(),
+                        'error' => $e->getMessage()
+                    ]);
+
+                    session()->flash('error', 'Error al subir el archivo: ' . $attachment->getClientOriginalName());
+                }
+            }
+        }
+
+
         $params = [
             'contenido' => $this->message,
             'asunto' => $this->subject,
             'emisor_id' => $codigo_contribuyente,
             'receptor_id' => $receptor_id,
+            'json_anexos' => !empty($anexosArray) ? json_encode($anexosArray) : null,
         ];
 
-        // Add padre-related fields if padre exists and has the needed properties
         if ($this->padre) {
             if (isset($this->padre->anio)) {
                 $params['anio'] = $this->padre->anio;
@@ -100,18 +160,15 @@ class EmitirMensajeComponent extends Component
             $params['estado_emitido_id'] = 1;
             $params['usuario_creacion'] = 1;
         }
-        Debugbar::info('📄 param:', $params);
 
-        // Process your email sending logic here
+        Debugbar::info('📄 Parámetros finales:', $params);
+        Debugbar::info('📎 JSON Anexos generado:', $anexosArray);
+
         $resultado = $this->service->crear($params);
 
         Debugbar::info('📨 Resultado creación emitido:', $resultado);
 
-        // Reset form after sending
         $this->reset(['cc', 'bcc', 'subject', 'message', 'attachments']);
         $this->dispatch('messageSent')->to('emitido.emitido-component');
-
-        // // Emit event or show notification
-        // $this->dispatch('messageSent');
     }
 }

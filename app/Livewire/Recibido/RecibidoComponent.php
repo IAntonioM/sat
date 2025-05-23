@@ -7,6 +7,7 @@ use Barryvdh\Debugbar\Facades\Debugbar;
 use App\Models\Contribuyente;
 use App\Services\RecibidoService;
 use Illuminate\Support\Facades\Session;
+use Livewire\Attributes\On;
 
 class RecibidoComponent extends Component
 {
@@ -42,8 +43,13 @@ class RecibidoComponent extends Component
     public function seleccionarDocumento($nu_emi)
     {
         $this->dispatch('documentoSeleccionado', nu_emi: $nu_emi);
+        $this->buscarDocumentos();
     }
-
+    #[On('actualizarRecibido')]
+    public function actualizarRecibido()
+    {
+        $this->buscarDocumentos();
+    }
 
     public function buscarDocumentos()
     {

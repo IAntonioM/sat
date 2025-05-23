@@ -21,13 +21,14 @@ class NuevaCasillaComponent extends Component
     public $bcc = '';
     public $subject = '';
     public $message = '';
-    public $attachments = [];
-    public $usuarios = []; // Lista de usuarios obtenidos
-    public $mostrarListaUsuarios = false; // Controlar visibilidad de la lista
-    public $selectedIndex = -1; // Índice del usuario seleccionado con teclado
-    public $usuarioSeleccionado = null; // Usuario actualmente seleccionado
+    public $attachments = [];     // Lista de archivos ya agregados
+    public $newAttachments = [];  // Nuevos archivos temporales
 
-    // Reglas de validación
+    public $usuarios = [];
+    public $mostrarListaUsuarios = false;
+    public $selectedIndex = -1;
+    public $usuarioSeleccionado = null;
+
     protected $rules = [
         'to' => 'required|string|min:1',
         'subject' => 'required|string|min:1',
@@ -48,11 +49,9 @@ class NuevaCasillaComponent extends Component
 
     public function updatedTo()
     {
-        // Resetear selección cuando se cambia el texto
         $this->selectedIndex = -1;
         $this->usuarioSeleccionado = null;
 
-        // Buscar usuarios automáticamente si hay al menos 2 caracteres
         if (strlen(trim($this->to)) >= 2) {
             $this->buscarUsuarios();
         } else {
@@ -63,12 +62,6 @@ class NuevaCasillaComponent extends Component
 
     public function buscarUsuarios()
     {
-        if (strlen(trim($this->to)) < 2) {
-            $this->usuarios = [];
-            $this->mostrarListaUsuarios = false;
-            return;
-        }
-
         $params = [
             'term' => $this->to,
             'accion' => 1
@@ -76,7 +69,7 @@ class NuevaCasillaComponent extends Component
 
         $this->usuarios = $this->usuarioService->buscarUsuario($params);
         $this->mostrarListaUsuarios = count($this->usuarios) > 0;
-        $this->selectedIndex = -1; // Resetear selección
+        $this->selectedIndex = -1;
 
         Debugbar::info('👤 Usuarios encontrados:', $this->usuarios);
     }
@@ -86,19 +79,7 @@ class NuevaCasillaComponent extends Component
         if (isset($this->usuarios[$index])) {
             $usuario = $this->usuarios[$index];
             $this->usuarioSeleccionado = $usuario;
-
-            // Formatear el texto del input según prefieras
-            // Opción 1: Solo el nombre completo
             $this->to = trim($usuario->vnombre . ' ' . $usuario->vpater . ' ' . $usuario->vmater);
-
-            // Opción 2: Nombre + correo (si tiene)
-            // if (!empty($usuario->vcorreo)) {
-            //     $this->to = trim($usuario->vnombre . ' ' . $usuario->vpater . ' ' . $usuario->vmater) . ' <' . $usuario->vcorreo . '>';
-            // } else {
-            //     $this->to = trim($usuario->vnombre . ' ' . $usuario->vpater . ' ' . $usuario->vmater);
-            // }
-
-            // Cerrar la lista
             $this->cerrarListaUsuarios();
 
             Debugbar::info('👤 Usuario seleccionado:', $usuario);
@@ -118,13 +99,6 @@ class NuevaCasillaComponent extends Component
         $this->selectedIndex = -1;
     }
 
-    // Método para obtener el usuario seleccionado completo
-    public function getUsuarioSeleccionado()
-    {
-        return $this->usuarioSeleccionado;
-    }
-
-    // Método para limpiar la selección
     public function limpiarSeleccion()
     {
         $this->to = '';
@@ -134,14 +108,26 @@ class NuevaCasillaComponent extends Component
         $this->usuarioSeleccionado = null;
     }
 
+    // 📌 Manejador para los nuevos archivos temporales
+    public function updatedNewAttachments()
+    {
+        if ($this->newAttachments) {
+            foreach ($this->newAttachments as $file) {
+                $this->attachments[] = $file;
+            }
+            $this->newAttachments = [];
+        }
+    }
+
+    public function removeAttachment($index)
+    {
+        unset($this->attachments[$index]);
+        $this->attachments = array_values($this->attachments);
+    }
+
     public function send()
     {
-
-        // Validate inputs
-        $this->validate([
-            'to' => 'required',
-            'message' => 'required',
-        ]);
+        $this->validate();
 
         $codigo_contribuyente = Session::get('codigo_contribuyente');
 
@@ -149,40 +135,72 @@ class NuevaCasillaComponent extends Component
             'contenido' => $this->message,
             'asunto' => $this->subject,
             'emisor_id' => $codigo_contribuyente,
+            'tipo_documento_emitido_id' => 1,
+            'estado_emitido_id' => 1,
+            'usuario_creacion' => 1,
+            'anio' => date('Y'),
         ];
 
-        Debugbar::info('📨 UsuarioSelecionado:', $this->usuarioSeleccionado);
-        Debugbar::info('📨 UsuarioSelecionado:', $this->usuarioSeleccionado);
-        // Add padre-related fields if padre exists and has the needed properties
+        if ($this->usuarioSeleccionado) {
+            $params['receptor_id'] = $this->usuarioSeleccionado->vcodcontr;
+        }
 
-        $params['tipo_documento_emitido_id'] = 1;
-        $params['estado_emitido_id'] = 1;
-        $params['usuario_creacion'] = 1;
-        $params['anio'] = date('Y');
-        $params['receptor_id'] = $this->usuarioSeleccionado->vcodcontr;
-        Debugbar::info('📄 param:', $params);
+        // 📎 Procesar archivos adjuntos
+        $anexosArray = [];
+
+        foreach ($this->attachments as $attachment) {
+            try {
+                $originalName = $attachment->getClientOriginalName();
+                $extension = $attachment->getClientOriginalExtension();
+                $fileName = time() . '_' . uniqid() . '.' . $extension;
+                $filePath = $attachment->storeAs('archivos_casilla_electronica', $fileName);
+
+                $anexosArray[] = [
+                    'nombre_archivo' => $originalName,
+                    'url_archivo' => $fileName,
+                    'extension_tipo' => $extension
+                ];
+
+                Debugbar::info('📎 Archivo guardado:', [
+                    'original' => $originalName,
+                    'almacenado_como' => $fileName,
+                    'ext' => $extension,
+                ]);
+            } catch (\Exception $e) {
+                Debugbar::error('❌ Error archivo:', [
+                    'file' => $attachment->getClientOriginalName(),
+                    'error' => $e->getMessage()
+                ]);
+
+                session()->flash('error', 'Error al subir archivo: ' . $attachment->getClientOriginalName());
+            }
+        }
+
+        if (!empty($anexosArray)) {
+            $params['json_anexos'] = json_encode($anexosArray);
+        }
+
+        Debugbar::info('📤 Parámetros finales:', $params);
 
         $resultado = $this->service->crear($params);
 
-        Debugbar::info('📨 Resultado creación emitido:', $resultado);
+        Debugbar::info('📨 Resultado creación:', $resultado);
 
-        // Reset form after sending
-        $this->reset(['cc', 'bcc', 'subject', 'message', 'attachments']);
-
+        // Limpiar formulario
+        $this->reset([
+            'to', 'cc', 'bcc', 'subject', 'message',
+            'attachments', 'usuarios', 'mostrarListaUsuarios',
+            'selectedIndex', 'usuarioSeleccionado'
+        ]);
     }
 
     public function limpiarFormulario()
     {
-        $this->to = '';
-        $this->cc = '';
-        $this->bcc = '';
-        $this->subject = '';
-        $this->message = '';
-        $this->attachments = [];
-        $this->usuarios = [];
-        $this->mostrarListaUsuarios = false;
-        $this->selectedIndex = -1;
-        $this->usuarioSeleccionado = null;
+        $this->reset([
+            'to', 'cc', 'bcc', 'subject', 'message',
+            'attachments', 'usuarios', 'mostrarListaUsuarios',
+            'selectedIndex', 'usuarioSeleccionado'
+        ]);
     }
 
     public function render()
