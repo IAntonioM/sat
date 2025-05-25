@@ -20,7 +20,7 @@ class Recibido extends Model
         @flag_favorito = ?, @flag_marcador = ?, @flag_archivado = ?,
         @fecha_inicio = ?, @fecha_fin = ?, @usuario_creacion = ?,
         @pagina = ?, @registros_por_pagina = ?,
-        @receptor_id = ?, @emisor_id = ?, @asunto = ?, @tipo_documento_emitido_id = ?";
+        @receptor_id = ?, @emisor_id = ?, @asunto = ?, @tipo_documento_emitido_id = ?, @json_recibido = ?";
 
         return DB::select($sql, [
             $params['accion'] ?? null,
@@ -42,6 +42,7 @@ class Recibido extends Model
             $params['emisor_id'] ?? null,
             $params['asunto'] ?? null,
             $params['tipo_documento_emitido_id'] ?? null,
+            $params['json_recibido'] ?? null,
         ]);
     }
 }

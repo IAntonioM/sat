@@ -3,8 +3,8 @@
         <div class="card-header align-items-center py-5 gap-2 gap-md-5" style="padding: 0 1rem;">
             <div class="d-flex flex-wrap gap-2">
                 <div class="form-check form-check-sm form-check-custom form-check-solid">
-                    <input class="form-check-input" type="checkbox" data-kt-check="true"
-                        data-kt-check-target="#kt_inbox_listing .form-check-input" value="1" />
+                    <input class="form-check-input" type="checkbox" wire:click="toggleTodos"
+                        {{ count($json_recibido) === count($documentos) && count($documentos) > 0 ? 'checked' : '' }} />
                 </div>
                 <div class="d-flex align-items-center position-relative">
                     <i class="ki-duotone ki-magnifier fs-3 position-absolute ms-4">
@@ -33,9 +33,12 @@
                         <tr>
                             <td class="ps-4">
                                 <div class="form-check form-check-sm form-check-custom form-check-solid mt-3">
-                                    <input class="form-check-input" type="checkbox"
-                                        value="{{ $documento->nu_cor ?? '' }}" />
+                                    <input class="form-check-input document-checkbox" type="checkbox"
+                                        value="{{ $documento->nu_emi ?? '' }}"
+                                        wire:click="toggleRecibido('{{ $documento->nu_emi }}')"
+                                        {{ in_array($documento->nu_emi, $json_recibido) ? 'checked' : '' }} />
                                 </div>
+                                {{ $documento->nu_emi ?? '' }}
                             </td>
                             <td>
                                 <div class="text-dark gap-1 pt-2">

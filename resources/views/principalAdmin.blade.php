@@ -122,7 +122,7 @@
     </div>
     <!--end::Card widget 3-->
 </div>
-
+<livewire:chatbot.chatbot-component />
 
 
 @endsection
