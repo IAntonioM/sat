@@ -73,7 +73,7 @@ class RecibidoComponent extends Component
         $this->documentos = $resultado ?? [];
     }
 
-    // Método para manejar selección/deselección de documentos individuales
+    // Método MEJORADO para manejar selección/deselección sin re-renderizar inmediatamente
     public function toggleRecibido($nuEmi)
     {
         if (in_array($nuEmi, $this->json_recibido)) {
@@ -82,14 +82,17 @@ class RecibidoComponent extends Component
             $this->json_recibido[] = $nuEmi;
         }
 
+        // Reindexar el array para evitar problemas con las claves
+        $this->json_recibido = array_values($this->json_recibido);
+
         // Disparar evento para efectos visuales (opcional)
         $this->dispatch('seleccionActualizada');
 
-        // Realizar nueva búsqueda para mantener los seleccionados visibles
-        $this->buscarDocumentos();
+        // NO re-buscar inmediatamente para evitar el parpadeo
+        // $this->buscarDocumentos();
     }
 
-    // NUEVO: Método para seleccionar/deseleccionar todos los documentos visibles
+    // Método MEJORADO para seleccionar/deseleccionar todos
     public function toggleTodos()
     {
         $documentosVisibles = collect($this->documentos)->pluck('nu_emi')->toArray();
@@ -102,18 +105,20 @@ class RecibidoComponent extends Component
             $this->json_recibido = array_unique(array_merge($this->json_recibido, $documentosVisibles));
         }
 
+        // Reindexar para evitar problemas
+        $this->json_recibido = array_values($this->json_recibido);
+
         $this->dispatch('seleccionActualizada');
-        $this->buscarDocumentos();
+        // No re-buscar inmediatamente
     }
 
-    // NUEVO: Método para limpiar toda la selección
     public function limpiarSeleccion()
     {
         $this->json_recibido = [];
+        // Aquí sí podemos re-buscar porque es una acción explícita del usuario
         $this->buscarDocumentos();
     }
 
-    // NUEVO: Método para procesar los documentos seleccionados
     public function procesarSeleccionados()
     {
         if (empty($this->json_recibido)) {
@@ -124,12 +129,10 @@ class RecibidoComponent extends Component
             return;
         }
 
-        // Aquí puedes agregar la lógica para procesar los documentos seleccionados
         $documentosSeleccionados = $this->getSelectedRecibidosData();
 
         Debugbar::info('🔄 PROCESANDO:', $documentosSeleccionados);
 
-        // Ejemplo: enviar a otro componente o ejecutar alguna acción
         $this->dispatch('procesarDocumentos', [
             'documentos' => $this->json_recibido,
             'datos' => $documentosSeleccionados
@@ -141,7 +144,6 @@ class RecibidoComponent extends Component
         ]);
     }
 
-    // Método para obtener documentos seleccionados con sus datos completos
     public function getSelectedRecibidosData()
     {
         if (empty($this->json_recibido)) {
@@ -154,21 +156,16 @@ class RecibidoComponent extends Component
                ->toArray();
     }
 
-    // NUEVO: Método para obtener estadísticas de selección
     public function getSelectionStats()
     {
+        $documentosVisibles = collect($this->documentos)->pluck('nu_emi')->toArray();
+
         return [
             'total_documentos' => count($this->documentos),
             'total_seleccionados' => count($this->json_recibido),
-            'seleccionados_visibles' => count(array_intersect(
-                $this->json_recibido,
-                collect($this->documentos)->pluck('nu_emi')->toArray()
-            )),
+            'seleccionados_visibles' => count(array_intersect($this->json_recibido, $documentosVisibles)),
             'todos_visibles_seleccionados' => count($this->documentos) > 0 &&
-                count(array_intersect(
-                    $this->json_recibido,
-                    collect($this->documentos)->pluck('nu_emi')->toArray()
-                )) === count($this->documentos)
+                count(array_intersect($this->json_recibido, $documentosVisibles)) === count($this->documentos)
         ];
     }
 
@@ -176,8 +173,7 @@ class RecibidoComponent extends Component
     {
         return view('livewire.recibido.recibido-component', [
             'documentos' => $this->documentos,
-            'stats' => $this->getSelectionStats() // Opcional: pasar estadísticas a la vista
+            'stats' => $this->getSelectionStats()
         ]);
     }
 }
-?>

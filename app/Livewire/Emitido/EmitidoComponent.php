@@ -70,4 +70,6 @@ class EmitidoComponent extends Component
         $this->buscarDocumento();
     }
 
+
+
 }

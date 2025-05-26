@@ -126,7 +126,7 @@
                         </a>
                         <!--end::Star-->
                         <!--begin::Mark as important-->
-                        <a href="#" class="btn btn-sm btn-icon btn-clear btn-active-light-primary me-3"
+                        {{-- <a href="#" class="btn btn-sm btn-icon btn-clear btn-active-light-primary me-3"
                             data-bs-toggle="tooltip" data-bs-placement="top" title="Mark as important">
                             <i class="ki-duotone ki-save-2 fs-2 m-0">
                                 <span class="path1"></span>
@@ -152,7 +152,7 @@
                                 <span class="path3"></span>
                                 <span class="path4"></span>
                             </i>
-                        </a>
+                        </a> --}}
                         <!--end::Settings-->
                     </div>
                 </div>
@@ -689,7 +689,7 @@
                                 </a>
                                 <!--end::Star-->
                                 <!--begin::Mark as important-->
-                                <a href="#" class="btn btn-sm btn-icon btn-clear btn-active-light-primary me-3"
+                                {{-- <a href="#" class="btn btn-sm btn-icon btn-clear btn-active-light-primary me-3"
                                     data-bs-toggle="tooltip" data-bs-placement="top" title="Mark as important">
                                     <i class="ki-duotone ki-save-2 fs-2 m-0">
                                         <span class="path1"></span>
@@ -715,7 +715,7 @@
                                         <span class="path3"></span>
                                         <span class="path4"></span>
                                     </i>
-                                </a>
+                                </a> --}}
                                 <!--end::Settings-->
                             </div>
                         </div>
@@ -909,5 +909,8 @@
                 return new bootstrap.Tooltip(tooltipTriggerEl);
             });
         });
+
+
     </script>
+
 </div>
