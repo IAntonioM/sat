@@ -1,10 +1,10 @@
 @extends('layouts.cabeceraAdmin')
 @section('content')
-<div class="col-xl-1"></div>
+
 @if($usuario->vestado == '002' )
-<div class="col-xl-3">
+<div class="col-xl-4">
     <!--begin::Card widget 3-->
-    <div class="card card-flush bgi-no-repeat bgi-size-contain bgi-position-x-end h-xl-100" style="background-color: #F1416C;background-image:url('assets/media/svg/shapes/wave-bg-red.svg')">
+    <div class="card card-flush bgi-repeat bgi-size-contain bgi-position-x-end h-xl-100" style="background-color: #F1416C;background-image:url('assets/media/svg/shapes/wave-bg-red.svg')">
         <!--begin::Header-->
         <div class="card-header pt-5 mb-3">
             <!--begin::Icon-->
@@ -43,11 +43,11 @@
     <!--end::Card widget 3-->
 </div>
 @endif
-<div class="col-xl-1"></div>
+
 @if($usuario->vestado == '002' || $usuario->vestado == '003')
-<div class="col-xl-3">
+<div class="col-xl-4">
     <!--begin::Card widget 3-->
-    <div class="card card-flush bgi-no-repeat bgi-size-contain bgi-position-x-end h-xl-100" style="background-color: #7239EA;background-image:url('assets/media/svg/shapes/wave-bg-purple.svg')">
+    <div class="card card-flush bgi-repeat bgi-size-contain bgi-position-x-end h-xl-100" style="background-color: #7239EA;background-image:url('assets/media/svg/shapes/wave-bg-purple.svg')">
         <!--begin::Header-->
         <div class="card-header pt-5 mb-3">
             <!--begin::Icon-->
@@ -80,11 +80,11 @@
     </div>
     <!--end::Card widget 3-->
 </div>
-<div class="col-xl-1"></div>
+
 @endif
-<div class="col-xl-3">
+<div class="col-xl-4">
     <!--begin::Card widget 3-->
-    <div class="card card-flush bgi-no-repeat bgi-size-contain bgi-position-x-end h-xl-100" style="background-color: #2bcdff;background-image:url('assets/media/svg/shapes/wave-bg-red.svg')">
+    <div class="card card-flush bgi-repeat bgi-size-contain bgi-position-x-end h-xl-100" style="background-color: #2bcdff;background-image:url('assets/media/svg/shapes/widget-bg-5.png')">
         <!--begin::Header-->
         <div class="card-header pt-5 mb-3">
             <!--begin::Icon-->
@@ -110,7 +110,7 @@
         <div class="card-footer" style="border-top: 1px solid rgba(241, 60, 60, 0.3);background: rgba(0, 0, 0, 0.15);">
             <!--begin::Progress-->
             <div class="fw-bold text-white py-2" style="text-align: center;">
-                <a href="{{ route('casilla') }}" class="btn btn-sm btn-light-danger btn-active-danger">
+                <a href="{{ route('casilla') }}" class="btn btn-sm btn-light-primary btn-active-primary">
                     <i class="ki-duotone ki-plus fs-2"></i>Ir a Casilla Electronica</a>
                 <span class="opacity-50"></span>
             </div>

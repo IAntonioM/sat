@@ -30,6 +30,30 @@
     <link href="{{ asset('assets/plugins/global/plugins.bundle.css') }}" rel="stylesheet" type="text/css" />
     <link href="{{ asset('assets/css/style.bundle.css') }}" rel="stylesheet" type="text/css" />
     <!--end::Global Stylesheets Bundle-->
+<style>
+/* Animación para la apertura del chat */
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px) scale(0.95);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+/* Efecto hover para las opciones */
+.hover-option:hover {
+    background-color: #e9ecef !important;
+    transform: translateX(3px);
+}
+
+/* Scroll automático mejorado */
+#chat-messages {
+    scroll-behavior: smooth;
+}
+</style>
     <script>
         // Frame-busting to prevent site from being loaded within a frame without permission (click-jacking) if (window.top != window.self) { window.top.location.replace(window.self.location.href); }
     </script>
@@ -149,59 +173,59 @@
 
                                 <!--end::Theme mode-->
                                 <!--begin::User-->
-                                <div class="d-flex align-items-center me-lg-n2 ms-1 ms-lg-3"
-                                    id="kt_header_user_menu_toggle">
+                                <div class="d-flex align-items-center me-lg-n2 ms-1 ms-lg-3" id="kt_header_user_menu_toggle">
                                     <!--begin::Menu wrapper-->
-                                    <div class="btn btn-icon btn-active-light-primary btn-custom w-30px h-30px w-md-40px h-md-40px"
-                                        data-kt-menu-trigger="click" data-kt-menu-attach="parent"
-                                        data-kt-menu-placement="bottom-end">
-                                        <img class="h-30px w-30px rounded" src="assets/media/avatars/blank.png"
-                                            alt="" />
+                                    <!--<div class="btn btn-icon  btn-custom w-30px h-30px w-md-40px h-md-40px" data-kt-menu-placement="bottom-end">
+                                        <i class="fa-solid fa-user-tie" style="font-size: 25px"></i>
                                     </div>
+                                    <span style="padding: 0 15px 0 2px; color:#ffffff">{{ $usuario->vnombre ?? 'Usuario' }}</span>-->
+
+                                    <div class="btn btn-icon btn-active-light-primary btn-custom w-30px h-30px w-md-40px h-md-40px" data-kt-menu-placement="bottom-end">
+                                        <i class="fa-solid fa-address-card" style="font-size: 27px"></i>
+                                    </div>
+                                    <a href="{{ route('perfilAdmin') }}" class="menu-link " style="padding: 0.65rem 1rem 0.65rem 0.5rem;background-color: rgba(255, 255, 255, 0.0);">Mi Perfil</a>
+
+                                    <div class="btn btn-icon btn-active-light-primary btn-custom w-30px h-30px w-md-40px h-md-40px" data-kt-menu-placement="bottom-end">
+                                        <i class="fa-solid fa-right-from-bracket" style="font-size: 27px"></i>
+                                    </div>
+                                    <form method="POST" action="{{ route('logout') }}">
+                                        @csrf
+                                        <button type="submit" class="menu-link "
+                                            style="background: none; border: none; padding: 0; margin: 0; cursor: pointer; color: #ffffff;">
+                                            Cerrar Sesión
+                                        </button>
+                                    </form>
                                     <!--begin::User account menu-->
-                                    <div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-800 menu-state-bg menu-state-color fw-semibold py-4 fs-6 w-275px"
+                                    <!--<div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-800 menu-state-bg menu-state-color fw-semibold py-4 fs-6 w-275px"
                                         data-kt-menu="true">
-                                        <!--begin::Menu item-->
+
                                         <div class="menu-item px-3">
                                             <div class="menu-content d-flex align-items-center px-3">
-                                                <!--begin::Avatar-->
+
                                                 <div class="symbol symbol-50px me-5">
-                                                    <img alt="Logo"
-                                                        src="{{ asset('assets/media/avatars/blank.png') }}" />
+                                                    <img alt="Logo" src="{{ asset('assets/media/avatars/blank.png') }}" />
                                                 </div>
-                                                <!--end::Avatar-->
-                                                <!--begin::Username-->
+
                                                 <div class="d-flex flex-column">
                                                     <div class="fw-bold d-flex align-items-center fs-8">
                                                         {{ $usuario->vnombre ?? 'Usuario' }}
-                                                        <!--<span class="badge badge-light-success fw-bold fs-8 px-2 py-1 ms-2">Pro</span>-->
+
                                                     </div>
                                                     <a href="#"
                                                         class="fw-semibold text-muted text-hover-primary fs-7">{{ $usuario->vcodcontr ?? 'Sin Codigo Contribuyente' }}</a>
                                                 </div>
-                                                <!--end::Username-->
+
                                             </div>
                                         </div>
-                                        <!--end::Menu item-->
-                                        <!--begin::Menu separator-->
+
                                         <div class="separator my-2"></div>
-                                        <!--end::Menu separator-->
-                                        <!--begin::Menu item-->
+
                                         <div class="menu-item px-5">
                                             <a href="{{ route('perfilAdmin') }}" class="menu-link px-5">Mi Perfil</a>
                                         </div>
-                                        <!--end::Menu item-->
-                                        <!--begin::Menu item-->
 
-                                        <!--end::Menu item-->
-
-
-                                        <!--begin::Menu separator-->
                                         <div class="separator my-2"></div>
-                                        <!--end::Menu separator-->
 
-
-                                        <!--begin::Menu item-->
                                         <div class="menu-item px-5">
                                             <form method="POST" action="{{ route('logout') }}">
                                                 @csrf
@@ -211,8 +235,8 @@
                                                 </button>
                                             </form>
                                         </div>
-                                        <!--end::Menu item-->
-                                    </div>
+
+                                    </div>-->
                                     <!--end::User account menu-->
                                     <!--end::Menu wrapper-->
                                 </div>

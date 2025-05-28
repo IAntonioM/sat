@@ -1,8 +1,8 @@
 @extends('layouts.cabecera')
 @section('content')
-<div class="col-xl-3">
+<div class="col-xl-4">
     <!--begin::Card widget 3-->
-    <div class="card card-flush bgi-no-repeat bgi-size-contain bgi-position-x-end h-xl-100" style="background-color: #F1416C;background-image:url('assets/media/svg/shapes/wave-bg-red.svg')">
+    <div class="card card-flush bg-repeat bgi-size-contain bgi-position-x-end h-xl-100" style="background-color: #F1416C;background-image:url('assets/media/svg/shapes/wave-bg-red.svg')">
         <!--begin::Header-->
         <div class="card-header pt-5 mb-3">
             <!--begin::Icon-->
@@ -16,8 +16,8 @@
         <div class="card-body d-flex align-items-end mb-3">
             <!--begin::Info-->
             <div class="fw-bold text-white py-2">
-                <span class="opacity-50">Pago en Linea</span>
-                <span class="fs-2hx text-white fw-bold me-6" >Consolidado</span>
+                <span class="opacity-50">Pago en Linea</span><BR>
+                <span class="fs-2hx text-white fw-bold me-6" >Consolidado</span><BR>
                 <span class="opacity-50">Impuesto Predial y Arbitrios</span>
             </div>
 
@@ -38,10 +38,10 @@
     </div>
     <!--end::Card widget 3-->
 </div>
-<div class="col-xl-1"></div>
-<div class="col-xl-3">
+
+<div class="col-xl-4">
     <!--begin::Card widget 3-->
-    <div class="card card-flush bgi-no-repeat bgi-size-contain bgi-position-x-end h-xl-100" style="background-color: #7239EA;background-image:url('assets/media/svg/shapes/wave-bg-purple.svg')">
+    <div class="card card-flush bgi-repeat bgi-size-contain bgi-position-x-end h-xl-100" style="background-color: #7239EA;background-image:url('assets/media/svg/shapes/wave-bg-purple.svg')">
         <!--begin::Header-->
         <div class="card-header pt-5 mb-3">
             <!--begin::Icon-->
@@ -54,7 +54,7 @@
         <!--begin::Card body-->
         <div class="card-body d-flex align-items-end mb-3">
             <div class="fw-bold text-white py-2">
-                <span class="opacity-50">Pago en Linea</span>
+                <span class="opacity-50">Pago en Linea</span><BR>
                 <span class="fs-2hx text-white fw-bold me-6" >Detallado</span><br>
                 <span class="opacity-50">Impuesto Predial y Arbitrios</span>
             </div>
@@ -74,10 +74,10 @@
     </div>
     <!--end::Card widget 3-->
 </div>
-<div class="col-xl-1"></div>
-<div class="col-xl-3">
+
+<div class="col-xl-4">
     <!--begin::Card widget 3-->
-    <div class="card card-flush bgi-no-repeat bgi-size-contain bgi-position-x-end h-xl-100" style="background-color: #0fb85b;background-image:url('assets/media/svg/shapes/widget-bg-3.png')">
+    <div class="card card-flush bgi-repeat bgi-size-contain bgi-position-x-end h-xl-100" style="background-color: #0fb85b;background-image:url('assets/media/svg/shapes/widget-bg-3.png')">
         <!--begin::Header-->
         <div class="card-header pt-5 mb-3">
             <!--begin::Icon-->
@@ -92,7 +92,7 @@
         <div class="card-body d-flex align-items-end mb-3">
             <div class="fw-bold text-white py-2">
                 <span class="opacity-50">Declaración Jurada</span><br>
-                <span class="fs-2hx text-white fw-bold me-6" >HR </span>
+                <span class="fs-2hx text-white fw-bold me-6" >HR - Hoja Resumen </span>
 
             </div>
         </div>
@@ -146,10 +146,10 @@
     </div>
     <!--end::Card widget 3-->
 </div> --}}
-<div class="col-xl-1"></div>
-<div class="col-xl-3">
+
+<div class="col-xl-4">
     <!--begin::Card widget 3-->
-    <div class="card card-flush bgi-repeat bgi-size-contain bgi-position-x-end h-xl-100 " style="background-color: #009ef7;background-image:url('assets/media/svg/shapes/widget-bg-1.png'); ">
+    <div class="card card-flush bg-repeat bgi-size-contain bgi-position-x-end h-xl-100 " style="background-color: #009ef7;background-image:url('assets/media/svg/shapes/widget-bg-1.png'); ">
         <!--begin::Header-->
         <div class="card-header pt-5 mb-3">
             <!--begin::Icon-->
@@ -182,8 +182,8 @@
     </div>
     <!--end::Card widget 3-->
 </div>
-<div class="col-xl-1"></div>
-<div class="col-xl-3">
+
+<div class="col-xl-4">
     <!--begin::Card widget 3-->
     <div class="card card-flush bgi-repeat bgi-size-contain bgi-position-x-end h-xl-100 " style="background-color: #F6C000;background-image:url('assets/media/svg/shapes/widget-bg-4.png'); ">
         <!--begin::Header-->
@@ -220,10 +220,10 @@
     </div>
     <!--end::Card widget 3-->
 </div>
-<div class="col-xl-1"></div>
-<div class="col-xl-3">
+
+<div class="col-xl-4">
     <!--begin::Card widget 3-->
-    <div class="card card-flush bgi-no-repeat bgi-size-contain bgi-position-x-end h-xl-100" style="background-color: #2bcdff;background-image:url('assets/media/svg/shapes/wave-bg-red.svg')">
+    <div class="card card-flush bg-repeat bgi-size-contain bgi-position-x-end h-xl-100" style="background-color: #2bcdff;background-image:url('assets/media/svg/shapes/widget-bg-5.png')">
         <!--begin::Header-->
         <div class="card-header pt-5 mb-3">
             <!--begin::Icon-->
@@ -249,7 +249,7 @@
         <div class="card-footer" style="border-top: 1px solid rgba(241, 60, 60, 0.3);background: rgba(0, 0, 0, 0.15);">
             <!--begin::Progress-->
             <div class="fw-bold text-white py-2" style="text-align: center;">
-                <a href="{{ route('casilla') }}" class="btn btn-sm btn-light-danger btn-active-danger">
+                <a href="{{ route('casilla') }}" class="btn btn-sm btn-light-primary btn-active-primary">
                     <i class="ki-duotone ki-plus fs-2"></i>Ir a Casilla Electronica</a>
                 <span class="opacity-50"></span>
             </div>
@@ -702,4 +702,5 @@
         </div>
     </div>
 </div>-->
+<livewire:chatbot.chatbot-component />
 @endsection

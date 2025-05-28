@@ -26,7 +26,31 @@
 		<link href="assets/css/style.bundle.css" rel="stylesheet" type="text/css" />
 		<!--end::Global Stylesheets Bundle-->
 		<script>// Frame-busting to prevent site from being loaded within a frame without permission (click-jacking) if (window.top != window.self) { window.top.location.replace(window.self.location.href); }</script>
-	</head>
+<style>
+/* Animación para la apertura del chat */
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px) scale(0.95);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+/* Efecto hover para las opciones */
+.hover-option:hover {
+    background-color: #e9ecef !important;
+    transform: translateX(3px);
+}
+
+/* Scroll automático mejorado */
+#chat-messages {
+    scroll-behavior: smooth;
+}
+</style>
+    </head>
 	<!--end::Head-->
 	<!--begin::Body-->
 	<body id="kt_body" class="header-fixed header-tablet-and-mobile-fixed toolbar-enabled">
@@ -109,7 +133,7 @@
 													<!--begin:Menu item-->
 													<div class="menu-item">
 														<!--begin:Menu link-->
-														<a class="menu-link py-3" href="#"   data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-dismiss="click" data-bs-placement="right">
+														<a class="menu-link py-3" href="{{ route('consolidado') }}"   data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-dismiss="click" data-bs-placement="right">
 															<span class="menu-icon">
 																<i class="ki-duotone ki-rocket fs-2">
 																	<span class="path1"></span>
@@ -125,7 +149,7 @@
 													<!--begin:Menu item-->
 													<div class="menu-item">
 														<!--begin:Menu link-->
-														<a class="menu-link py-3" href="#"  data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-dismiss="click" data-bs-placement="right">
+														<a class="menu-link py-3" href="{{ route('detallado') }}"  data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-dismiss="click" data-bs-placement="right">
 															<span class="menu-icon">
 																<i class="ki-duotone ki-abstract-26 fs-2">
 																	<span class="path1"></span>
@@ -146,10 +170,12 @@
 											<!--begin:Menu item-->
 											<div data-kt-menu-trigger="{default: 'click', lg: 'hover'}" data-kt-menu-placement="bottom-start" class="menu-item menu-lg-down-accordion menu-sub-lg-down-indention me-0 me-lg-2">
 												<!--begin:Menu link-->
+												<a class="menu-link py-3" href="{{ route('Pagos') }}"  data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-dismiss="click" data-bs-placement="right">
 												<span class="menu-link py-3">
 													<span class="menu-title">Mis Pagos</span>
 													<span class="menu-arrow d-lg-none"></span>
 												</span>
+												</a>
 												<!--end:Menu link-->
 
 											</div>
@@ -183,7 +209,7 @@
 													<!--begin:Menu item-->
 													<div class="menu-item">
 														<!--begin:Menu link-->
-														<a class="menu-link py-3" href="#" data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-dismiss="click" data-bs-placement="right">
+														<a class="menu-link py-3" href="{{ route('HLA') }}" data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-dismiss="click" data-bs-placement="right">
 															<span class="menu-icon">
 																<i class="ki-duotone ki-abstract-26 fs-2">
 																	<span class="path1"></span>
@@ -202,10 +228,12 @@
 											</div>
 											<div data-kt-menu-trigger="{default: 'click', lg: 'hover'}" data-kt-menu-placement="bottom-start" class="menu-item menu-lg-down-accordion menu-sub-lg-down-indention me-0 me-lg-2">
 												<!--begin:Menu link-->
+												<a class="menu-link py-3" href="{{ route('casilla') }}" data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-dismiss="click" data-bs-placement="right">
 												<span class="menu-link py-3">
 													<span class="menu-title">Casilla Electrónica</span>
 													<span class="menu-arrow d-lg-none"></span>
 												</span>
+												</a>
 												<!--end:Menu link-->
 
 											</div>
@@ -226,10 +254,27 @@
 									<!--end::Theme mode-->
 									<!--begin::User-->
 									<div class="d-flex align-items-center me-lg-n2 ms-1 ms-lg-3" id="kt_header_user_menu_toggle">
-										<!--begin::Menu wrapper-->
-										<div class="btn btn-icon btn-active-light-primary btn-custom w-30px h-30px w-md-40px h-md-40px" data-kt-menu-trigger="click" data-kt-menu-attach="parent" data-kt-menu-placement="bottom-end">
-											<img class="h-30px w-30px rounded" src="assets/media/avatars/blank.png" alt="" />
-										</div>
+
+									<!--	<div class="btn btn-icon  btn-custom w-30px h-30px w-md-40px h-md-40px" data-kt-menu-placement="bottom-end">
+                                        <i class="fa-solid fa-user-tie" style="font-size: 25px"></i>
+                                    </div>
+                                    <span style="padding: 0 15px 0 2px; color:#ffffff">{{ $usuario->vcodcontr ?? 'Usuario' }}</span>-->
+
+                                    <div class="btn btn-icon btn-active-light-primary btn-custom w-30px h-30px w-md-40px h-md-40px" data-kt-menu-placement="bottom-end">
+                                        <i class="fa-solid fa-address-card" style="font-size: 27px"></i>
+                                    </div>
+                                    <a href="{{ route('perfilAdmin') }}" class="menu-link " style="padding: 0.65rem 1rem 0.65rem 0.5rem;background-color: rgba(255, 255, 255, 0.0);">Mi Perfil</a>
+
+                                    <div class="btn btn-icon btn-active-light-primary btn-custom w-30px h-30px w-md-40px h-md-40px" data-kt-menu-placement="bottom-end">
+                                        <i class="fa-solid fa-right-from-bracket" style="font-size: 27px"></i>
+                                    </div>
+                                    <form method="POST" action="{{ route('logout') }}">
+                                        @csrf
+                                        <button type="submit" class="menu-link "
+                                            style="background: none; border: none; padding: 0; margin: 0; cursor: pointer; color: #ffffff;">
+                                            Cerrar Sesión
+                                        </button>
+                                    </form>
 										<!--begin::User account menu-->
 										<div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-800 menu-state-bg menu-state-color fw-semibold py-4 fs-6 w-275px" data-kt-menu="true">
 											<!--begin::Menu item-->
