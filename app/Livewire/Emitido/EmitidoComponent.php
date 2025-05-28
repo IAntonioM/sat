@@ -2,10 +2,12 @@
 
 namespace App\Livewire\Emitido;
 
+use App\Models\Contribuyente;
 use Livewire\Component;
 use App\Services\EmitidoService;
 use Barryvdh\Debugbar\Facades\Debugbar;
 use Livewire\Attributes\On;
+use Illuminate\Support\Facades\Session;
 
 class EmitidoComponent extends Component
 {
@@ -32,6 +34,10 @@ class EmitidoComponent extends Component
 
     public function buscarDocumento()
     {
+
+        $codigo_contribuyente = Session::get('codigo_contribuyente');
+
+        $usuario = Contribuyente::obtenerDatosContri($codigo_contribuyente);
         if (!$this->nu_emi) {
             $this->documentos = [];
             $this->padre = null;
@@ -42,6 +48,7 @@ class EmitidoComponent extends Component
         $resultado = $this->service->buscar([
             'nu_emi' => $this->nu_emi,
             'anio' => $this->anio ?? date('Y'),
+            'receptor_id' => $usuario->vcodcontr
         ]);
 
         $this->documentos = $resultado ?? [];
@@ -70,6 +77,20 @@ class EmitidoComponent extends Component
         $this->buscarDocumento();
     }
 
+    public function marcarFavorito($nu_emi)
+    {
+        $codigo_contribuyente = Session::get('codigo_contribuyente');
+
+        $resultado = $this->service->accionFavorito([
+            'nu_emi' => $nu_emi,
+            'receptor_id' => $codigo_contribuyente
+        ]);
+
+        Debugbar::info('📌 Resultado marcador:', $resultado);
+
+        // Opcionalmente puedes actualizar la lista de documentos o marcar solo el documento afectado
+        $this->buscarDocumento(); // Para refrescar
+    }
 
 
 }

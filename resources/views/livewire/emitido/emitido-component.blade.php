@@ -1,4 +1,7 @@
-<div class="card-body" style="max-height: 800px; overflow-y: auto;">
+<div class="card-body" style="max-height: 800px; overflow-y: auto;" >
+    <div id="printable-area">
+
+
     @if ($visible)
         <!--begin::Title-->
         <div class="d-flex flex-wrap gap-2 justify-content-between mb-8">
@@ -22,8 +25,9 @@
                 </a>
                 <!--end::Sort-->
                 <!--begin::Print-->
-                <a href="#" class="btn btn-sm btn-icon btn-light btn-active-light-primary me-2"
-                    data-bs-toggle="tooltip" data-bs-placement="top" title="Print">
+                <a href="javascript:void(0)" onclick="printCardBody()"
+                    class="btn btn-sm btn-icon btn-light btn-active-light-primary me-2" data-bs-toggle="tooltip"
+                    data-bs-placement="top" title="Print">
                     <i class="ki-duotone ki-printer fs-2">
                         <span class="path1"></span>
                         <span class="path2"></span>
@@ -32,6 +36,7 @@
                         <span class="path5"></span>
                     </i>
                 </a>
+
                 <!--end::Print-->
             </div>
         </div>
@@ -120,10 +125,16 @@
                     <!--end::Date-->
                     <div class="d-flex">
                         <!--begin::Star-->
-                        <a href="#" class="btn btn-sm btn-icon btn-clear btn-active-light-primary me-3"
-                            data-bs-toggle="tooltip" data-bs-placement="top" title="Star">
-                            <i class="ki-duotone ki-star fs-2 m-0"></i>
+                        <a href="#"
+                        wire:click.prevent="marcarFavorito('{{ $padre->nu_emi }}')"
+                        class="btn btn-sm btn-icon btn-clear btn-active-light-primary me-3"
+                        data-bs-toggle="tooltip" data-bs-placement="top" title="Favorito">
+                            <i class="ki-duotone ki-star fs-2 m-0 {{ $padre->flag_favorito == 1 ? 'text-warning' : '' }}">
+                                <span class="path1"></span>
+                                <span class="path2"></span>
+                            </i>
                         </a>
+
                         <!--end::Star-->
                         <!--begin::Mark as important-->
                         {{-- <a href="#" class="btn btn-sm btn-icon btn-clear btn-active-light-primary me-3"
@@ -682,11 +693,19 @@
                             <!--end::Date-->
                             <div class="d-flex">
                                 <!--begin::Star-->
-                                <a href="#" class="btn btn-sm btn-icon btn-clear btn-active-light-primary me-3"
+                                {{-- <a href="#" class="btn btn-sm btn-icon btn-clear btn-active-light-primary me-3"
                                     data-bs-toggle="tooltip" data-bs-placement="top" title="Star">
-                                    {{-- <i class="ki-duotone ki-star fs-2 text-warning m-0"></i> --}}
                                     <i class="ki-duotone ki-star fs-2 text m-0"></i>
-                                </a>
+                                </a> --}}
+                                <a href="#"
+                                        wire:click.prevent="marcarFavorito('{{ $hijo->nu_emi }}')"
+                                        class="btn btn-sm btn-icon btn-clear btn-active-light-primary me-3"
+                                        data-bs-toggle="tooltip" data-bs-placement="top" title="Favorito">
+                                            <i class="ki-duotone ki-star fs-2 m-0 {{ $hijo->flag_favorito == 1 ? 'text-warning' : '' }}">
+                                                <span class="path1"></span>
+                                                <span class="path2"></span>
+                                            </i>
+                                        </a>
                                 <!--end::Star-->
                                 <!--begin::Mark as important-->
                                 {{-- <a href="#" class="btn btn-sm btn-icon btn-clear btn-active-light-primary me-3"
@@ -895,12 +914,16 @@
         </div>
         <!--end::Message accordion-->
         <!--begin::Form--> --}}
-        @if ($visible)
-            <livewire:emitir-mensaje.emitir-mensaje-component :padre="$padre" :key="'emitir-mensaje-' . $padre->nu_emi" />
-        @endif
+
 
     @endif
     <!--end::Form-->
+    </div>
+
+        @if ($visible)
+            <livewire:emitir-mensaje.emitir-mensaje-component :padre="$padre" :key="'emitir-mensaje-' . $padre->nu_emi" />
+        @endif
+</div>
     <script>
         // Inicializar tooltips
         document.addEventListener('DOMContentLoaded', function() {
@@ -910,7 +933,17 @@
             });
         });
 
+        function printCardBody() {
+            var printContents = document.getElementById("printable-area").innerHTML;
+            var originalContents = document.body.innerHTML;
 
+            // Reemplaza todo el contenido del body por solo el card-body
+            document.body.innerHTML = printContents;
+
+            window.print();
+
+            // Luego de imprimir, vuelve a dejar el contenido original
+            document.body.innerHTML = originalContents;
+            location.reload(); // Recarga para evitar estado inconsistente
+        }
     </script>
-
-</div>

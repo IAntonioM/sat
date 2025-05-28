@@ -193,34 +193,39 @@
                 <!--begin::Upload attachement-->
                 <span class="btn btn-icon btn-sm btn-clean btn-active-light-primary me-2"
                     id="kt_inbox_reply_attachments_select"
+                    data-toggle="tooltip" title="Adjuntar Archivo"
                     onclick="document.getElementById('attachment-input').click()">
                     <i class="ki-duotone ki-paper-clip fs-2 m-0"></i>
                 </span>
                 <!--end::Upload attachement-->
                 <!--begin::Pin-->
-                <span class="btn btn-icon btn-sm btn-clean btn-active-light-primary">
+                {{-- <span class="btn btn-icon btn-sm btn-clean btn-active-light-primary">
                     <i class="ki-duotone ki-geolocation fs-2 m-0">
                         <span class="path1"></span>
                         <span class="path2"></span>
                     </i>
-                </span>
+                </span> --}}
                 <!--end::Pin-->
             </div>
             <!--end::Actions-->
             <!--begin::Toolbar-->
             <div class="d-flex align-items-center">
                 <!--begin::More actions-->
-                <span class="btn btn-icon btn-sm btn-clean btn-active-light-primary me-2" data-toggle="tooltip"
-                    title="More actions">
+                {{-- <span class="btn btn-icon btn-sm btn-clean btn-active-light-primary me-2" data-toggle="tooltip"
+                    title="Mas Acciones">
                     <i class="ki-duotone ki-setting-2 fs-2">
                         <span class="path1"></span>
                         <span class="path2"></span>
                     </i>
-                </span>
+                </span> --}}
                 <!--end::More actions-->
                 <!--begin::Dismiss reply-->
-                <span class="btn btn-icon btn-sm btn-clean btn-active-light-primary" data-inbox="dismiss"
-                    data-toggle="tooltip" title="Dismiss reply">
+                <span
+                    wire:click="limpiarMensaje"
+                    class="btn btn-icon btn-sm btn-clean btn-active-light-primary"
+                    data-inbox="dismiss"
+                    data-toggle="tooltip"
+                    title="Borrar Texto">
                     <i class="ki-duotone ki-trash fs-2">
                         <span class="path1"></span>
                         <span class="path2"></span>
@@ -229,6 +234,7 @@
                         <span class="path5"></span>
                     </i>
                 </span>
+
                 <!--end::Dismiss reply-->
             </div>
             <!--end::Toolbar-->

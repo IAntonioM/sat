@@ -13,9 +13,12 @@
                         <span class="path1"></span>
                         <span class="path2"></span>
                     </i>
-                    <input type="text" wire:keydown.enter="search"
-                        class="form-control form-control-sm form-control-solid mw-120 min-w-120px min-w-lg-150px ps-11"
-                        placeholder="Buscar por asunto" />
+                    <input type="text"
+       wire:model="search"
+       wire:keydown.enter="buscar"
+       class="form-control form-control-sm form-control-solid mw-120 min-w-120px min-w-lg-150px ps-11"
+       placeholder="Buscar por asunto" />
+
                 </div>
             </div>
 
@@ -70,14 +73,17 @@
                                                     class="path2"></span></i>
                                         </a> --}}
                                         <a href="#"
-                                            class="btn btn-sm btn-icon btn-clear btn-active-light-primary me-3"
-                                            data-bs-toggle="tooltip" data-bs-placement="top" title="Marcador">
-                                            <i class="ki-duotone ki-save-2 fs-2 m-0">
+                                        wire:click.prevent="marcarMarcador('{{ $documento->nu_emi }}')"
+                                        class="btn btn-sm btn-icon btn-clear btn-active-light-primary me-3"
+                                        data-bs-toggle="tooltip" data-bs-placement="top" title="Marcador">
+                                            <i class="ki-duotone ki-save-2 fs-2 m-0
+                                                {{ $documento->flag_marcador == 1 ? 'text-warning' : '' }}">
                                                 <span class="path1"></span>
                                                 <span class="path2"></span>
                                             </i>
                                         </a>
-                                        <a href="#" class="btn btn-sm btn-icon btn-light-danger" title="Eliminar" >
+                                        <a href="#" class="btn btn-sm btn-icon btn-light-danger"
+                                        data-bs-toggle="tooltip" data-bs-placement="top" title="Mandar a Papelera" >
                                             <i class="ki-duotone ki-trash fs-2"><span class="path1"></span><span
                                                     class="path2"></span><span class="path3"></span><span
                                                     class="path4"></span><span class="path5"></span></i>
@@ -95,6 +101,30 @@
             </table>
         </div>
 
+        {{-- <!-- NUEVO: Panel de acciones para documentos seleccionados -->
+        @if (count($json_recibido) > 0)
+            <div class="card-footer d-flex justify-content-between align-items-center">
+                <button type="button" class="btn btn-sm btn-light-danger"
+                    wire:click="limpiarSeleccion"
+                    title="Limpiar selección">
+                    <i class="ki-duotone ki-cross fs-3">
+                        <span class="path1"></span>
+                        <span class="path2"></span>
+                    </i>
+                    Limpiar
+                </button>
+
+                <button type="button" class="btn btn-sm btn-primary"
+                    wire:click="procesarSeleccionados"
+                    title="Procesar documentos seleccionados">
+                    <i class="ki-duotone ki-check fs-3">
+                        <span class="path1"></span>
+                        <span class="path2"></span>
+                    </i>
+                    Procesar ({{ count($json_recibido) }})
+                </button>
+            </div>
+        @endif --}}
     </div>
 </div>
 

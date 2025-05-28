@@ -39,6 +39,7 @@ class RecibidoComponent extends Component
     public function seleccionarDocumento($nu_emi)
     {
         $this->dispatch('documentoSeleccionado', nu_emi: $nu_emi);
+        $this->dispatch('actualizarMenuConteo');
         $this->buscarDocumentos();
     }
 
@@ -151,9 +152,9 @@ class RecibidoComponent extends Component
         }
 
         return collect($this->documentos)
-               ->whereIn('nu_emi', $this->json_recibido)
-               ->values()
-               ->toArray();
+            ->whereIn('nu_emi', $this->json_recibido)
+            ->values()
+            ->toArray();
     }
 
     public function getSelectionStats()
@@ -168,6 +169,27 @@ class RecibidoComponent extends Component
                 count(array_intersect($this->json_recibido, $documentosVisibles)) === count($this->documentos)
         ];
     }
+
+
+
+    public function marcarMarcador($nu_emi)
+    {
+        $codigo_contribuyente = Session::get('codigo_contribuyente');
+        $usuario = Contribuyente::obtenerDatosContri($codigo_contribuyente);
+
+        $resultado = $this->service->accionMarcador([
+            'nu_emi' => $nu_emi,
+            'receptor_id' => $usuario->vcodcontr
+        ]);
+
+        Debugbar::info('📌 Resultado marcador:', $resultado);
+
+        // Opcionalmente puedes actualizar la lista de documentos o marcar solo el documento afectado
+        $this->buscarDocumentos(); // Para refrescar
+    }
+
+
+
 
     public function render()
     {

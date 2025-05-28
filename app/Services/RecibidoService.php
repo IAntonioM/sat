@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Services;
 
 use App\Models\Recibido;
@@ -33,6 +34,20 @@ class RecibidoService
             'estado_recepcion_id' => $estadoId,
         ]);
     }
+
+    public function getDataMenu(array $params)
+    {
+        $params['accion'] = 20;
+        return Recibido::executeProcedure($params);
+    }
+
+    public function accionMarcador(array $params)
+    {
+        $params['accion'] = 5;
+        return Recibido::executeProcedure($params);
+    }
+
+
 
     // Puedes agregar más métodos para acciones 4, 5, 6
 }

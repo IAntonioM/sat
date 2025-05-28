@@ -65,6 +65,11 @@ class EmitidoService
         ]);
     }
 
+    public function accionFavorito(array $params)
+    {
+        $params['accion'] = 5;
+        return Emitido::executeProcedure($params);
+    }
 
 
     // Puedes agregar métodos para acciones 5 y 6 si están implementadas en el SP

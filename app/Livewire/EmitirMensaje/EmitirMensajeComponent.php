@@ -171,4 +171,8 @@ class EmitirMensajeComponent extends Component
         $this->reset(['cc', 'bcc', 'subject', 'message', 'attachments']);
         $this->dispatch('messageSent')->to('emitido.emitido-component');
     }
+    public function limpiarMensaje()
+    {
+        $this->message = '';
+    }
 }
