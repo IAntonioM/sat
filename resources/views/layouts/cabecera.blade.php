@@ -226,7 +226,7 @@
 												</div>
 												<!--end:Menu sub-->
 											</div>
-											<div data-kt-menu-trigger="{default: 'click', lg: 'hover'}" data-kt-menu-placement="bottom-start" class="menu-item menu-lg-down-accordion menu-sub-lg-down-indention me-0 me-lg-2">
+											<div  data-kt-menu-placement="bottom-start" class="menu-item menu-lg-down-accordion menu-sub-lg-down-indention me-0 me-lg-2">
 												<!--begin:Menu link-->
 												<a class="menu-link py-3" href="{{ route('casilla') }}" data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-dismiss="click" data-bs-placement="right">
 												<span class="menu-link py-3">

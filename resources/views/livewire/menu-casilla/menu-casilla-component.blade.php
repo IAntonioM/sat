@@ -10,7 +10,8 @@
         <!--begin::Aside content-->
         <div class="card-body" style="background-color: #f9f9f9;">
             <!--begin::Button-->
-            <a href="{{ route('createCasilla') }}" class="btn btn-primary fw-bold w-100 mb-8">Nuevo Mensaje</a>
+            <br>
+            {{-- <a href="{{ route('createCasilla') }}" class="btn btn-primary fw-bold w-100 mb-8">Nuevo Mensaje</a> --}}
             <!--end::Button-->
             <!--begin::Menu-->
             <div class="menu menu-column menu-rounded menu-state-bg menu-state-title-primary menu-state-icon-primary menu-state-bullet-primary mb-10">

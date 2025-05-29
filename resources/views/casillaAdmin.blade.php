@@ -65,7 +65,7 @@
                     <!--begin::Table-->
                     <div class="d-flex flex-column flex-lg-row">
 
-                        <livewire:menu-casilla.menu-casilla-component />
+                        <livewire:menu-casilla-admin.menu-casilla-admin-component />
                         <livewire:recibido.recibido-component />
                         {{-- <div class=" col-xl-3 row" style="margin: 0 1rem; border-left: 1px solid #f1f1f2;">
 									<!--begin::Card-->
