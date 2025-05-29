@@ -1,4 +1,4 @@
-<div class="d-none d-lg-flex flex-column flex-lg-row-auto w-100 w-lg-300px" data-kt-drawer="true"
+<div class="d-none d-lg-flex flex-column flex-lg-row-auto w-100 w-lg-300px " data-kt-drawer="true"
     data-kt-drawer-name="inbox-aside" data-kt-drawer-activate="{default: true, lg: false}" data-kt-drawer-overlay="true"
     data-kt-drawer-width="225px" data-kt-drawer-direction="start"
     data-kt-drawer-toggle="#kt_inbox_aside_toggle"style="background-color: #f9f9f9;">

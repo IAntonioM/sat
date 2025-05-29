@@ -1,4 +1,4 @@
-<div>
+<div style="border-left: 2px solid #dfdfdf;">
     <form id="kt_inbox_reply_form" class="rounded border mt-10" wire:submit.prevent="send">
         <!--begin::Body-->
         <div class="d-block">
