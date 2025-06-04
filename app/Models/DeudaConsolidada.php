@@ -58,7 +58,7 @@ class DeudaConsolidada extends Model
      */
     public static function obtenerAniosDisponibles($codigoContribuyente)
     {
-        $result = DB::select('SELECT DISTINCT año FROM CONSOLIDADO WHERE codigo = ?', [$codigoContribuyente]);
+        $result = DB::select('SELECT DISTINCT año FROM CONSOLIDADO WHERE codigo = ? and tipo <> 005', [$codigoContribuyente]);
         return collect($result)->pluck('año')->toArray();
     }
 
@@ -69,7 +69,7 @@ class DeudaConsolidada extends Model
      */
     public static function obtenerTiposTributo($codigoContribuyente)
     {
-        $result = DB::select('SELECT DISTINCT tipo,mtipo FROM CONSOLIDADO WHERE codigo = ?', [$codigoContribuyente]);
+        $result = DB::select('SELECT DISTINCT tipo,mtipo FROM CONSOLIDADO WHERE codigo = ? and tipo <> 005', [$codigoContribuyente]);
         return $result;
     }
 

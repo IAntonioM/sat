@@ -30,21 +30,21 @@ class PagosModel extends Model
     public static function obtenerAniosDisponibles($vcodcontr)
     {
         $result = DB::select(
-            'select DISTINCT año from PAGOS_PORTAL where codigo = ?',[$vcodcontr]);
+            'select DISTINCT año from PAGOS_PORTAL where codigo = ? and tipo <> 005',[$vcodcontr]);
         return $result;
     }
 
     public static function obtenerTiposTributosDisponibles($vcodcontr)
     {
         $result = DB::select(
-            'select DISTINCT tipo, tipo_d from PAGOS_PORTAL where codigo = ?',[$vcodcontr]);
+            'select DISTINCT tipo, tipo_d from PAGOS_PORTAL where codigo = ? and tipo <> 005',[$vcodcontr]);
         return $result;
     }
 
     public static function obtenerTotalPagado($vcodcontr)
     {
         $result = DB::select(
-            'select Sum(total) as totalPagado from PAGOS_PORTAL where codigo = ?',[$vcodcontr]);
+            "select Sum(total) as totalPagado from PAGOS_PORTAL where codigo = ? and tipo = '005'",[$vcodcontr]);
         return $result;
     }
 

@@ -15,14 +15,16 @@ class ConsolidadoReport extends FPDF
     protected $deudas;
     protected $datosContribuyente;
     protected $totalDeuda;
+    protected $itemsSeleccionados;
 
-    public function __construct($codigoContribuyente, $anioSeleccionado = '%', $tipoTributo = '%')
+    public function __construct($codigoContribuyente, $anioSeleccionado = '%', $tipoTributo = '%', $itemsSeleccionados = null)
     {
         parent::__construct('L', 'mm', 'A4');
 
         $this->codigoContribuyente = $codigoContribuyente;
         $this->anioSeleccionado = $anioSeleccionado;
         $this->tipoTributo = $tipoTributo;
+        $this->itemsSeleccionados = $itemsSeleccionados;
         $this->fechaActual = date('d/m/Y');
 
         // Obtener datos del contribuyente
@@ -37,6 +39,34 @@ class ConsolidadoReport extends FPDF
             $this->anioSeleccionado,
             $this->tipoTributo
         );
+
+        // Filtrar solo los items seleccionados si existen
+        if ($this->itemsSeleccionados) {
+            $this->filtrarItemsSeleccionados();
+        }
+    }
+
+    private function filtrarItemsSeleccionados()
+    {
+        $itemsArray = explode(',', $this->itemsSeleccionados);
+        $deudasFiltradas = [];
+
+        foreach ($itemsArray as $item) {
+            $parts = explode('|', $item);
+            if (count($parts) === 3) {
+                $tipo = $parts[1];
+                $anio = $parts[2];
+
+                foreach ($this->deudas as $deuda) {
+                    if ($deuda->tipo === $tipo && $deuda->año == $anio) {
+                        $deudasFiltradas[] = $deuda;
+                        break;
+                    }
+                }
+            }
+        }
+
+        $this->deudas = $deudasFiltradas;
     }
 
     //Cabecera de página
@@ -80,7 +110,7 @@ class ConsolidadoReport extends FPDF
         $header = array('Tributo', 'Año', 'Imp. Insoluto', 'Imp. Reajuste', 'Mora', 'Cos. de Emisión', 'Total');
         $w = array(65, 25, 35, 35, 35, 35, 35);
 
-        for($i = 0; $i < count($header); $i++) {
+        for ($i = 0; $i < count($header); $i++) {
             $this->Cell($w[$i], 8, utf8_decode($header[$i]), 1, 0, 'C', 1);
         }
         $this->Ln();

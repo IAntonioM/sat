@@ -49,11 +49,12 @@ class ReporteController extends Controller
                 return $report->generarPDF();
                 break;
 
-                case 'reporteConsolidado':
+            case 'reporteConsolidado':
                 $codigoContribuyente = $request->input('codigo_contribuyente');
                 $anioSeleccionado = $request->input('anio', '%');
                 $tipoTributo = $request->input('tipo_tributo', '%');
-                $report = new ConsolidadoReport($codigoContribuyente, $anioSeleccionado, $tipoTributo);
+                $itemsSeleccionados = $request->input('items_seleccionados');
+                $report = new ConsolidadoReport($codigoContribuyente, $anioSeleccionado, $tipoTributo, $itemsSeleccionados);
                 return $report->generarPDF();
                 break;
 

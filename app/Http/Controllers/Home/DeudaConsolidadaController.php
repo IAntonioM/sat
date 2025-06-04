@@ -2,33 +2,24 @@
 
 namespace App\Http\Controllers\Home;
 
-use App\Http\Requests\Opciones\DeudaConsolidadaRequest;
-use App\Models\DeudaConsolidada;
-use App\Models\Contribuyente;
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use Carbon\Carbon;
-use Barryvdh\Debugbar\Facades\Debugbar;
-use Illuminate\Support\Facades\Session;
+use Illuminate\Http\Request;
 
 class DeudaConsolidadaController extends Controller
 {
     /**
-     * Mostrar la vista de deudas consolidadas
+     * Mostrar la vista de deudas consolidadas (ahora con Livewire)
      *
      * @param Request $request
      * @return \Illuminate\View\View
      */
     public function index(Request $request)
     {
-        // Obtener el código del contribuyente de la sesión o del parámetro
+        // Verificar que hay una sesión válida
         $codigoContribuyente = session('codigo_contribuyente') ??
-        session('cod_usuario') ?? null; // Valor por defecto para pruebas
-
-        $usuario = Contribuyente::obtenerDatosContri($codigoContribuyente);
+                              session('cod_usuario') ?? null;
 
         if (!$codigoContribuyente) {
-            // Si no hay código de contribuyente, redirigir al login
             return redirect()->route('login')->with([
                 'alert' => [
                     'type' => 'error',
@@ -38,107 +29,38 @@ class DeudaConsolidadaController extends Controller
             ]);
         }
 
-        // Guardar el código en sesión para futuras consultas
-        $request->session()->put('codigo_contribuyente', $codigoContribuyente);
-
-        // Obtener datos del contribuyente
-        $contribuyente = DeudaConsolidada::obtenerDatosContribuyente($codigoContribuyente);
-
-        if (!$contribuyente) {
-            return redirect()->route('login')->with('error', 'No se encontró el contribuyente');
-        }
-
-        // Obtener el total de la deuda
-        $totalDeuda = DeudaConsolidada::obtenerTotalDeuda($codigoContribuyente);
-
-        // Obtener los filtros
-        $anioSeleccionado = $request->anio ?? '%';
-        $tipoTributo = $request->tipo_tributo ?? '%';
-
-        // Obtener las deudas detalladas
-        $deudas = DeudaConsolidada::obtenerDeudasDetalladas($codigoContribuyente, $anioSeleccionado, $tipoTributo);
-
-        // Preparar datos para la vista
-        $deudas = collect($deudas)->groupBy('año');
-        $aniosDisponibles = DeudaConsolidada::obtenerAniosDisponibles($codigoContribuyente);
-        $tiposTributo = DeudaConsolidada::obtenerTiposTributo($codigoContribuyente);
-        $fechaActual = Carbon::now()->format('d/m/Y');
-
-        Debugbar::info('contribuyente',$contribuyente);
-        Debugbar::info('totalDeuda',$totalDeuda);
-        Debugbar::info('deudas',$deudas);
-        Debugbar::info('aniosDisponibles',$aniosDisponibles);
-        Debugbar::info('tiposTributo',$tiposTributo);
-        Debugbar::info('anioSeleccionado',$anioSeleccionado);
-        Debugbar::info('tipoTributo',$tipoTributo);
-        Debugbar::info('fechaActual',$fechaActual);
-        Debugbar::info('usuario',$usuario);
-
-        return view('consolidado', compact(
-            'contribuyente',
-            'totalDeuda',
-            'deudas',
-            'aniosDisponibles',
-            'tiposTributo',
-            'anioSeleccionado',
-            'tipoTributo',
-            'fechaActual',
-            'usuario'
-        ));
+        // La lógica ahora está en el componente Livewire
+        return view('consolidado');
     }
 
     /**
-     * Filtra las deudas por año y tipo de tributo
+     * Método de compatibilidad para el filtro (redirige al index)
+     * Se mantiene por compatibilidad con rutas existentes
      *
-     * @param DeudaConsolidadaRequest $request
-     * @return \Illuminate\Http\JsonResponse
+     * @param Request $request
+     * @return \Illuminate\Http\RedirectResponse
      */
-    public function filtrar(DeudaConsolidadaRequest $request)
+    public function filtrar(Request $request)
     {
-        // Este método se mantiene como está, ya implementado en el index
-        return $this->index($request);
+        // Los filtros ahora se manejan en tiempo real con Livewire
+        return redirect()->route('consolidado')->with('message', 'Use los filtros en la página');
     }
 
     /**
-     * Procesa el pago de las deudas seleccionadas
+     * Endpoint para pagos via AJAX (opcional, para compatibilidad)
+     * La funcionalidad principal está en el componente Livewire
      *
      * @param Request $request
      * @return \Illuminate\Http\JsonResponse
      */
     public function pagar(Request $request)
     {
-        $results = [];
-
-        if ($request->has('items')) {
-            foreach ($request->items as $item) {
-                // Cada item debe contener codigo|tipo|año
-                $parts = explode('|', $item);
-                if (count($parts) === 3) {
-                    $codigoContribuyente = $parts[0];
-                    $tipoConsolidado = $parts[1];
-                    $anoConsolidado = $parts[2];
-
-                    // Llamar al método para pagar
-                    $result = DeudaConsolidada::pagarConsolidado(
-                        $codigoContribuyente,
-                        $tipoConsolidado,
-                        $anoConsolidado
-                    );
-
-                    $results[] = [
-                        'codigo' => $codigoContribuyente,
-                        'tipo' => $tipoConsolidado,
-                        'ano' => $anoConsolidado,
-                        'result' => $result
-                    ];
-                }
-            }
-        }
+        // Este método se mantiene solo para compatibilidad con llamadas AJAX externas
+        // La funcionalidad principal está ahora en el componente Livewire
 
         return response()->json([
-            'status' => 'success',
-            'message' => 'Pagos procesados correctamente',
-            'results' => $results
+            'status' => 'info',
+            'message' => 'Use la funcionalidad de pago integrada en la página'
         ]);
     }
 }
