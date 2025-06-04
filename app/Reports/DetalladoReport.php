@@ -15,20 +15,27 @@ class DetalladoReport extends FPDF
     protected $deudas;
     protected $datosContribuyente;
     protected $totalDeuda;
+    protected $itemsSeleccionados;
 
-    public function __construct($codigoContribuyente, $anioSeleccionado = '%', $tipoTributo = '%')
+    public function __construct($codigoContribuyente, $anioSeleccionado = '%', $tipoTributo = '%', $itemsSeleccionados = null)
     {
         parent::__construct('L', 'mm', 'A4');
 
         $this->codigoContribuyente = $codigoContribuyente;
         $this->anioSeleccionado = $anioSeleccionado;
         $this->tipoTributo = $tipoTributo;
+        $this->itemsSeleccionados = $itemsSeleccionados;
         $this->fechaActual = date('d/m/Y');
+
+        // Debug: verificar qué items se reciben
+        if ($this->itemsSeleccionados) {
+            error_log("Items seleccionados recibidos: " . $this->itemsSeleccionados);
+        }
 
         // Obtener datos del contribuyente
         $this->datosContribuyente = Detallado::obtenerDatosContribuyente($this->codigoContribuyente);
 
-        // Obtener total de deuda
+        // Obtener total de deuda (se recalculará si hay filtros)
         $this->totalDeuda = Detallado::obtenerTotalDeuda($this->codigoContribuyente);
 
         // Obtener las deudas detalladas según filtros
@@ -37,6 +44,87 @@ class DetalladoReport extends FPDF
             $this->anioSeleccionado,
             $this->tipoTributo
         );
+
+        // Debug: verificar cuántas deudas se obtuvieron inicialmente
+        error_log("Total deudas antes del filtro: " . count($this->deudas));
+
+        // Filtrar solo los items seleccionados si existen
+        if ($this->itemsSeleccionados) {
+            $this->filtrarItemsSeleccionados();
+            error_log("Total deudas después del filtro: " . count($this->deudas));
+        }
+    }
+
+    private function filtrarItemsSeleccionados()
+    {
+        if (!$this->itemsSeleccionados) {
+            return;
+        }
+
+        $itemsArray = explode(',', $this->itemsSeleccionados);
+        $deudasFiltradas = [];
+
+        // Debug: mostrar qué items se están procesando
+        error_log("Procesando items: " . print_r($itemsArray, true));
+
+        foreach ($itemsArray as $item) {
+            $item = trim($item); // Limpiar espacios
+            if (empty($item)) continue;
+
+            $parts = explode('|', $item);
+            error_log("Item: $item - Parts: " . print_r($parts, true));
+
+            // Manejar tanto formato completo como incompleto
+            if (count($parts) === 3) {
+                // Formato: codigo|tipo|año-periodo
+                $codigo = trim($parts[0]);
+                $tipo = trim($parts[1]);
+                $anioPeriodo = trim($parts[2]);
+            } elseif (count($parts) === 2 && empty($parts[1])) {
+                // Formato: codigo||año-periodo (tipo vacío)
+                $codigo = trim($parts[0]);
+                $tipo = ''; // Tipo vacío, necesitaremos otra forma de identificar
+                $anioPeriodo = trim($parts[2] ?? '');
+            } else {
+                continue; // Formato no reconocido
+            }
+
+            // Extraer año y periodo
+            $anioPeriodoParts = explode('-', $anioPeriodo);
+            if (count($anioPeriodoParts) === 2) {
+                $anio = $anioPeriodoParts[0];
+                $periodo = $anioPeriodoParts[1];
+
+                // Buscar la deuda que coincida
+                foreach ($this->deudas as $deuda) {
+                    // Si el tipo está vacío, solo comparar año y periodo
+                    if (empty($tipo)) {
+                        if ($deuda->ano == $anio && $deuda->periodo == $periodo) {
+                            $deudasFiltradas[] = $deuda;
+                            error_log("Deuda encontrada (sin tipo): año=$anio, periodo=$periodo");
+                            break;
+                        }
+                    } else {
+                        // Comparar con tipo, año y periodo
+                        if (
+                            $deuda->tipo === $tipo &&
+                            $deuda->ano == $anio &&
+                            $deuda->periodo == $periodo
+                        ) {
+                            $deudasFiltradas[] = $deuda;
+                            error_log("Deuda encontrada (con tipo): tipo=$tipo, año=$anio, periodo=$periodo");
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+
+        error_log("Deudas filtradas: " . count($deudasFiltradas));
+        $this->deudas = $deudasFiltradas;
+
+        // Recalcular el total de deuda basado en los items filtrados
+        $this->totalDeuda = array_sum(array_column($deudasFiltradas, 'total'));
     }
 
     //Cabecera de página
@@ -80,7 +168,7 @@ class DetalladoReport extends FPDF
         $header = array('Tributo', 'Año-Periodo', 'Imp. Insoluto', 'Imp. Reajuste', 'Mora', 'Cos. de Emisión', 'Total');
         $w = array(60, 30, 35, 35, 35, 35, 35);
 
-        for($i = 0; $i < count($header); $i++) {
+        for ($i = 0; $i < count($header); $i++) {
             $this->Cell($w[$i], 8, utf8_decode($header[$i]), 1, 0, 'C', 1);
         }
         $this->Ln();

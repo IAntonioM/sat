@@ -92,7 +92,7 @@
                                 <div class="d-flex flex-row">
                                     <div class="w-200 mw-250px me-3">
                                         <!--begin::Select2-->
-                                        <select class="form-select form-select-solid" wire:model.live="anioSeleccionado"
+                                        <select class="form-select form-select-solid" wire:model.live.live="anioSeleccionado"
                                             data-control="select2" data-hide-search="true"
                                             data-placeholder="Seleccione el Año">
                                             <option value="%">Todos los años</option>
@@ -106,7 +106,7 @@
                                     </div>
                                     <div class="w-200 mw-250px">
                                         <!--begin::Select2-->
-                                        <select class="form-select form-select-solid" wire:model.live="tipoTributo"
+                                        <select class="form-select form-select-solid" wire:model.live.live="tipoTributo"
                                             data-control="select2" data-hide-search="true"
                                             data-placeholder="Seleccione el Tributo">
                                             <option value="%">Todos los tributos</option>
@@ -131,9 +131,9 @@
                             <!--begin::Card toolbar-->
                             <div class="card-toolbar flex-row-fluid justify-content-end gap-5">
                                 <!--begin::Add product-->
-                                <a href="#" class="btn btn-primary" onclick="abrirReporte()" target="_blank">
-                                    <i class="fa-solid fa-print"></i> Imprimir
-                                </a>
+                                <a href="{{ $this->reporteUrl }}" class="btn btn-primary" target="_blank">
+                            <i class="fa-solid fa-print"></i> Imprimir
+                        </a>
                                 <button wire:click="pagar" class="btn btn-success">
                                     <i class="fa-solid fa-money-bill-1-wave"></i>
                                     Pagar ({{ number_format($totalSeleccionado, 2) }})
@@ -170,7 +170,7 @@
                                         <th class="w-20px pe-2">
                                             <div class="form-check form-check-sm form-check-custom form-check-solid">
                                                 <input class="form-check-input" type="checkbox"
-                                                    wire:model="selectAll" />
+                                                    wire:model.live.live="selectAll" />
                                             </div>
                                         </th>
                                     </tr>
@@ -211,7 +211,7 @@
                                                         <div
                                                             class="form-check form-check-sm form-check-custom form-check-solid">
                                                             <input class="form-check-input checkbox-recibo"
-                                                                type="checkbox" wire:model="itemsSeleccionados"
+                                                                type="checkbox" wire:model.live="itemsSeleccionados"
                                                                 value="{{ $valorCheckbox }}"
                                                                 data-tipo="{{ $deuda->tipo }}"
                                                                 data-anio="{{ $deuda->año }}"
@@ -234,7 +234,8 @@
                                                 <td style="background-color:#f1f1f2"></td>
                                                 <td style="background-color:#f1f1f2;"><b>TOTAL</b></td>
                                                 <td style="font-size: 16px;">
-                                                    <b>{{ number_format($totalGeneral, 2) }}</b></td>
+                                                    <b>{{ number_format($totalGeneral, 2) }}</b>
+                                                </td>
                                                 <td style="background-color:#f1f1f2;"></td>
                                             </tr>
                                         @endif

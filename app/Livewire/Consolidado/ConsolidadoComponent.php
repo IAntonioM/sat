@@ -111,28 +111,6 @@ class ConsolidadoComponent extends Component
      */
     public function filtrar()
     {
-        // Mostrar items seleccionados antes del filtro
-        Debugbar::info('Items seleccionados antes del filtro', $this->itemsSeleccionados);
-        Debugbar::info('Total seleccionado', $this->totalSeleccionado);
-        Debugbar::info('Cantidad de items seleccionados', count(array_filter($this->itemsSeleccionados)));
-
-        // Preparar datos detallados de los items seleccionados
-        $detallesSeleccionados = [];
-        foreach ($this->itemsSeleccionados as $item) {
-            if ($item) {
-                $parts = explode('|', $item);
-                if (count($parts) === 3) {
-                    $detallesSeleccionados[] = [
-                        'codigo_contribuyente' => $parts[0],
-                        'tipo' => $parts[1],
-                        'anio' => $parts[2],
-                        'valor_completo' => $item
-                    ];
-                }
-            }
-        }
-        Debugbar::info('Detalles de items seleccionados', $detallesSeleccionados);
-
         $this->cargarDatos();
 
         // Limpiar selección al filtrar (opcional, comentar si quieres mantener la selección)
@@ -161,16 +139,39 @@ class ConsolidadoComponent extends Component
     }
 
     /**
-     * Método para manejar la selección/deselección de items individuales
+     * Método que se ejecuta cuando cambia la selección de items
      */
     public function updatedItemsSeleccionados()
     {
         $this->calcularTotalSeleccionado();
 
-        // Debug cuando se selecciona/deselecciona un item
+        // Generar array con códigos cada vez que se marque/desmarque un check
         $itemsActivos = array_filter($this->itemsSeleccionados);
+
+        // Preparar datos detallados de los items seleccionados
+        $detallesSeleccionados = [];
+        foreach ($itemsActivos as $item) {
+            if ($item) {
+                $parts = explode('|', $item);
+                if (count($parts) === 3) {
+                    $detallesSeleccionados[] = [
+                        'codigo_contribuyente' => $parts[0],
+                        'tipo' => $parts[1],
+                        'anio' => $parts[2],
+                        'valor_completo' => $item
+                    ];
+                }
+            }
+        }
+
+        // **NUEVA LÍNEA: Guardar en sesión el array actualizado**
+        session(['items_seleccionados_consolidado' => $itemsActivos]);
+
+        // Debug cuando se selecciona/deselecciona un item
         Debugbar::info('Items seleccionados actualizados', $itemsActivos);
+        Debugbar::info('Array guardado en sesión', session('items_seleccionados_consolidado'));
         Debugbar::info('Cantidad de items seleccionados', count($itemsActivos));
+        Debugbar::info('Detalles de items seleccionados', $detallesSeleccionados);
 
         // Verificar si todos están seleccionados para el checkbox "select all"
         $totalItems = 0;
@@ -198,6 +199,9 @@ class ConsolidadoComponent extends Component
             $this->itemsSeleccionados = [];
             Debugbar::info('Deseleccionados TODOS los items');
         }
+
+        // **NUEVA LÍNEA: Actualizar sesión también aquí**
+        session(['items_seleccionados_consolidado' => array_filter($this->itemsSeleccionados)]);
 
         $this->calcularTotalSeleccionado();
     }

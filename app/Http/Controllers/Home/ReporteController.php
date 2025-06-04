@@ -62,7 +62,8 @@ class ReporteController extends Controller
                 $codigoContribuyente = $request->input('codigo_contribuyente');
                 $anioSeleccionado = $request->input('anio', '%');
                 $tipoTributo = $request->input('tipo_tributo', '%');
-                $report = new DetalladoReport($codigoContribuyente, $anioSeleccionado, $tipoTributo);
+                $itemsSeleccionados = $request->input('items_seleccionados');
+                $report = new DetalladoReport($codigoContribuyente, $anioSeleccionado, $tipoTributo, $itemsSeleccionados);
                 return $report->generarPDF();
                 break;
 
