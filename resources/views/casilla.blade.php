@@ -67,7 +67,7 @@
 
                         <livewire:menu-casilla.menu-casilla-component />
                         <livewire:recibido.recibido-component />
-                        {{-- <div class=" col-xl-3 row" style="margin: 0 1rem; border-left: 1px solid #f1f1f2;">
+                        {{-- <div class=" col-xl-3 row" style="margin: 0 1rem; border-left: 1px solid #c7c7c9;">
 									<!--begin::Card-->
 									<div class="card">
 										<div class="card-header align-items-center py-5 gap-2 gap-md-5" style="padding: 0 1rem;">
@@ -476,7 +476,7 @@
 									</div>
 									<!--end::Card-->
 								</div> --}}
-                        <div class=" col-xl-6" style="border-left: 1px solid #f1f1f2;">
+                        <div class=" col-xl-6" style="border-left: 1px solid #c7c7c9;">
                             <!--begin::Card-->
                             <div class="card">
                                 <div class="card-header align-items-center py-5 gap-5">
