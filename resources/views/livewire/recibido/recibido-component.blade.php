@@ -1,4 +1,4 @@
-<div class="col-xl-3 row" style="margin: 0 1rem; border-left: 2px solid #dfdfdf;">
+<div class="col-xl-3 row" style="margin: 0 1rem; border-left: 2px solid #c7c7c9;">
     <div class="card">
         <div class="card-header align-items-center py-5 gap-2 gap-md-5" style="padding: 0 1rem;">
             <div class="d-flex flex-wrap gap-2">
