@@ -102,8 +102,7 @@ class DetalloComponent extends Component
             $this->recibosSeleccionados = [];
             foreach ($this->deudas as $deudasAnio) {
                 foreach ($deudasAnio as $deuda) {
-                    // CORREGIR: Usar el formato correcto con tipo incluido
-                    $this->recibosSeleccionados[] = "{$this->codigoContribuyente}|{$deuda->tipo}|{$deuda->ano}-{$deuda->periodo}";
+                    $this->recibosSeleccionados[] = "{$this->codigoContribuyente}|{$deuda->tipo_rec}|{$deuda->ano}-{$deuda->periodo}";
                 }
             }
             Debugbar::info('Seleccionados TODOS los recibos', $this->recibosSeleccionados);
@@ -140,7 +139,7 @@ class DetalloComponent extends Component
                             foreach ($deudasAnio as $deuda) {
                                 $deudaPeriodo = $deuda->ano . '-' . $deuda->periodo;
                                 // CORREGIR: Comparar también el código del contribuyente si es necesario
-                                if ($deuda->tipo === $tipo && $deudaPeriodo === $periodo) {
+                                if (trim($deuda->tipo_rec) === trim($tipo) && $deudaPeriodo === $periodo) {
                                     $this->totalSeleccionado += $deuda->total;
                                     $detalleCalculos[] = [
                                         'codigo' => $codigo,
@@ -204,7 +203,7 @@ class DetalloComponent extends Component
                     }
                 }
             }
-
+            Debugbar::info('deudas detalladas',$deudas);
             $this->deudas = collect($deudas)->groupBy($keyAnio);
         } catch (\Exception $e) {
             Debugbar::error('Error al filtrar deudas', [
@@ -255,8 +254,6 @@ class DetalloComponent extends Component
 
     public function render()
     {
-        return view('livewire.detallado.detallo-component')
-            ->extends('layouts.cabecera')
-            ->section('content');
+        return view('livewire.detallado.detallo-component');
     }
 }

@@ -1,46 +1,4 @@
 <div>
-    <div class="card " style="background-image: url(assets/media/logos/fondo1.jpg);background-position: center center;">
-        <div class="card-body pt-9 pb-0">
-            <!--begin::Details-->
-            <div class="d-flex flex-wrap flex-sm-nowrap mb-6">
-                <!--begin::Wrapper-->
-                <div class="flex-grow-1">
-                    <!--begin::Head-->
-                    <div class="d-flex justify-content-between align-items-start flex-wrap mb-2">
-                        <!--begin::Details-->
-                        <div class="d-flex flex-column">
-                            <!--begin::Status-->
-                            <div class="d-flex align-items-center mb-1">
-                                <span class="text-gray-800 text-primary fs-1 fw-bold me-3">Deudas Detalladas</span>
-                            </div>
-                            <!--end::Status-->
-                            <!--begin::Description-->
-                            <div class="d-flex flex-wrap fw-semibold mb-4 fs-5 text-gray-400">Deudas del Contribuyente al
-                                {{ $fechaActual }}</div>
-                            <!--end::Description-->
-                        </div>
-                        <!--end::Details-->
-                        <!--begin::Actions-->
-                        <div class="d-flex mb-4">
-                            <div
-                                class="border border-gray-300 border-dashed rounded min-w-125px py-3 px-4 me-6 mb-3 badge-light-primary">
-                                <div class="fw-semibold fs-6 text-gray-400">Su Deuda Actual es:</div>
-                                <!--begin::Number-->
-                                <div class="d-flex align-items-center">
-                                    <div class=" fw-bold" data-kt-countup="true"
-                                        data-kt-countup-value="{{ $totalDeuda }}" data-kt-countup-prefix="S/."
-                                        style="font-size:30px">0</div>
-                                </div>
-                                <!--end::Number-->
-                            </div>
-                        </div>
-                        <!--end::Actions-->
-                    </div>
-                    <!--end::Head-->
-                </div>
-            </div>
-        </div>
-    </div>
 
     <div id="kt_content_container" class="d-flex flex-column-fluid align-items-start "
         style="padding-right: calc(0px * .5); padding-left: calc(0px * .5);">
@@ -100,7 +58,7 @@
                         </a>
                         <button wire:click="prepararPago" class="btn btn-success">
                             <i class="fa-solid fa-money-bill-1-wave"></i>
-                            Pagar ({{ number_format($totalSeleccionado, 2) }})
+                            Pagar
                         </button>
                         <!--end::Add product-->
                     </div>
@@ -109,14 +67,6 @@
                 <!--end::Card header-->
                 <!--begin::Card body-->
                 <div class="card-body pt-0">
-                    {{-- Información de selección --}}
-                    @if (count(array_filter($recibosSeleccionados)) > 0)
-                        <div class="alert alert-info mb-3">
-                            <strong>Recibos seleccionados:</strong>
-                            {{ count(array_filter($recibosSeleccionados)) }}
-                            | <strong>Total:</strong> {{ number_format($totalSeleccionado, 2) }}
-                        </div>
-                    @endif
                     <!--begin::Table-->
                     <table class="table align-middle table-row-dashed fs-6 gy-5 table-bordered"
                         id="kt_ecommerce_sales_table">
@@ -169,7 +119,7 @@
                                             <div class="form-check form-check-sm form-check-custom form-check-solid">
                                                 <input class="form-check-input check_deuda" type="checkbox"
                                                     wire:model.live="recibosSeleccionados"
-                                                    value="{{ trim($codigoContribuyente) }}|{{ trim($deuda->tipo) }}|{{ $deuda->ano }}-{{ $deuda->periodo }}"
+                                                    value="{{ trim($codigoContribuyente) }}|{{ trim($deuda->tipo_rec) }}|{{ $deuda->ano }}-{{ $deuda->periodo }}"
                                                     data-monto="{{ $deuda->total }}" />
                                             </div>
                                         </td>

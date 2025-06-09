@@ -107,12 +107,12 @@ class DetalladoReport extends FPDF
                     } else {
                         // Comparar con tipo, año y periodo
                         if (
-                            $deuda->tipo === $tipo &&
+                            trim($deuda->tipo_rec) === $tipo &&
                             $deuda->ano == $anio &&
                             $deuda->periodo == $periodo
                         ) {
                             $deudasFiltradas[] = $deuda;
-                            error_log("Deuda encontrada (con tipo): tipo=$tipo, año=$anio, periodo=$periodo");
+                            error_log("Deuda encontrada (con tipo): tipo_rec=$tipo, año=$anio, periodo=$periodo");
                             break;
                         }
                     }
