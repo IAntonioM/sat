@@ -39,8 +39,18 @@ class CasillaController extends Controller
         $usuario = Contribuyente::obtenerDatosContri($codigo_contribuyente);
 
         Debugbar::info('📄 Datos contribuyente:', $usuario);
+        if ($usuario && $usuario->vestado === '001') {
+                    // Si es cuenta contribuyente, mostramos la vista normal
+                    return view('casillaNuevo', compact('usuario'));
+                } elseif ($usuario && in_array($usuario->vestado, ['002', '003'])) {
+                    // Si es tipo administrativo, redirigimos a otra vista
+                    return view('casillaNuevoAdmin', compact('usuario'));
+                } else {
+                    // En caso de vestado desconocido o null, redirigir o mostrar error
+                    abort(403, 'Estado de cuenta no autorizado');
+                }
+            }
 
-
-        return view('casillaNuevo', compact('usuario'));
+        // return view('casillaNuevo', compact('usuario'));
     }
-}
+

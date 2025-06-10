@@ -15,6 +15,7 @@ class RecibidoComponent extends Component
     public $search = '';
     protected RecibidoService $service;
     public $json_recibido = []; // Array de nu_emi seleccionados
+    public $tipoSeleccionado = 1; // Valor por defecto
 
     public function boot(RecibidoService $service)
     {
@@ -23,6 +24,8 @@ class RecibidoComponent extends Component
 
     public function mount()
     {
+
+        $this->tipoSeleccionado = request()->get('tipo', 1) ?? 1;
         $this->buscarDocumentos();
     }
 
@@ -62,7 +65,7 @@ class RecibidoComponent extends Component
             'pagina' => 1,
             'registros_por_pagina' => 10,
             'anio' => (int)$anioActual,
-            'tipo_documento_emitido_id' => 1,
+            'tipo_documento_emitido_id' => $this->tipoSeleccionado,
             'receptor_id' => $usuario->vcodcontr,
             'asunto' => $this->search ?: null,
             'json_recibido' => $selectedJson

@@ -22,6 +22,7 @@ class EmitirMensajeComponent extends Component
     public $message = '';
     public $attachments = [];
     public $newAttachments = []; // Nueva propiedad para archivos temporales
+    public $tipoSeleccionado = 1; // Valor por defecto
 
     public function boot(EmitidoService $service)
     {
@@ -35,6 +36,7 @@ class EmitirMensajeComponent extends Component
 
     public function mount($padre = null)
     {
+        $this->tipoSeleccionado = request()->get('tipo', 1) ?? 1;
         $this->padre = $padre;
         $codigo_contribuyente = Session::get('codigo_contribuyente');
 
@@ -156,7 +158,7 @@ class EmitirMensajeComponent extends Component
             if (isset($this->padre->nu_emi)) {
                 $params['nu_emi_padre'] = $this->padre->nu_emi;
             }
-            $params['tipo_documento_emitido_id'] = 1;
+            $params['tipo_documento_emitido_id'] = $this->tipoSeleccionado;
             $params['estado_emitido_id'] = 1;
             $params['usuario_creacion'] = 1;
         }

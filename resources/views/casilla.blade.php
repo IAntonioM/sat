@@ -479,7 +479,7 @@
                         <div class=" col-xl-6" style="border-left: 1px solid #c7c7c9;">
                             <!--begin::Card-->
                             <div class="card">
-                                <div class="card-header align-items-center py-5 gap-5">
+                                {{-- <div class="card-header align-items-center py-5 gap-5">
                                     <!--begin::Actions-->
                                     <div class="d-flex">
                                         <!--begin::Back-->
@@ -678,7 +678,7 @@
                                         <!--end::Toggle-->
                                     </div>
                                     <!--end::Pagination-->
-                                </div>
+                                </div> --}}
                                 <livewire:emitido.emitido-component />
                                 {{-- <div class="card-body">
 											<!--begin::Title-->

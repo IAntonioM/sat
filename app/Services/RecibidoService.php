@@ -34,12 +34,20 @@ class RecibidoService
             'estado_recepcion_id' => $estadoId,
         ]);
     }
-
+    //contendeo de documentos no leidos por menu
     public function getDataMenu(array $params)
     {
         $params['accion'] = 20;
         return Recibido::executeProcedure($params);
     }
+
+    //consultar all menus
+        public function getAllMenu(array $params)
+    {
+        $params['accion'] = 21;
+        return Recibido::executeProcedure($params);
+    }
+
 
     public function accionMarcador(array $params)
     {

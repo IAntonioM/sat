@@ -263,7 +263,7 @@
                                     <div class="btn btn-icon btn-active-light-primary btn-custom w-30px h-30px w-md-40px h-md-40px" data-kt-menu-placement="bottom-end">
                                         <i class="fa-solid fa-address-card" style="font-size: 27px"></i>
                                     </div>
-                                    <a href="{{ route('perfilAdmin') }}" class="menu-link " style="padding: 0.65rem 1rem 0.65rem 0.5rem;background-color: rgba(255, 255, 255, 0.0);">Mi Perfil</a>
+                                    <a href="{{ route('perfil') }}" class="menu-link " style="padding: 0.65rem 1rem 0.65rem 0.5rem;background-color: rgba(255, 255, 255, 0.0);">Mi Perfil</a>
 
                                     <div class="btn btn-icon btn-active-light-primary btn-custom w-30px h-30px w-md-40px h-md-40px" data-kt-menu-placement="bottom-end">
                                         <i class="fa-solid fa-right-from-bracket" style="font-size: 27px"></i>

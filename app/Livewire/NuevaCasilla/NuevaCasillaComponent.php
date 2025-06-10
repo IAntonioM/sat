@@ -6,8 +6,12 @@ use Livewire\Component;
 use Livewire\WithFileUploads;
 use Barryvdh\Debugbar\Facades\Debugbar;
 use App\Services\EmitidoService;
+use App\Services\RecibidoService;
 use App\Services\UsuarioService;
+use App\Services\TipoDocumentoService; // Agregar este servicio
 use Illuminate\Support\Facades\Session;
+
+use App\Models\Contribuyente;
 
 class NuevaCasillaComponent extends Component
 {
@@ -15,6 +19,7 @@ class NuevaCasillaComponent extends Component
 
     protected EmitidoService $service;
     protected UsuarioService $usuarioService;
+    protected RecibidoService $tipoDocumentoService; // Agregar esta propiedad
 
     public $to = '';
     public $cc = '';
@@ -23,32 +28,95 @@ class NuevaCasillaComponent extends Component
     public $message = '';
     public $attachments = [];     // Lista de archivos ya agregados
     public $newAttachments = [];  // Nuevos archivos temporales
-
+    public $esUsuarioNormal = false; // Nueva propiedad para identificar tipo de usuario
+    // Propiedades para usuario
     public $usuarios = [];
     public $mostrarListaUsuarios = false;
     public $selectedIndex = -1;
     public $usuarioSeleccionado = null;
 
+    // Propiedades para tipo de documento/área
+    public $tipoDocumentoEmitidoId = '';
+    public $tiposDocumento = [];
+
     protected $rules = [
         'to' => 'required|string|min:1',
         'subject' => 'required|string|min:1',
         'message' => 'required|string|min:1',
+        'tipoDocumentoEmitidoId' => 'required|integer|min:1',
     ];
 
     protected $messages = [
         'to.required' => 'El campo Para es obligatorio',
         'subject.required' => 'El asunto es obligatorio',
         'message.required' => 'El mensaje es obligatorio',
+        'tipoDocumentoEmitidoId.required' => 'Debe seleccionar un área/tipo de documento',
     ];
 
-    public function boot(EmitidoService $service, UsuarioService $usuarioService)
+    public function boot(EmitidoService $service, UsuarioService $usuarioService, RecibidoService $tipoDocumentoService)
     {
         $this->service = $service;
         $this->usuarioService = $usuarioService;
+        $this->tipoDocumentoService = $tipoDocumentoService;
     }
+    public function establecerAdminPorDefecto()
+    {
+        // Crear objeto admin por defecto
+        $adminPorDefecto = (object) [
+            'cidusu' => '0000005092',
+            'vnombre' => 'ADMIN',
+            'vrazon' => '',
+            'vpater' => '',
+            'vmater' => '',
+            'vnrodoc' => 'admin',
+            'vcorreo' => '',
+            'vusuario' => 'ADMIN',
+            'vcodcontr' => 'admin'
+        ];
+
+        $this->usuarioSeleccionado = $adminPorDefecto;
+        $this->to = 'ADMIN';
+
+        Debugbar::info('👤 Admin establecido por defecto para usuario normal');
+    }
+    public function mount()
+    {
+        $codigo_contribuyente = Session::get('codigo_contribuyente');
+        $usuario = Contribuyente::obtenerDatosContri($codigo_contribuyente);
+        // Verificar si es usuario normal (estado '001')
+        $this->esUsuarioNormal = ($usuario && $usuario->vestado === '001');
+
+        // Si es usuario normal, establecer admin por defecto
+        if ($this->esUsuarioNormal) {
+            $this->establecerAdminPorDefecto();
+        }
+        // Cargar los tipos de documento al inicializar el componente
+        $this->cargarTiposDocumento();
+    }
+
+    public function cargarTiposDocumento()
+    {
+        try {
+            // Aquí debes ajustar según tu servicio o modelo
+            $this->tiposDocumento = $this->tipoDocumentoService->getAllMenu([]);
+
+            Debugbar::info('📋 Tipos de documento cargados:', $this->tiposDocumento);
+        } catch (\Exception $e) {
+            Debugbar::error('❌ Error al cargar tipos de documento:', $e->getMessage());
+            $this->tiposDocumento = [];
+        }
+    }
+
 
     public function updatedTo()
     {
+        // Si es usuario normal, no permitir cambios en el destinatario
+        if ($this->esUsuarioNormal) {
+            $this->to = 'ADMIN';
+            return;
+        }
+
+        // Lógica original para usuarios admin
         $this->selectedIndex = -1;
         $this->usuarioSeleccionado = null;
 
@@ -59,9 +127,13 @@ class NuevaCasillaComponent extends Component
             $this->mostrarListaUsuarios = false;
         }
     }
-
     public function buscarUsuarios()
     {
+        // Solo permitir búsqueda si NO es usuario normal
+        if ($this->esUsuarioNormal) {
+            return;
+        }
+
         $params = [
             'term' => $this->to,
             'accion' => 1
@@ -76,6 +148,11 @@ class NuevaCasillaComponent extends Component
 
     public function seleccionarUsuario($index)
     {
+        // Solo permitir selección si NO es usuario normal
+        if ($this->esUsuarioNormal) {
+            return;
+        }
+
         if (isset($this->usuarios[$index])) {
             $usuario = $this->usuarios[$index];
             $this->usuarioSeleccionado = $usuario;
@@ -101,6 +178,13 @@ class NuevaCasillaComponent extends Component
 
     public function limpiarSeleccion()
     {
+        // Si es usuario normal, mantener admin por defecto
+        if ($this->esUsuarioNormal) {
+            $this->establecerAdminPorDefecto();
+            return;
+        }
+
+        // Lógica original para usuarios admin
         $this->to = '';
         $this->usuarios = [];
         $this->mostrarListaUsuarios = false;
@@ -135,7 +219,7 @@ class NuevaCasillaComponent extends Component
             'contenido' => $this->message,
             'asunto' => $this->subject,
             'emisor_id' => $codigo_contribuyente,
-            'tipo_documento_emitido_id' => 1,
+            'tipo_documento_emitido_id' => $this->tipoDocumentoEmitidoId, // Usar el valor seleccionado
             'estado_emitido_id' => 1,
             'usuario_creacion' => 1,
             'anio' => date('Y'),
@@ -188,18 +272,36 @@ class NuevaCasillaComponent extends Component
 
         // Limpiar formulario
         $this->reset([
-            'to', 'cc', 'bcc', 'subject', 'message',
-            'attachments', 'usuarios', 'mostrarListaUsuarios',
-            'selectedIndex', 'usuarioSeleccionado'
+            'to',
+            'cc',
+            'bcc',
+            'subject',
+            'message',
+            'tipoDocumentoEmitidoId',
+            'attachments',
+            'usuarios',
+            'mostrarListaUsuarios',
+            'selectedIndex',
+            'usuarioSeleccionado'
         ]);
+
+        session()->flash('success', 'Mensaje enviado correctamente');
     }
 
     public function limpiarFormulario()
     {
         $this->reset([
-            'to', 'cc', 'bcc', 'subject', 'message',
-            'attachments', 'usuarios', 'mostrarListaUsuarios',
-            'selectedIndex', 'usuarioSeleccionado'
+            'to',
+            'cc',
+            'bcc',
+            'subject',
+            'message',
+            'tipoDocumentoEmitidoId',
+            'attachments',
+            'usuarios',
+            'mostrarListaUsuarios',
+            'selectedIndex',
+            'usuarioSeleccionado'
         ]);
     }
 

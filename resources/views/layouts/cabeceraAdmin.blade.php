@@ -154,6 +154,18 @@
                                             </div>
                                             <!--end:Menu item-->
                                         @endif
+
+                                        @if($usuario->vestado == '002' || $usuario->vestado == '003')
+                                            <div data-kt-menu-trigger="{default: 'click', lg: 'hover'}"
+                                                 data-kt-menu-placement="bottom-start"
+                                                 class="menu-item menu-lg-down-accordion menu-sub-lg-down-indention me-0 me-lg-2">
+                                                <!--begin:Menu link-->
+                                                <a href="{{ route('casilla') }}">Casilla Elctronica</a>
+                                                <!--end:Menu link-->
+
+                                            </div>
+                                            <!--end:Menu item-->
+                                        @endif
                                     </div>
                                     <!--end::Menu-->
                                 </div>
@@ -180,16 +192,19 @@
                                     </div>
                                     <span style="padding: 0 15px 0 2px; color:#ffffff">{{ $usuario->vnombre ?? 'Usuario' }}</span>-->
 
-                                    <div class="btn btn-icon btn-active-light-primary btn-custom w-30px h-30px w-md-40px h-md-40px" data-kt-menu-placement="bottom-end">
+
+                                    <a href="{{ route('perfilAdmin') }}" class="menu-link " style="padding: 0.65rem 1rem 0.65rem 0.5rem;background-color: rgba(255, 255, 255, 0.0);">
+                                        <div class="btn btn-icon btn-active-light-primary btn-custom w-30px h-30px w-md-40px h-md-40px" data-kt-menu-placement="bottom-end">
                                         <i class="fa-solid fa-address-card" style="font-size: 27px"></i>
                                     </div>
-                                    <a href="{{ route('perfilAdmin') }}" class="menu-link " style="padding: 0.65rem 1rem 0.65rem 0.5rem;background-color: rgba(255, 255, 255, 0.0);">Mi Perfil</a>
+                                        Mi Perfil</a>
 
-                                    <div class="btn btn-icon btn-active-light-primary btn-custom w-30px h-30px w-md-40px h-md-40px" data-kt-menu-placement="bottom-end">
-                                        <i class="fa-solid fa-right-from-bracket" style="font-size: 27px"></i>
-                                    </div>
+
                                     <form method="POST" action="{{ route('logout') }}">
                                         @csrf
+                                         <div class="btn btn-icon btn-active-light-primary btn-custom w-30px h-30px w-md-40px h-md-40px" data-kt-menu-placement="bottom-end">
+                                        <i class="fa-solid fa-right-from-bracket" style="font-size: 27px"></i>
+                                    </div>
                                         <button type="submit" class="menu-link "
                                             style="background: none; border: none; padding: 0; margin: 0; cursor: pointer; color: #ffffff;">
                                             Cerrar Sesión

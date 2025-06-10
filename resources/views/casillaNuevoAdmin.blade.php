@@ -1,4 +1,4 @@
-@extends('layouts.cabecera')
+@extends('layouts.cabeceraAdmin')
 @section('content')
     <style>
         .table> :not(caption)>*>* {
