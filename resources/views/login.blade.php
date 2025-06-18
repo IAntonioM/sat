@@ -96,6 +96,6 @@
 					</div>
 					<!--end::Card-->
 				</div>
-
+<livewire:chatbot.chatbot-component />
 				<!--end::Body-->
 				@endsection

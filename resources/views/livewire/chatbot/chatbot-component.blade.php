@@ -11,6 +11,7 @@
 
     <!-- Ventana del chat mejorada -->
     @if ($open)
+      <div style="position: fixed;bottom: 0px;right: 365px;"><img src="assets/media/avatars/robot1.png" alt=""></div>
         <div class="position-fixed shadow-lg border-0"
             style="bottom: 90px; right: 20px; width: 350px; z-index: 1051; border-radius: 15px; overflow: hidden; animation: slideUp 0.3s ease-out;">
 
