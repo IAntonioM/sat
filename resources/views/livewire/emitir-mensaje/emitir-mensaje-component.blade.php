@@ -209,6 +209,7 @@
             </div>
             <!--end::Actions-->
             <!--begin::Toolbar-->
+
             <div class="d-flex align-items-center">
                 <!--begin::More actions-->
                 {{-- <span class="btn btn-icon btn-sm btn-clean btn-active-light-primary me-2" data-toggle="tooltip"
@@ -237,8 +238,18 @@
 
                 <!--end::Dismiss reply-->
             </div>
+
             <!--end::Toolbar-->
         </div>
+        @if ($errors->any())
+            <div class="alert alert-danger mx-8 mb-0">
+                <ul class="mb-0">
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
         <!--end::Footer-->
     </form>
 

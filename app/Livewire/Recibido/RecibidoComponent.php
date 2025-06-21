@@ -196,7 +196,10 @@ class RecibidoComponent extends Component
 
     public function render()
     {
+        $codigo_contribuyente = Session::get('codigo_contribuyente');
+        $usuario = Contribuyente::obtenerDatosContri($codigo_contribuyente);
         return view('livewire.recibido.recibido-component', [
+            'usuario' => $usuario,
             'documentos' => $this->documentos,
             'stats' => $this->getSelectionStats()
         ]);

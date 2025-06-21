@@ -270,16 +270,29 @@
 
             <!--begin::Upload attachement-->
             <span class="btn btn-icon btn-sm btn-clean btn-active-light-primary me-2"
-                id="kt_inbox_reply_attachments_select" data-kt-inbox-form="dropzone_upload"
+                id="kt_inbox_reply_attachments_select"
+                data-bs-toggle="tooltip"
+                data-bs-placement="top"
+                title="Adjuntar Archivos"
                 onclick="document.getElementById('attachment-input').click()">
                 <i class="ki-duotone ki-paper-clip fs-2 m-0"></i>
             </span>
             <!--end::Upload attachement-->
 
             <!--begin::Clear form-->
-            <button type="button" class="btn btn-icon btn-sm btn-clean btn-active-light-secondary me-2"
-                wire:click="limpiarFormulario" title="Limpiar formulario">
-                <i class="ki-duotone ki-trash fs-2 m-0"></i>
+            <button type="button"
+                class="btn btn-icon btn-sm btn-clean btn-active-light-primary"
+                wire:click="limpiarFormulario"
+                data-bs-toggle="tooltip"
+                data-bs-placement="top"
+                title="Limpiar formulario">
+                <i class="ki-duotone ki-trash fs-2">
+                        <span class="path1"></span>
+                        <span class="path2"></span>
+                        <span class="path3"></span>
+                        <span class="path4"></span>
+                        <span class="path5"></span>
+                    </i>
             </button>
             <!--end::Clear form-->
         </div>

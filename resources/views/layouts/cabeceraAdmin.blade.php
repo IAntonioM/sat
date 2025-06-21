@@ -366,6 +366,35 @@
     <!--end::Custom Javascript-->
     <!--end::Javascript-->
 </body>
+<script>
+    Livewire.on('alertaLivewire', data => {
+        const alert = data[0];
+
+        Swal.fire({
+            icon: alert.type || 'info',
+            title: alert.title || 'Mensaje',
+            html: alert.message || 'Sin contenido',
+            confirmButtonText: 'Aceptar',
+            allowOutsideClick: false,  // ⛔ No cerrar al hacer clic afuera
+            allowEscapeKey: false,     // ⛔ No cerrar con Escape
+            allowEnterKey: true,       // ✅ Permitimos Enter para confirmar
+            customClass: {
+                confirmButton: `btn btn-light-${
+                    alert.type === 'success' ? 'success' :
+                    alert.type === 'warning' ? 'warning' :
+                    alert.type === 'info' ? 'info' :
+                    alert.type === 'error' ? 'danger' : 'primary'
+                }`
+            }
+        }).then(() => {
+            if (alert.tipo) {
+                window.location.href = `/casilla?tipo=${alert.tipo}`;
+            }
+        });
+    });
+</script>
+
+
 @if (session('alert'))
     <script>
         Swal.fire({
@@ -434,6 +463,7 @@
         @endif
     });
 </script>
+
 
 <!--end::Body-->
 

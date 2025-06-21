@@ -195,13 +195,36 @@ class NuevaCasillaComponent extends Component
     // 📌 Manejador para los nuevos archivos temporales
     public function updatedNewAttachments()
     {
-        if ($this->newAttachments) {
-            foreach ($this->newAttachments as $file) {
-                $this->attachments[] = $file;
+        $permitidos = [
+            'application/pdf',
+            'application/msword',
+            'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+            'application/vnd.ms-excel',
+            'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+            'image/jpeg',
+            'image/png',
+            'image/gif',
+        ];
+
+        $maxSizeMB = 12;
+
+        foreach ($this->newAttachments as $file) {
+            if (!in_array($file->getMimeType(), $permitidos)) {
+                session()->flash('error', 'Tipo de archivo no permitido: ' . $file->getClientOriginalName());
+                continue;
             }
-            $this->newAttachments = [];
+
+            if ($file->getSize() > $maxSizeMB * 1024 * 1024) {
+                session()->flash('error', 'Archivo demasiado grande (máx ' . $maxSizeMB . ' MB): ' . $file->getClientOriginalName());
+                continue;
+            }
+
+            $this->attachments[] = $file;
         }
+
+        $this->newAttachments = [];
     }
+
 
     public function removeAttachment($index)
     {
@@ -227,7 +250,11 @@ class NuevaCasillaComponent extends Component
 
         if ($this->usuarioSeleccionado) {
             $params['receptor_id'] = $this->usuarioSeleccionado->vcodcontr;
+        } else {
+            session()->flash('error', 'Debe seleccionar un usuario receptor antes de enviar el mensaje.');
+            return;
         }
+
 
         // 📎 Procesar archivos adjuntos
         $anexosArray = [];
@@ -277,7 +304,6 @@ class NuevaCasillaComponent extends Component
             'bcc',
             'subject',
             'message',
-            'tipoDocumentoEmitidoId',
             'attachments',
             'usuarios',
             'mostrarListaUsuarios',
@@ -285,7 +311,12 @@ class NuevaCasillaComponent extends Component
             'usuarioSeleccionado'
         ]);
 
-        session()->flash('success', 'Mensaje enviado correctamente');
+        $this->dispatch('alertaLivewire', [
+            'type' => 'success',
+            'title' => 'Enviado correctamente',
+            'message' => 'Tu mensaje ha sido procesado y enviado.',
+            'tipo' => $this->tipoDocumentoEmitidoId,
+        ]);
     }
 
     public function limpiarFormulario()

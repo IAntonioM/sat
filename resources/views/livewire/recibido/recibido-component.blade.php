@@ -63,8 +63,10 @@
                                         <br><span class="fw-semibold text-dark"
                                             style="font-size: 12px">{{ \Carbon\Carbon::parse($documento->fecha_recepcion)->format('d/m/Y H:i:s') ?? 'Sin fecha' }}</span>
                                     </a>
-                                    @if ($documento->estado_recepcion_id == 0)
-                                        <span class="badge badge-warning">No leído</span>
+                                    @if ($documento->mensajes_no_leidos > 0)
+                                        <span class="badge badge-warning">
+                                            {{ $documento->mensajes_no_leidos }} no leído{{ $documento->mensajes_no_leidos > 1 ? 's' : '' }}
+                                        </span>
                                     @endif
                                     <div style="text-align: right">
                                         {{-- <a href="#" class="btn btn-sm btn-icon btn-light-warning"
@@ -82,12 +84,16 @@
                                                 <span class="path2"></span>
                                             </i>
                                         </a>
-                                        {{-- <a href="#" class="btn btn-sm btn-icon btn-light-danger"
-                                        data-bs-toggle="tooltip" data-bs-placement="top" title="Mandar a Papelera" >
-                                            <i class="ki-duotone ki-trash fs-2"><span class="path1"></span><span
-                                                    class="path2"></span><span class="path3"></span><span
-                                                    class="path4"></span><span class="path5"></span></i>
-                                        </a> --}}
+                                        @if(in_array($usuario->vestado, ['002', '003']))
+                                            <a href="#" class="btn btn-sm btn-icon btn-light-danger"
+                                                data-bs-toggle="tooltip" data-bs-placement="top" title="Mandar a Papelera">
+                                                <i class="ki-duotone ki-trash fs-2">
+                                                    <span class="path1"></span><span class="path2"></span>
+                                                    <span class="path3"></span><span class="path4"></span>
+                                                    <span class="path5"></span>
+                                                </i>
+                                            </a>
+                                        @endif
                                     </div>
                                 </div>
                             </td>

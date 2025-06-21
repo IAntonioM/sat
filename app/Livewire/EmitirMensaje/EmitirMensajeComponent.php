@@ -52,20 +52,40 @@ class EmitirMensajeComponent extends Component
             }
         }
     }
-
-    // Método para manejar nuevos archivos
     public function updatedNewAttachments()
     {
-        if ($this->newAttachments) {
-            // Agregar los nuevos archivos a la lista existente
-            foreach ($this->newAttachments as $file) {
-                $this->attachments[] = $file;
+        $permitidos = [
+            'application/pdf',
+            'application/msword',
+            'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+            'application/vnd.ms-excel',
+            'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+            'image/jpeg',
+            'image/png',
+            'image/gif',
+        ];
+
+        $maxSizeMB = 12;
+
+        foreach ($this->newAttachments as $file) {
+            // Validar tipo
+            if (!in_array($file->getMimeType(), $permitidos)) {
+                $this->addError('newAttachments', 'Tipo de archivo no permitido: ' . $file->getClientOriginalName());
+                continue;
             }
 
-            // Limpiar la propiedad temporal
-            $this->newAttachments = [];
+            // Validar tamaño
+            if ($file->getSize() > $maxSizeMB * 1024 * 1024) {
+                $this->addError('newAttachments', 'Archivo demasiado grande (máx ' . $maxSizeMB . ' MB): ' . $file->getClientOriginalName());
+                continue;
+            }
+
+            $this->attachments[] = $file;
         }
+
+        $this->newAttachments = [];
     }
+
 
     public function removeAttachment($index)
     {
@@ -92,7 +112,11 @@ class EmitirMensajeComponent extends Component
         $this->validate([
             'to' => 'required',
             'message' => 'required',
+        ], [
+            'to.required' => 'El destinatario es obligatorio.',
+            'message.required' => 'El mensaje es obligatorio.',
         ]);
+
 
         $codigo_contribuyente = Session::get('codigo_contribuyente');
         $receptor_id = ($this->padre->emisor_id == $codigo_contribuyente)
