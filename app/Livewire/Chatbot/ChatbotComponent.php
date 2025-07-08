@@ -2,6 +2,8 @@
 
 namespace App\Livewire\Chatbot;
 
+use App\Models\Chatbot;
+use Illuminate\Support\Facades\Http;
 use Livewire\Component;
 
 class ChatbotComponent extends Component
@@ -10,10 +12,12 @@ class ChatbotComponent extends Component
     public $message = '';
     public $messages = [];
     public $showingMenu = true;
+    public $sessionId;
+    public $loading = false;
 
     public function mount()
     {
-        // No inicializar mensajes aquí para que sea más rápido
+        $this->sessionId = session()->getId();
     }
 
     public function toggleChat()
@@ -28,16 +32,28 @@ class ChatbotComponent extends Component
 
     private function initializeChat()
     {
+        // Obtener el menú principal desde la base de datos
+        $menuOptions = Chatbot::getMainMenu();
+
         $this->messages = [
             [
                 'sender' => 'bot',
                 'text' => '👋 ¡Hola! Bienvenido al asistente virtual del SAT (Servicio de Administración Tributaria). ¿En qué podemos ayudarte hoy?'
-            ],
-            [
-                'sender' => 'bot',
-                'text' => "Selecciona una opción:\n\n1️⃣ Consultas sobre tributos\n2️⃣ Casilla electrónica\n3️⃣ Buzón de notificaciones\n4️⃣ Atención al cliente\n\nTambién puedes escribir tu consulta directamente."
             ]
         ];
+
+        // Construir el mensaje del menú desde la base de datos
+        $menuText = "Selecciona una opción:\n\n";
+        foreach ($menuOptions as $option) {
+            $menuText .= "{$option->menu_number}️⃣ {$option->question}\n";
+        }
+        $menuText .= "\nTambién puedes escribir tu consulta directamente.";
+
+        $this->messages[] = [
+            'sender' => 'bot',
+            'text' => $menuText
+        ];
+
         $this->showingMenu = true;
     }
 
@@ -48,12 +64,20 @@ class ChatbotComponent extends Component
         // Agregar mensaje del usuario
         $this->messages[] = ['sender' => 'user', 'text' => $this->message];
 
+        // Mostrar indicador de carga
+        $this->loading = true;
+        $this->messages[] = ['sender' => 'bot', 'text' => 'Escribiendo...', 'loading' => true];
+
         // Procesar respuesta del bot
         $response = $this->processMessage($this->message);
+
+        // Remover mensaje de carga y agregar respuesta real
+        array_pop($this->messages);
         $this->messages[] = ['sender' => 'bot', 'text' => $response];
 
         // Limpiar input
         $this->message = '';
+        $this->loading = false;
 
         // Forzar actualización para el scroll
         $this->dispatch('messageAdded');
@@ -68,80 +92,75 @@ class ChatbotComponent extends Component
 
     private function processMessage($message)
     {
-        $message = trim($message);
+        $this->loading = true;
 
-        if (is_numeric($message)) {
-            $option = (int)$message;
-            return $this->getMenuResponse($option);
+        try {
+
+            $dbResponse = Chatbot::processMessage($message, $this->sessionId, request()->ip(), request()->userAgent());
+
+            if ($dbResponse) {
+                $this->showingMenu = str_contains($dbResponse->response, '1️⃣');
+                return $dbResponse->response;
+            }
+
+            // Fallback final
+            return $this->getFallbackResponse();
+        } catch (\Exception $e) {
+            // En caso de error, usar la base de datos
+            $dbResponse = Chatbot::processMessage($message, $this->sessionId, request()->ip(), request()->userAgent());
+
+            if ($dbResponse) {
+                return $dbResponse->response;
+            }
+
+            return $this->getFallbackResponse();
+        } finally {
+            $this->loading = false;
         }
+    }
 
-        return $this->getTextResponse($message);
+    private function getFallbackResponse()
+    {
+        $this->showingMenu = true;
+        $menuOptions = Chatbot::getMainMenu();
+
+        $menuText = "🤖 No encontré una respuesta exacta. Selecciona una opción:\n\n";
+        foreach ($menuOptions as $option) {
+            $menuText .= "{$option->menu_number}️⃣ {$option->question}\n";
+        }
+        $menuText .= "\nO escribe tu duda nuevamente.";
+
+        return $menuText;
     }
 
     private function getMenuResponse($option)
     {
         $this->showingMenu = false;
 
-        switch ($option) {
-            case 1:
-                return "💼 **Consultas sobre tributos:**\n\n• Impuesto a la Renta, IGV, ITAN\n• Declaraciones y pagos mensuales\n• Cronogramas de vencimiento\n\n¿Sobre qué tributo deseas consultar?";
+        $menuResponse = Chatbot::getMenuResponse($option);
 
-            case 2:
-                return "📬 **Casilla electrónica:**\n\n• Revisa notificaciones oficiales\n• Accede con tu N.Documento y clave \n• Guarda tus comunicaciones del SAT\n\n¿Necesitas ayuda para acceder a tu casilla?";
-
-            case 3:
-                return "📨 **Buzón de notificaciones:**\n\n• Consulta notificaciones pendientes\n• Configura alertas por correo\n• Visualiza documentos tributarios\n\n¿Deseas saber cómo usarlo?";
-
-            case 4:
-                return "📞 **Atención al cliente:**\n\n• Teléfono: (01) 315-0730\n• WhatsApp: +51 987 654 321\n• Email: consultas@sat.gob.pe\n\n¿Prefieres que te llamemos o escribamos?";
-
-            default:
-                $this->showingMenu = true;
-                return "❌ Opción no válida. Por favor selecciona una opción del menú:\n\n1️⃣ Consultas sobre tributos\n2️⃣ Casilla electrónica\n3️⃣ Buzón de notificaciones\n4️⃣ Atención al cliente\n\nO escribe tu consulta directamente.";
+        if (!empty($menuResponse)) {
+            return $menuResponse[0]->response;
         }
+
+        // Fallback si no se encuentra la opción
+        $this->showingMenu = true;
+        return "❌ Opción no válida. Por favor selecciona una opción del menú válida o escribe tu consulta directamente.";
     }
 
     private function getTextResponse($message)
     {
-        $message = strtolower($message);
+        $response = Chatbot::processMessage($message, $this->sessionId, request()->ip(), request()->userAgent());
 
-        // Respuestas para palabras clave relacionadas con menú
-        if (str_contains($message, 'menú') || str_contains($message, 'opciones') || str_contains($message, 'ayuda')) {
-            $this->showingMenu = true;
-            return "Aquí tienes las opciones disponibles:\n\n1️⃣ Consultas sobre tributos\n2️⃣ Casilla electrónica\n3️⃣ Buzón de notificaciones\n4️⃣ Atención al cliente\n\nSelecciona una opción o escribe tu consulta directamente.";
+        if ($response) {
+            // Si la respuesta contiene opciones de menú, activar el flag
+            $this->showingMenu = str_contains($response->response, '1️⃣');
+            return $response->response;
         }
 
-        if (str_contains($message, 'hola') || str_contains($message, 'buenos')) {
-            return "👋 ¡Hola! ¿En qué puedo ayudarte? Usa el menú o escribe tu consulta relacionada al SAT.";
-        }
-
-        if (str_contains($message, 'tributo') || str_contains($message, 'pago') || str_contains($message, 'declaración')) {
-            return "💰 Puedes realizar tus pagos y declaraciones a través de nuestra plataforma online. ¿Qué tributo deseas declarar o pagar?";
-        }
-
-        if (str_contains($message, 'casilla') || str_contains($message, 'clave sol')) {
-            return "🔐 Para ingresar a tu casilla electrónica, usa tu Num Documento y Clave . ¿Olvidaste tu clave o tienes problemas de acceso?";
-        }
-
-        if (str_contains($message, 'notificación') || str_contains($message, 'buzón')) {
-            return "📨 Tu buzón de notificaciones contiene documentos oficiales del SAT. Puedes revisarlos accediendo con tu clave.";
-        }
-
-        if (str_contains($message, 'atención') || str_contains($message, 'contacto') || str_contains($message, 'teléfono')) {
-            return "📞 Nuestro equipo de atención al cliente está disponible de Lunes a Viernes de 8:30 a.m. a 5:30 p.m. al (01) 111-111 WhatsApp +51 999 999 999.";
-        }
-
-        if (str_contains($message, 'gracias') || str_contains($message, 'thank')) {
-            return "😊 ¡De nada! Si tienes otra consulta, estaré encantado de ayudarte.";
-        }
-
-        if (str_contains($message, 'adiós') || str_contains($message, 'bye') || str_contains($message, 'chau')) {
-            return "👋 ¡Hasta pronto! Recuerda que puedes contactarnos 24/7 mediante este chat.";
-        }
-
-        // Respuesta por defecto con menú
+        // Si no se encuentra respuesta, mostrar menú
         $this->showingMenu = true;
-        return "🤖 No encontré una respuesta exacta a tu mensaje. Por favor selecciona una de estas opciones:\n\n1️⃣ Consultas sobre tributos\n2️⃣ Casilla electrónica\n3️⃣ Buzón de notificaciones\n4️⃣ Atención al cliente\n\nO escribe tu duda nuevamente.";
+        return "🤖 No encontré una respuesta exacta a tu mensaje. Por favor selecciona una de estas opciones o escribe tu duda nuevamente.";
     }
 
     public function render()

@@ -21,6 +21,10 @@ use App\Http\Controllers\Casilla\CasillaController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Storage;
 
+use App\Http\Controllers\ChatbotController;
+use App\Http\Controllers\ChatbotAdminController;
+use App\Http\Controllers\ChatbotCategoryController;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -140,4 +144,39 @@ Route::middleware(['check.login', 'force.password.change', 'admin.access'])->gro
     Route::post('crearUsuario', [UsuariosAdminController::class, 'store'])->name('crearUsuario');
     Route::post('actualizarUsuario', [UsuariosAdminController::class, 'update'])->name('actualizarUsuario');
     Route::post('eliminarUsuario', [UsuariosAdminController::class, 'delete'])->name('eliminarUsuario');
+});
+
+
+
+// Rutas públicas del chatbot
+Route::prefix('chatbot')->group(function () {
+    Route::post('/message', [ChatbotController::class, 'processMessage']);
+    Route::get('/menu', [ChatbotController::class, 'getMainMenu']);
+    Route::get('/search', [ChatbotController::class, 'searchByKeyword']);
+    Route::get('/history', [ChatbotController::class, 'getConversationHistory']);
+});
+
+// Rutas de administración (protegidas con middleware de autenticación)
+Route::prefix('admin/chatbot')->middleware(['auth:sanctum'])->group(function () {
+
+    // Dashboard y estadísticas
+    Route::get('/dashboard', [ChatbotAdminController::class, 'dashboard']);
+    Route::get('/stats', [ChatbotAdminController::class, 'getConversationStats']);
+    Route::get('/export', [ChatbotAdminController::class, 'exportConversations']);
+
+    // Gestión de respuestas
+    Route::get('/responses', [ChatbotAdminController::class, 'listResponses']);
+    Route::post('/responses', [ChatbotAdminController::class, 'createResponse']);
+    Route::put('/responses/{id}', [ChatbotAdminController::class, 'updateResponse']);
+    Route::delete('/responses/{id}', [ChatbotAdminController::class, 'deleteResponse']);
+
+    // Gestión de categorías
+    Route::apiResource('categories', ChatbotCategoryController::class);
+});
+
+Route::name('chatbot.')->group(function () {
+    Route::post('/api/chatbot/message', [ChatbotController::class, 'processMessage'])->name('message');
+    Route::get('/api/chatbot/menu', [ChatbotController::class, 'getMainMenu'])->name('menu');
+    Route::get('/api/chatbot/search', [ChatbotController::class, 'searchByKeyword'])->name('search');
+    Route::get('/api/chatbot/history', [ChatbotController::class, 'getConversationHistory'])->name('history');
 });
