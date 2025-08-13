@@ -114,7 +114,28 @@ Route::middleware(['check.login', 'force.password.change', 'user.access'])->grou
         }
         abort(404);
     })->where('path', '.*')->name('ver.archivoCasillaElectronica');
+
+    
 });
+
+// Ruta para archivos PDF del chatbot
+    Route::get('/chatbot/pdf/{type}/{response_id?}', function ($type, $response_id = null) {
+        $filename = '';
+        
+        if ($type === 'fut') {
+            // FUT específico por response_id
+            $filename = "chatbot_pdfs/FUT_response_{$response_id}.pdf";
+        } elseif ($type === 'fic01') {
+            // FIC-01 es el mismo para todos
+            $filename = "chatbot_pdfs/FIC-01.pdf";
+        }
+        
+        if ($filename && Storage::exists($filename)) {
+            return response()->file(storage_path('app/' . $filename));
+        }
+        
+        abort(404);
+    })->where('response_id', '[0-9]+')->name('chatbot.pdf');
 
 // lo peude ver vestado 002 y 003
 Route::middleware(['check.login', 'force.password.change', 'moderator.access'])->group(function () {

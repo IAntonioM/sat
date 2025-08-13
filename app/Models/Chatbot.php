@@ -68,7 +68,7 @@ class Chatbot extends Model
             LEFT JOIN chatbot_categories c ON r.category_id = c.id
             WHERE r.is_menu_option = 1
             AND r.is_active = 1
-            ORDER BY r.menu_number
+            ORDER BY CAST(r.menu_number AS INT) ASC
         ");
     }
 
@@ -141,11 +141,6 @@ class Chatbot extends Model
             }
         }
 
-        // Registrar conversación
-        if ($sessionId && $response) {
-            self::saveConversation($sessionId, $message, $response, $userIp, $userAgent);
-        }
-
         return $response;
     }
 
@@ -189,80 +184,7 @@ class Chatbot extends Model
 
         return $foundKeywords;
     }
-
-    /**
-     * Guardar conversación
-     */
-    public static function saveConversation($sessionId, $userMessage, $response, $userIp = null, $userAgent = null)
-    {
-        // Manejar correctamente el objeto response
-        if (is_object($response)) {
-            $responseText = $response->response;
-            $responseId = $response->id;
-        } elseif (is_array($response)) {
-            $responseText = $response['response'];
-            $responseId = $response['id'];
-        } else {
-            $responseText = $response;
-            $responseId = null;
-        }
-
-        DB::insert("
-        INSERT INTO chatbot_conversations (session_id, user_message, bot_response, response_id, user_ip, user_agent, created_at)
-        VALUES (?, ?, ?, ?, ?, ?, GETDATE())
-    ", [
-            $sessionId,
-            $userMessage,
-            $responseText,
-            $responseId,
-            $userIp,
-            $userAgent
-        ]);
-    }
-
-    /**
-     * Obtener estadísticas de conversaciones
-     */
-    public static function getConversationStats($startDate = null, $endDate = null)
-    {
-        $whereClause = "";
-        $params = [];
-
-        if ($startDate && $endDate) {
-            $whereClause = "WHERE created_at BETWEEN ? AND ?";
-            $params = [$startDate, $endDate];
-        }
-
-        return DB::select("
-            SELECT
-                COUNT(*) as total_conversations,
-                COUNT(DISTINCT session_id) as unique_sessions,
-                AVG(CAST(LEN(user_message) as FLOAT)) as avg_message_length
-            FROM chatbot_conversations
-            {$whereClause}
-        ", $params);
-    }
-
-    /**
-     * Obtener palabras clave más buscadas
-     */
-    public static function getTopKeywords($limit = 10)
-    {
-        return DB::select("
-        SELECT TOP (?)
-            k.keyword,
-            COUNT(c.id) as usage_count,
-            r.response
-        FROM chatbot_keywords k
-        INNER JOIN chatbot_responses r ON k.response_id = r.id
-        LEFT JOIN chatbot_conversations c ON r.id = c.response_id
-        WHERE r.is_active = 1
-        GROUP BY k.keyword, r.response
-        HAVING COUNT(c.id) > 0
-        ORDER BY usage_count DESC
-    ", [$limit]);
-    }
-
+    
     public static function findByExactKeyword($keyword)
     {
         return DB::select("

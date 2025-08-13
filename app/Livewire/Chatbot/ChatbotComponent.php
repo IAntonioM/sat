@@ -14,6 +14,7 @@ class ChatbotComponent extends Component
     public $showingMenu = true;
     public $sessionId;
     public $loading = false;
+    public $initialized = false; // ✅ Nuevo flag para evitar duplicación
 
     public function mount()
     {
@@ -24,9 +25,10 @@ class ChatbotComponent extends Component
     {
         $this->open = !$this->open;
 
-        // Solo inicializar cuando se abre el chat por primera vez
-        if ($this->open && empty($this->messages)) {
+        // Solo inicializar cuando se abre el chat por primera vez Y no está inicializado
+        if ($this->open && !$this->initialized) {
             $this->initializeChat();
+            $this->initialized = true; // ✅ Marcar como inicializado
         }
     }
 
@@ -95,12 +97,12 @@ class ChatbotComponent extends Component
         $this->loading = true;
 
         try {
-
             $dbResponse = Chatbot::processMessage($message, $this->sessionId, request()->ip(), request()->userAgent());
 
             if ($dbResponse) {
                 $this->showingMenu = str_contains($dbResponse->response, '1️⃣');
-                return $dbResponse->response;
+                $responseWithPdfs = $this->addPdfLinksToResponse($dbResponse->response, $dbResponse->id ?? null);
+                return $responseWithPdfs;
             }
 
             // Fallback final
@@ -110,7 +112,7 @@ class ChatbotComponent extends Component
             $dbResponse = Chatbot::processMessage($message, $this->sessionId, request()->ip(), request()->userAgent());
 
             if ($dbResponse) {
-                return $dbResponse->response;
+                return $this->addPdfLinksToResponse($dbResponse->response, $dbResponse->id ?? null);
             }
 
             return $this->getFallbackResponse();
@@ -131,6 +133,24 @@ class ChatbotComponent extends Component
         $menuText .= "\nO escribe tu duda nuevamente.";
 
         return $menuText;
+    }
+
+    private function addPdfLinksToResponse($response, $responseId = null)
+    {
+        // Buscar menciones de FUT y FIC-01 y agregar enlaces
+        $response = preg_replace(
+            '/\bFUT\b/',
+            '<a href="' . route('chatbot.pdf', ['type' => 'fut', 'response_id' => $responseId]) . '" target="_blank" class="btn btn-sm btn-outline-primary me-1"><i class="fas fa-file-pdf"></i> FUT</a>',
+            $response
+        );
+        
+        $response = preg_replace(
+            '/\bFicha FIC-01\b/',
+            '<a href="' . route('chatbot.pdf', ['type' => 'fic01']) . '" target="_blank" class="btn btn-sm btn-outline-success me-1"><i class="fas fa-file-pdf"></i> Ficha FIC-01</a>',
+            $response
+        );
+        
+        return $response;
     }
 
     private function getMenuResponse($option)
