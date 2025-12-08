@@ -33,7 +33,7 @@ class DeudaConsolidada extends Model
     public static function obtenerTotalDeuda($codigoContribuyente)
     {
         $result = DB::select('EXEC pxConsultasWeb2 @msquery=?, @vcodcontr =?', [2, $codigoContribuyente]);
-        return $result && isset($result[0]->total) ? $result[0]->total : 0;
+        return $result && isset($result[0]->total_sb) ? $result[0]->total_sb : 0;
     }
 
     /**

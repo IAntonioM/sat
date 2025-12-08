@@ -86,4 +86,20 @@ class Detallado extends Model
         $result = DB::select('SELECT DISTINCT tipo,mtipo FROM DETALLADO WHERE codigo = ? and tipo <> 005', [$codigoContribuyente]);
         return $result;
     }
+
+    /**
+     * Pagar una deuda detallada específica
+     *
+     * @param string $codigoContribuyente
+     * @param string $tipo
+     * @param string $ano
+     * @param string $periodo
+     * @return bool
+     */
+    public static function pagarDetallado($codigoContribuyente, $tipo, $ano, $periodo)
+    {
+        $result = DB::statement('EXEC pxConsultasWeb2 @msquery = 31, @Codigo = ?, @Tipo = ?, @Ano = ?, @Periodo = ?', 
+            [$codigoContribuyente, $tipo, $ano, $periodo]);
+        return $result;
+    }
 }

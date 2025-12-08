@@ -225,15 +225,71 @@ class DetalloComponent extends Component
         $this->filtrarDeudas();
     }
 
-    public function prepararPago()
+    /**
+    * Procesar el pago de las deudas seleccionadas
+    */
+    public function pagar()
     {
         if (empty($this->recibosSeleccionados)) {
             session()->flash('error', 'Debe seleccionar al menos una deuda para pagar');
             return;
         }
 
-        session(['recibos_seleccionados' => $this->recibosSeleccionados]);
-        return redirect()->route('deudas.pago');
+        try {
+            $results = [];
+
+            foreach ($this->recibosSeleccionados as $item) {
+                if ($item) {
+                    // Verificar si es formato consolidado o idrecibo
+                    if (strpos($item, '|') !== false) {
+                        // Formato consolidado: codigo|tipo|periodo
+                        $parts = explode('|', $item);
+                        if (count($parts) === 3) {
+                            $codigoContribuyente = trim($parts[0]);
+                            $tipo = trim($parts[1]);
+                            $anioPeriodo = $parts[2]; // formato: "2020-01"
+                            
+                            // Separar año y periodo
+                            $anioperiodoParts = explode('-', $anioPeriodo);
+                            if (count($anioperiodoParts) === 2) {
+                                $ano = $anioperiodoParts[0];
+                                $periodo = $anioperiodoParts[1];
+
+                                // Llamar al método para pagar
+                                $result = Detallado::pagarDetallado(
+                                    $codigoContribuyente,
+                                    $tipo,
+                                    $ano,
+                                    $periodo
+                                );
+
+                                $results[] = [
+                                    'codigo' => $codigoContribuyente,
+                                    'tipo' => $tipo,
+                                    'ano' => $ano,
+                                    'periodo' => $periodo,
+                                    'result' => $result
+                                ];
+                            }
+                        }
+                    }
+                }
+            }
+
+            // Recargar datos después del pago
+            $this->cargarDatos();
+            $this->recibosSeleccionados = [];
+            $this->totalSeleccionado = 0;
+
+            session()->flash('success', 'Pagos procesados correctamente');
+
+            // Log de resultados para debug
+            Debugbar::info('Resultados del pago', $results);
+            
+        } catch (\Exception $e) {
+            session()->flash('error', 'Error al procesar el pago: ' . $e->getMessage());
+            Debugbar::error('Error en pagar', $e);
+        }
     }
 
     /**

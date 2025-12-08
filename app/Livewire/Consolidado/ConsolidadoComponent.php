@@ -77,9 +77,6 @@ class ConsolidadoComponent extends Component
                 return;
             }
 
-            // Obtener el total de la deuda
-            $this->totalDeuda = DeudaConsolidada::obtenerTotalDeuda($this->codigoContribuyente);
-
             // Obtener las deudas detalladas
             $deudas = DeudaConsolidada::obtenerDeudasDetalladas(
                 $this->codigoContribuyente,
@@ -89,6 +86,9 @@ class ConsolidadoComponent extends Component
 
             // Agrupar deudas por año
             $this->deudas = collect($deudas)->groupBy('año');
+
+            // CALCULAR EL TOTAL DESDE LAS MISMAS DEUDAS (para que coincida con la tabla)
+            $this->totalDeuda = collect($deudas)->sum('total');
 
             // Obtener datos para los filtros
             $this->aniosDisponibles = DeudaConsolidada::obtenerAniosDisponibles($this->codigoContribuyente);

@@ -56,7 +56,7 @@
                         <a href="{{ $this->reporteUrl }}" class="btn btn-primary" target="_blank">
                             <i class="fa-solid fa-print"></i> Imprimir
                         </a>
-                        <button wire:click="prepararPago" class="btn btn-success">
+                        <button wire:click="pagar" class="btn btn-success">
                             <i class="fa-solid fa-money-bill-1-wave"></i>
                             Pagar
                         </button>
